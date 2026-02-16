@@ -1,8 +1,8 @@
 # --------------------------
-# C# / .NET ignores
+# .NET / C# ignores
 # --------------------------
-bin/
-obj/
+**/bin/
+**/obj/
 *.dll
 *.exe
 *.pdb
@@ -12,14 +12,15 @@ obj/
 *.userosscache
 .vscode/
 .vs/
-server/Api/appsettings.Development.json
+**/appsettings.Development.json
 
 # --------------------------
 # Node / React ignores
 # --------------------------
-node_modules/
-build/
-dist/
-.env
+client/node_modules/
+client/build/
+client/dist/
+client/.env
 npm-debug.log
 yarn-error.log
+
