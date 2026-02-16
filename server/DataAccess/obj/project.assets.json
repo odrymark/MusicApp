@@ -543,11 +543,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
+      "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
       "projectName": "DataAccess",
-      "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
+      "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
       "packagesPath": "/home/odrymark/.nuget/packages/",
-      "outputPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/obj/",
+      "outputPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/odrymark/.nuget/NuGet/NuGet.Config"

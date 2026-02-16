@@ -12,20 +12,20 @@ public class MusicDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Song>()
-            .HasOne(s => s.User)
-            .WithMany(u => u.Songs)
-            .HasForeignKey(s => s.UserId)
+            .HasOne(s => s.user)
+            .WithMany(u => u.songs)
+            .HasForeignKey(s => s.userId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Playlist>()
-            .HasOne(p => p.User)
-            .WithMany(u => u.Playlists)
-            .HasForeignKey(p => p.UserId)
+            .HasOne(p => p.user)
+            .WithMany(u => u.playlists)
+            .HasForeignKey(p => p.userId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Playlist>()
-            .HasMany(p => p.Songs)
-            .WithMany(s => s.Playlists)
+            .HasMany(p => p.songs)
+            .WithMany(s => s.playlists)
             .UsingEntity<Dictionary<string, object>>(
                 "PlaylistSongs",
                 j => j

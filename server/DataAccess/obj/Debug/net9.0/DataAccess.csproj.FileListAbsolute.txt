@@ -11,3 +11,16 @@
 /home/odrymark/Projects/devops/MusicApp/server/DataAccess/obj/Debug/net9.0/refint/DataAccess.dll
 /home/odrymark/Projects/devops/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.pdb
 /home/odrymark/Projects/devops/MusicApp/server/DataAccess/obj/Debug/net9.0/ref/DataAccess.dll
+/home/odrymark/Projects/MusicApp/server/DataAccess/bin/Debug/net9.0/DataAccess.deps.json
+/home/odrymark/Projects/MusicApp/server/DataAccess/bin/Debug/net9.0/DataAccess.dll
+/home/odrymark/Projects/MusicApp/server/DataAccess/bin/Debug/net9.0/DataAccess.pdb
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.csproj.AssemblyReference.cache
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfoInputs.cache
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfo.cs
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.csproj.CoreCompileInputs.cache
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.sourcelink.json
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.dll
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/refint/DataAccess.dll
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.pdb
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/ref/DataAccess.dll

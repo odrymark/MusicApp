@@ -1,3 +1,4 @@
+using Api.Services;
 using DataAccess;
 
 namespace Api;
@@ -6,7 +7,7 @@ public class Seeder(MusicDbContext ctx) : ISeeder
 {
     public async Task Seed()
     {
-        ctx.Database.EnsureCreated();
+        await ctx.Database.EnsureCreatedAsync();
 
         SeedAdminUser();
 
@@ -15,13 +16,16 @@ public class Seeder(MusicDbContext ctx) : ISeeder
 
     private void SeedAdminUser()
     {
-        if (!ctx.Users.Any(u => u.Username == "admin"))
+        var passwd = new PasswordService().HashPassword("passwd123");
+        
+        if (!ctx.Users.Any(u => u.username == "admin"))
         {
             var admin = new User
             {
-                Username = "admin",
-                Password = "passwd123",
-                Email = "admin@gmail.com"
+                username = "admin",
+                password = passwd,
+                email = "admin@gmail.com",
+                isAdmin = true
             };
 
             ctx.Users.Add(admin);

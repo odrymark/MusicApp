@@ -948,11 +948,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/odrymark/Projects/devops/MusicApp/server/Test/Test.csproj",
+      "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
       "projectName": "Test",
-      "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/Test/Test.csproj",
+      "projectPath": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
       "packagesPath": "/home/odrymark/.nuget/packages/",
-      "outputPath": "/home/odrymark/Projects/devops/MusicApp/server/Test/obj/",
+      "outputPath": "/home/odrymark/Projects/MusicApp/server/Test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/odrymark/.nuget/NuGet/NuGet.Config"

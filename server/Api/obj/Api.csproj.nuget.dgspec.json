@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/odrymark/Projects/devops/MusicApp/server/Api/Api.csproj": {}
+    "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj": {}
   },
   "projects": {
-    "/home/odrymark/Projects/devops/MusicApp/server/Api/Api.csproj": {
+    "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/odrymark/Projects/devops/MusicApp/server/Api/Api.csproj",
+        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj",
         "projectName": "Api",
-        "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/Api/Api.csproj",
+        "projectPath": "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj",
         "packagesPath": "/home/odrymark/.nuget/packages/",
-        "outputPath": "/home/odrymark/Projects/devops/MusicApp/server/Api/obj/",
+        "outputPath": "/home/odrymark/Projects/MusicApp/server/Api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/odrymark/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj": {
-                "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj"
+              "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
+                "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj"
               }
             }
           }
@@ -48,6 +48,14 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.13, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.16.0, )"
+            },
             "NSwag.AspNetCore": {
               "target": "Package",
               "version": "[14.6.3, )"
@@ -55,6 +63,10 @@
             "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
               "version": "[9.0.4, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.16.0, )"
             }
           },
           "imports": [
@@ -80,14 +92,14 @@
         }
       }
     },
-    "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj": {
+    "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
+        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
+        "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
         "packagesPath": "/home/odrymark/.nuget/packages/",
-        "outputPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/obj/",
+        "outputPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/odrymark/.nuget/NuGet/NuGet.Config"
