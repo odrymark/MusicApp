@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/Test/Test.csproj": {}
+    "/home/odrymark/Projects/devops/MusicApp/server/Test/Test.csproj": {}
   },
   "projects": {
-    "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/Test/Test.csproj": {
+    "/home/odrymark/Projects/devops/MusicApp/server/Test/Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/Test/Test.csproj",
+        "projectUniqueName": "/home/odrymark/Projects/devops/MusicApp/server/Test/Test.csproj",
         "projectName": "Test",
-        "projectPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/Test/Test.csproj",
+        "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/Test/Test.csproj",
         "packagesPath": "/home/odrymark/.nuget/packages/",
-        "outputPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/Test/obj/",
+        "outputPath": "/home/odrymark/Projects/devops/MusicApp/server/Test/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/odrymark/.nuget/NuGet/NuGet.Config"
