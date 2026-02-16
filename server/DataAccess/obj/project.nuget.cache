@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aVrBdB6ngtg=",
+  "dgSpecHash": "38TylSUnlQQ=",
   "success": true,
-  "projectFilePath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
+  "projectFilePath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
   "expectedPackageFiles": [
     "/home/odrymark/.nuget/packages/microsoft.entityframeworkcore/9.0.13/microsoft.entityframeworkcore.9.0.13.nupkg.sha512",
     "/home/odrymark/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.13/microsoft.entityframeworkcore.abstractions.9.0.13.nupkg.sha512",

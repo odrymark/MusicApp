@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import {useNavigate} from "react-router-dom";
 
 export default function SignUp() {
+    const navigate = useNavigate();
+
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -72,7 +75,7 @@ export default function SignUp() {
                     <div className="divider text-base-content/40 my-8">OR</div>
 
                     <div className="space-y-3">
-                        <button className="btn btn-primary btn-lg w-full">
+                        <button className="btn btn-primary btn-lg w-full" onClick={() => navigate("/login")}>
                             Login
                         </button>
                     </div>

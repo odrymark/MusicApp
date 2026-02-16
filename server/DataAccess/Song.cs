@@ -4,22 +4,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class Song
 {
-    public int Id { get; set; }
+    public Guid id { get; set; }
 
     [Required]
-    public int UserId { get; set; }
+    public Guid userId { get; set; }
 
     [Required]
     [MaxLength(100)]
-    public string Title { get; set; } = string.Empty;
+    public string title { get; set; } = string.Empty;
 
     [Required]
-    public string File { get; set; } = string.Empty;
+    public string file { get; set; } = string.Empty;
 
-    public string? Image { get; set; }
+    public string? image { get; set; }
 
-    [ForeignKey(nameof(UserId))]
-    public User User { get; set; } = null!;
+    [ForeignKey(nameof(userId))]
+    public User user { get; set; } = null!;
 
-    public ICollection<Playlist> Playlists { get; set; } = new List<Playlist>();
+    public ICollection<Playlist> playlists { get; set; } = new List<Playlist>();
 }
