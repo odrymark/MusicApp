@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj": {}
+    "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj": {}
   },
   "projects": {
-    "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj": {
+    "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj",
+        "projectUniqueName": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj",
+        "projectPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/DataAccess.csproj",
         "packagesPath": "/home/odrymark/.nuget/packages/",
-        "outputPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/obj/",
+        "outputPath": "/home/odrymark/Projects/devops/MusicApp/server/DataAccess/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/odrymark/.nuget/NuGet/NuGet.Config"
@@ -43,6 +43,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.13, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
