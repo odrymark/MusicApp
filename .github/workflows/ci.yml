@@ -26,8 +26,8 @@ jobs:
         run: dotnet restore server/server.sln
 
       - name: Build
-        run: dotnet build server/server.sln --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore
 
       - name: Run Tests
-        run: dotnet test server/server.sln --no-build --verbosity normal
+        run: dotnet test --no-build --verbosity normal
 
