@@ -1,4 +1,4 @@
-Music App
+## Music App
 
 A web application where users can upload their own songs, create playlists and listen to other users uploaded songs.
 
