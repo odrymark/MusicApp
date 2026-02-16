@@ -38,7 +38,7 @@ const SongSection = forwardRef<HTMLDivElement, SongSectionProps>(
                     {/* Scroll container */}
                     <div
                         ref={ref}
-                        className="flex gap-4 overflow-hidden scroll-smooth px-12"
+                        className="flex gap-4 overflow-x-hidden overflow-y-visible scroll-smooth px-12 py-4"
                     >
                         {songs.map((song) => (
                             <div

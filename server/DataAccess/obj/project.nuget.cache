@@ -1,8 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "dqahFGvnMj0=",
+  "dgSpecHash": "yRtdKgvAaDQ=",
   "success": true,
   "projectFilePath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/home/odrymark/.nuget/packages/microsoft.entityframeworkcore/9.0.13/microsoft.entityframeworkcore.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.entityframeworkcore.abstractions/9.0.13/microsoft.entityframeworkcore.abstractions.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.entityframeworkcore.analyzers/9.0.13/microsoft.entityframeworkcore.analyzers.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.caching.abstractions/9.0.13/microsoft.extensions.caching.abstractions.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.caching.memory/9.0.13/microsoft.extensions.caching.memory.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.dependencyinjection/9.0.13/microsoft.extensions.dependencyinjection.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.13/microsoft.extensions.dependencyinjection.abstractions.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.logging/9.0.13/microsoft.extensions.logging.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.13/microsoft.extensions.logging.abstractions.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.options/9.0.13/microsoft.extensions.options.9.0.13.nupkg.sha512",
+    "/home/odrymark/.nuget/packages/microsoft.extensions.primitives/9.0.13/microsoft.extensions.primitives.9.0.13.nupkg.sha512"
+  ],
   "logs": []
 }

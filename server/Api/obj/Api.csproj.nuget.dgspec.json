@@ -25,6 +25,86 @@
         "frameworks": {
           "net9.0": {
             "targetAlias": "net9.0",
+            "projectReferences": {
+              "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj": {
+                "projectPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.13, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.6.3, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj",
+        "projectName": "DataAccess",
+        "projectPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/DataAccess.csproj",
+        "packagesPath": "/home/odrymark/.nuget/packages/",
+        "outputPath": "/home/odrymark/Projects/sea-devops-f2026-devops-exam-project-DevOpsExamProject-1/server/DataAccess/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/odrymark/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
             "projectReferences": {}
           }
         },
@@ -43,6 +123,12 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.13, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -55,9 +141,6 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }

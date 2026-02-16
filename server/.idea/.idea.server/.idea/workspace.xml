@@ -4,8 +4,43 @@
     <projectFile profileName="http">Api/Api.csproj</projectFile>
     <projectFile profileName="https">Api/Api.csproj</projectFile>
   </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="8fca17c3-21d1-4b11-9532-1c1718aee247" name="Changes" comment="" />
+    <list default="true" id="8fca17c3-21d1-4b11-9532-1c1718aee247" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../client/src/components/SongSection.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../client/src/components/SongSection.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.server/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Api.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Api.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/Class1.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/DataAccess.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/DataAccess.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DataAccess/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Test/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/rider.project.restore.info" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,27 +50,46 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/DataAccess/Class1.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/TestProject1/UnitTest1.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Api/Controllers/MainController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Api/Services/MainService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DataAccess/MusicDbContext.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DataAccess/Playlist.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DataAccess/Song.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/DataAccess/User.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Test/UnitTest1.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="39iBrVGvsypSOcEZuILsKzKEdMs" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Api: http">
     <configuration name="Api: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Api/Api.csproj" />
@@ -77,7 +131,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1771169209917</updated>
-      <workItem from="1771169211128" duration="300000" />
+      <workItem from="1771169211128" duration="998000" />
+      <workItem from="1771247772087" duration="2831000" />
     </task>
     <servers />
   </component>
