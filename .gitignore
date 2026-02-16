@@ -12,7 +12,7 @@ obj/
 *.userosscache
 .vscode/
 .vs/
-appsettings.Development.json
+./server/Api/appsettings.Development.json
 
 # --------------------------
 # Node / React ignores
