@@ -34,15 +34,17 @@ Database (PostgreSQL):
 ### Week 6
 **Feature 1:** Initial backend and frontend
 
-**Feature 2:** Login and Create Account Page
+**Feature 2:** Login, Create Account and Home Page
 
 ### Week 7
 *Winter vacation - nothing planned.*
 
 ### Week 8
-**Feature 1:** Home Page
+**Feature 1:** Database Setup
 
-**Feature 2:** Database Setup
+**Feature 2:** User Login
+
+**Feature 3:** JWT Creation, Validation
 
 ### Week 9
 **Feature 1:** [...]
