@@ -13,9 +13,6 @@ The project uses:
 
 ## Architecture
 
-> [!NOTE]
-> Write a short explanation of your planned architecture here.
-
 Frontend (React):
   - Handles user interactions, authentication, and playlist management.
   - Communicates with the backend via REST APIs endpoints.
