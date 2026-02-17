@@ -18,7 +18,7 @@ export default function Home() {
 
     useEffect(() => {
         getMe().catch(() => {});
-    }, [getMe]);
+    }, []);
 
     const songs: Song[] = Array.from({ length: 15 }).map((_, i) => ({
         id: i,

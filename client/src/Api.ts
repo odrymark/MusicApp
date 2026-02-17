@@ -21,6 +21,24 @@ export interface UserLoginReqDto {
   password: string;
 }
 
+export interface UserCreateReqDto {
+  /**
+   * @minLength 3
+   * @maxLength 50
+   * @pattern ^[a-zA-Z0-9_]+$
+   */
+  username: string;
+  /**
+   * @format email
+   * @minLength 1
+   */
+  email: string;
+  /** @minLength 8 */
+  password: string;
+  /** @minLength 1 */
+  passwordConfirm: string;
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -340,6 +358,22 @@ export class Api<
       this.request<File, any>({
         path: `/api/auth/refresh`,
         method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags User
+     * @name UserCreateUser
+     * @request POST:/api/user/createUser
+     */
+    userCreateUser: (data: UserCreateReqDto, params: RequestParams = {}) =>
+      this.request<File, any>({
+        path: `/api/user/createUser`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
   };

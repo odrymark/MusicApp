@@ -17,10 +17,13 @@ export default function Login() {
 
     useEffect(() => {
         getMe().catch(() => {});
+    }, []);
 
-        if(user)
+    useEffect(() => {
+        if (user) {
             navigate("/home");
-    }, [getMe]);
+        }
+    }, [user]);
 
     async function handleSubmit(e: { preventDefault: () => void }) {
         e.preventDefault();

@@ -9,74 +9,35 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8fca17c3-21d1-4b11-9532-1c1718aee247" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/dataSources/5c6160cb-e475-4632-9195-c774a446cdc0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/dataSources/5c6160cb-e475-4632-9195-c774a446cdc0/storage_v2/_src_/database/neondb.1Hh4wQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/dataSources/5c6160cb-e475-4632-9195-c774a446cdc0/storage_v2/_src_/database/neondb.1Hh4wQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/dataSources/5c6160cb-e475-4632-9195-c774a446cdc0/storage_v2/_src_/database/neondb.1Hh4wQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/dataSources/5c6160cb-e475-4632-9195-c774a446cdc0/storage_v2/_src_/database/neondb.1Hh4wQ/schema/public.abK9xQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Api.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Api.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Controllers/MainController.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.server/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Seeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Seeder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Services/MainService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/bin/Debug/net9.0/Api.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/bin/Debug/net9.0/Api.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/bin/Debug/net9.0/Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Api/bin/Debug/net9.0/Api.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/bin/Debug/net9.0/Api.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Api/bin/Debug/net9.0/Api.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/bin/Debug/net9.0/DataAccess.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Api/bin/Debug/net9.0/DataAccess.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/bin/Debug/net9.0/DataAccess.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Api/bin/Debug/net9.0/DataAccess.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/bin/Debug/net9.0/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/bin/Debug/net9.0/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.targets" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.assets.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.AssemblyReference.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/ref/Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/ref/Api.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/refint/Api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/refint/Api.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/project.packagespec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/MusicDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/MusicDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/Playlist.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/Playlist.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/Song.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/Song.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/User.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/bin/Debug/net9.0/DataAccess.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/bin/Debug/net9.0/DataAccess.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/bin/Debug/net9.0/DataAccess.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/bin/Debug/net9.0/DataAccess.pdb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/DataAccess.csproj.nuget.dgspec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/DataAccess.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/ref/DataAccess.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/ref/DataAccess.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/refint/DataAccess.dll" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/Debug/net9.0/refint/DataAccess.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/project.packagespec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DataAccess/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DataAccess/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/DataAccess/obj/rider.project.restore.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Debug/net9.0/Test.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/Test.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/Test.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/project.packagespec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Test/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Test/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,12 +49,15 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Api/Controllers/AuthController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Api/Controllers/UserController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Api/DTOs/Request/UserCreateReqDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Api/DTOs/Request/UserLoginReqDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Api/DTOs/Response/GetMeResDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Api/DTOs/Response/UserLoginResDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Api/Services/AuthService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Api/Services/PasswordService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Api/Services/TokenService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Api/Services/UserService.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -113,7 +77,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "fix/gitignore",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -170,6 +134,7 @@
       <updated>1771169209917</updated>
       <workItem from="1771169211128" duration="300000" />
       <workItem from="1771259293217" duration="9204000" />
+      <workItem from="1771313539151" duration="3754000" />
     </task>
     <servers />
   </component>

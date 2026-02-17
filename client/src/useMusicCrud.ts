@@ -1,5 +1,5 @@
 import { Api } from "./Api.ts";
-import type { UserLoginReqDto } from "./Api.ts";
+import type { UserLoginReqDto, UserCreateReqDto } from "./Api.ts";
 import { userAtom } from "./atoms/userAtom.ts";
 import { useAtom } from "jotai";
 
@@ -26,7 +26,6 @@ export default function useMusicCrud() {
             const userData = await response.json() as unknown as UserInfo;
 
             setUser(userData);
-
         } catch (error) {
             console.error("Login failed:", error);
             throw error;
@@ -53,9 +52,21 @@ export default function useMusicCrud() {
         }
     }
 
+    async function createUser(dto: UserCreateReqDto): Promise<void> {
+        try {
+            await api.api.userCreateUser(dto);
+
+            await login({username: dto.username, password: dto.password});
+        } catch (error) {
+            console.error("Creating user failed:", error);
+            throw error;
+        }
+    }
+
     return {
         login,
         logout,
-        getMe
+        getMe,
+        createUser,
     };
 }

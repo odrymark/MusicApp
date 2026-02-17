@@ -60,6 +60,7 @@ builder.Services.AddAuthentication("JwtAuth")
 
 builder.Services.AddScoped<ISeeder, Seeder>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddControllers();
