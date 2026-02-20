@@ -2,6 +2,7 @@ import { createBrowserRouter, type RouteObject, RouterProvider, Navigate } from 
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Home from "./pages/Home.tsx";
+import UploadSong from "./pages/UploadSong.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -19,6 +20,10 @@ const routes: RouteObject[] = [
     {
         path: "/home",
         element: <Home/>
+    },
+    {
+        path: "/uploadSong",
+        element: <UploadSong/>
     },
 ];
 

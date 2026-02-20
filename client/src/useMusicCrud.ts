@@ -63,10 +63,23 @@ export default function useMusicCrud() {
         }
     }
 
+    async function uploadSong(file: File): Promise<void> {
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            await api.api.songUpload(formData as any);
+        } catch (error) {
+            console.error("Uploading song failed:", error);
+            throw error;
+        }
+    }
+
     return {
         login,
         logout,
         getMe,
         createUser,
+        uploadSong,
     };
 }
