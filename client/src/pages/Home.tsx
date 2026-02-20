@@ -70,17 +70,17 @@ export default function Home() {
 
                     <div className="flex flex-col justify-between flex-1 p-6">
                         <nav className="flex flex-col justify-center space-y-2 flex-1">
-                            <a className="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary font-medium">
+                            <a className="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary font-medium" onClick={() => navigate("/home")}>
                                 <span className="text-xl">🏠</span>
-                                <span>Dashboard</span>
+                                <span>Home</span>
                             </a>
                             <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
                                 <span className="text-xl">📊</span>
-                                <span>Analytics</span>
+                                <span>My Music</span>
                             </a>
-                            <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
+                            <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors" onClick={() => navigate("/uploadSong")}>
                                 <span className="text-xl">👥</span>
-                                <span>Users</span>
+                                <span>Upload Song</span>
                             </a>
                             <a className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
                                 <span className="text-xl">⚙️</span>

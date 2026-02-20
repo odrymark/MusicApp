@@ -128,3 +128,5 @@
 /home/odrymark/Projects/MusicApp/server/Api/obj/Debug/net9.0/Api.pdb
 /home/odrymark/Projects/MusicApp/server/Api/obj/Debug/net9.0/Api.genruntimeconfig.cache
 /home/odrymark/Projects/MusicApp/server/Api/obj/Debug/net9.0/ref/Api.dll
+/home/odrymark/Projects/MusicApp/server/Api/bin/Debug/net9.0/AWSSDK.Core.dll
+/home/odrymark/Projects/MusicApp/server/Api/bin/Debug/net9.0/AWSSDK.S3.dll

@@ -364,6 +364,33 @@ export class Api<
     /**
      * No description
      *
+     * @tags Song
+     * @name SongUpload
+     * @request POST:/api/song/uploadSong
+     */
+    songUpload: (
+      data: {
+        ContentType?: string | null;
+        ContentDisposition?: string | null;
+        Headers?: any[] | null;
+        /** @format int64 */
+        Length?: number;
+        Name?: string | null;
+        FileName?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, any>({
+        path: `/api/song/uploadSong`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags User
      * @name UserCreateUser
      * @request POST:/api/user/createUser

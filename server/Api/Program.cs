@@ -63,6 +63,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<R2Service>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument();
 
