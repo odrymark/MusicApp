@@ -47,9 +47,9 @@ Database (PostgreSQL):
 **Feature 3:** JWT Creation, Validation
 
 ### Week 9
-**Feature 1:** [...]
+**Feature 1:** Song Upload Page
 
-**Feature 2:** [...]
+**Feature 2:** Saving songs to CloudFlare
 
 ### Week 10
 **Feature 1:** [...]
