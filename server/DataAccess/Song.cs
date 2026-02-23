@@ -14,7 +14,8 @@ public class Song
     public string title { get; set; } = string.Empty;
 
     [Required]
-    public string file { get; set; } = string.Empty;
+    [MaxLength(100)]
+    public string songKey { get; set; } = string.Empty;
 
     public string? image { get; set; }
 

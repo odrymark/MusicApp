@@ -1,29 +1,37 @@
-import { createBrowserRouter, type RouteObject, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Home from "./pages/Home.tsx";
 import UploadSong from "./pages/UploadSong.tsx";
+import MyMusic from "./pages/MyMusic";
+import Sidebar from "./pages/Sidebar.tsx";
 
 const routes: RouteObject[] = [
     {
         path: "/",
-        element: <Navigate to="/login" replace />
-    },
-    {
-        path: "/login",
-        element: <Login/>
-    },
-    {
-        path: "/signup",
-        element: <SignUp/>
-    },
-    {
-        path: "/home",
-        element: <Home/>
-    },
-    {
-        path: "/uploadSong",
-        element: <UploadSong/>
+        element: <Sidebar/>,
+        children: [
+            {
+                path: "login",
+                element: <Login/>
+            },
+            {
+                path: "signup",
+                element: <SignUp/>
+            },
+            {
+                path: "home",
+                element: <Home/>
+            },
+            {
+                path: "uploadSong",
+                element: <UploadSong/>
+            },
+            {
+                path: "myMusic",
+                element: <MyMusic/>
+            },
+        ]
     },
 ];
 

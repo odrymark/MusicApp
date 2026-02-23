@@ -365,18 +365,14 @@ export class Api<
      * No description
      *
      * @tags Song
-     * @name SongUpload
+     * @name SongUploadSong
      * @request POST:/api/song/uploadSong
      */
-    songUpload: (
+    songUploadSong: (
       data: {
-        ContentType?: string | null;
-        ContentDisposition?: string | null;
-        Headers?: any[] | null;
-        /** @format int64 */
-        Length?: number;
-        Name?: string | null;
-        FileName?: string | null;
+        /** @format binary */
+        File?: File | null;
+        Title?: string | null;
       },
       params: RequestParams = {},
     ) =>
@@ -385,6 +381,20 @@ export class Api<
         method: "POST",
         body: data,
         type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Song
+     * @name SongGetUserSongs
+     * @request GET:/api/song/getUserSongs
+     */
+    songGetUserSongs: (params: RequestParams = {}) =>
+      this.request<File, any>({
+        path: `/api/song/getUserSongs`,
+        method: "GET",
         ...params,
       }),
 
