@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Amazon;
 using Amazon.S3;
+using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Microsoft.AspNetCore.Http;
 
@@ -47,7 +48,7 @@ public class R2Service
         public string Endpoint { get; set; }
     }
 
-    public async Task<string> UploadFileAsync(IFormFile file)
+    public async Task<string> UploadSongStorage(IFormFile file)
     {
         if (file == null || file.Length == 0)
             throw new ArgumentException("File is empty");
@@ -57,16 +58,6 @@ public class R2Service
 
         if (!allowedExtensions.Contains(extension))
             throw new ArgumentException("Invalid file type");
-
-        Console.WriteLine($"R2 Endpoint loaded: '{_endpoint}'");
-        if (string.IsNullOrWhiteSpace(_endpoint))
-        {
-            throw new InvalidOperationException("R2 Endpoint is empty or null - check your JSON config file");
-        }
-        if (!_endpoint.StartsWith("https://") || !_endpoint.EndsWith(".r2.cloudflarestorage.com"))
-        {
-            Console.WriteLine("Warning: Endpoint does not look like a valid R2 URL");
-        }
 
         var s3Config = new AmazonS3Config
         {
@@ -95,4 +86,25 @@ public class R2Service
 
         return fileName;
     }
+    
+    public string GenerateSignedUrl(string key, int expirationHours = 1)
+    {
+        var s3Config = new AmazonS3Config
+        {
+            ServiceURL = _endpoint,
+            ForcePathStyle = true,
+            AuthenticationRegion = "auto"
+        };
+
+        using var s3Client = new AmazonS3Client(_accessKey, _secretKey, s3Config);
+
+        var request = new GetPreSignedUrlRequest
+        {
+            BucketName = _bucketName,
+            Key = key,
+            Expires = DateTime.UtcNow.AddHours(expirationHours)
+        };
+
+        return s3Client.GetPreSignedURL(request);
+    } 
 }

@@ -64,6 +64,7 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<PasswordService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<R2Service>();
+builder.Services.AddScoped<SongService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument();
 

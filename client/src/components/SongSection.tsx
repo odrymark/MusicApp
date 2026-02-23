@@ -27,7 +27,6 @@ const SongSection = forwardRef<HTMLDivElement, SongSectionProps>(
                 <h2 className="text-2xl font-semibold mb-4 text-primary">{title}</h2>
 
                 <div className="relative">
-                    {/* Left button */}
                     <button
                         onClick={() => scrollRow("left")}
                         className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-base-100/80 hover:bg-base-100 p-2 rounded-full shadow"
@@ -35,7 +34,6 @@ const SongSection = forwardRef<HTMLDivElement, SongSectionProps>(
                         ◀
                     </button>
 
-                    {/* Scroll container */}
                     <div
                         ref={ref}
                         className="flex gap-4 overflow-hidden scroll-smooth px-12"
@@ -57,7 +55,6 @@ const SongSection = forwardRef<HTMLDivElement, SongSectionProps>(
                         ))}
                     </div>
 
-                    {/* Right button */}
                     <button
                         onClick={() => scrollRow("right")}
                         className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-base-100/80 hover:bg-base-100 p-2 rounded-full shadow"
