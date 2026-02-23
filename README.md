@@ -53,9 +53,9 @@ Database (PostgreSQL):
 **Feature 2:** Saving songs to CloudFlare
 
 ### Week 10
-**Feature 1:** [...]
+**Feature 1:** Saving songs to DB
 
-**Feature 2:** [...]
+**Feature 2:** Retrieving user's songs
 
 ### Week 11
 **Feature 1:** [...]
