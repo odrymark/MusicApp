@@ -22,8 +22,42 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
+      - name: Install required tools
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet tool install --global dotnet-reportgenerator-globaltool
+
       - name: Restore dependencies
         run: dotnet restore server/server.sln
 
+      - name: Start static code analysis
+        run: |
+          dotnet sonarscanner begin \
+            /k:"${{ secrets.SONARQUBE_KEY }}" \
+            /d:sonar.host.url="${{ secrets.SONARQUBE_URL }}" \
+            /d:sonar.token="${{ secrets.SONARQUBE_TOKEN }}" \
+            /d:sonar.coverageReportPaths="coverage-report/SonarQube.xml" \
+            /d:sonar.qualitygate.wait=false \
+            /d:sonar.qualitygate.timeout=300
+
       - name: Build
         run: dotnet build server/server.sln --configuration Release --no-restore
+
+      - name: Run tests
+        run: |
+          dotnet test server/server.sln \
+            --configuration Release \
+            --collect:"XPlat Code Coverage" \
+            --results-directory TestResults
+
+      - name: Generate coverage report for SonarQube
+        run: |
+          reportgenerator \
+            -reports:TestResults/**/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:SonarQube
+
+      - name: Complete static code analysis
+        run: |
+          dotnet sonarscanner end \
+            /d:sonar.token="${{ secrets.SONARQUBE_TOKEN }}"
