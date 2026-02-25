@@ -10,6 +10,7 @@ The project uses:
 - PostgreSQL as the database
 - Neon for the database provider
 - CloudFlare R2 for saving songs
+- SonarQube for static code analysis
 - fly.io for deployment
 
 ## Architecture
