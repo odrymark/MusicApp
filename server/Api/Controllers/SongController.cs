@@ -49,4 +49,18 @@ public class SongController(R2Service r2Service, SongService songService) : Cont
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpGet("getSongUrl")]
+    public IActionResult GetSongUrl(string key)
+    {
+        try
+        {
+            var url = r2Service.GenerateSignedUrl(key);
+            return Ok(url);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
