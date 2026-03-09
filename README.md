@@ -59,7 +59,7 @@ Database (PostgreSQL):
 **Feature 2:** Retrieving user's songs
 
 ### Week 11
-**Feature 1:** [...]
+**Feature 1:** Playing and controlling the user's own songs
 
 **Feature 2:** [...]
 
