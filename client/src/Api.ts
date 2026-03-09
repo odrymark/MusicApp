@@ -401,6 +401,26 @@ export class Api<
     /**
      * No description
      *
+     * @tags Song
+     * @name SongGetSongUrl
+     * @request GET:/api/song/getSongUrl
+     */
+    songGetSongUrl: (
+      query?: {
+        key?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<File, any>({
+        path: `/api/song/getSongUrl`,
+        method: "GET",
+        query: query,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags User
      * @name UserCreateUser
      * @request POST:/api/user/createUser

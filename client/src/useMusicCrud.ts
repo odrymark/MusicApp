@@ -20,6 +20,7 @@ export type Song = {
     id: string;
     title: string;
     songKey: string;
+    url: string;
     image: string | null;
 }
 
@@ -52,7 +53,7 @@ export default function useMusicCrud() {
     async function getMe(): Promise<void> {
         try {
             const response = await api.api.authGetMe();
-            
+
             setUser(await response.json() as unknown as UserInfo);
         } catch {
             setUser(null);
@@ -94,6 +95,18 @@ export default function useMusicCrud() {
         }
     }
 
+    async function getSongUrl(key: string): Promise<string> {
+        try {
+            const res = await api.api.songGetSongUrl({ key });
+
+            return await res.text();
+        }
+        catch (error) {
+            console.error("Retrieving song url failed:", error);
+            throw error;
+        }
+    }
+
     return {
         login,
         logout,
@@ -101,5 +114,6 @@ export default function useMusicCrud() {
         createUser,
         uploadSong,
         getUserSongs,
+        getSongUrl,
     };
 }

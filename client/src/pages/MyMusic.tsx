@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "../atoms/userAtom";
+import { currentSongAtom } from "../atoms/currentSongAtom";
 import useMusicCrud, { type Song } from "../useMusicCrud.ts";
 
 export default function MyMusic() {
     const user = useAtomValue(userAtom);
     const { getUserSongs } = useMusicCrud();
+    const setCurrentSong = useSetAtom(currentSongAtom);
 
     const [songs, setSongs] = useState<Song[]>([]);
     const [search, setSearch] = useState("");
     const [activeTab, setActiveTab] = useState<"songs" | "playlists">("songs");
 
     useEffect(() => {
-        getUserSongs().then((res) => setSongs(res))
+        getUserSongs().then((res) => setSongs(res));
     }, [user]);
 
     const filteredSongs = songs.filter((s) =>
@@ -68,7 +70,8 @@ export default function MyMusic() {
                             {filteredSongs.map((song) => (
                                 <div
                                     key={song.id}
-                                    className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full"
+                                    onClick={() => setCurrentSong(song)}
+                                    className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full cursor-pointer group relative"
                                 >
                                     {song.image ? (
                                         <img
@@ -81,6 +84,15 @@ export default function MyMusic() {
                                             No Image
                                         </div>
                                     )}
+
+                                    {/* Play overlay on hover */}
+                                    <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </div>
+                                    </div>
 
                                     <div className="font-semibold text-center text-sm mt-2">
                                         {song.title}
