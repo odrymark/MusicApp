@@ -7,8 +7,6 @@ public class Seeder(MusicDbContext ctx) : ISeeder
 {
     public async Task Seed()
     {
-        await ctx.Database.EnsureCreatedAsync();
-
         SeedAdminUser();
 
         await ctx.SaveChangesAsync();
