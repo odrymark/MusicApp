@@ -371,8 +371,10 @@ export class Api<
     songUploadSong: (
       data: {
         /** @format binary */
-        File?: File | null;
-        Title?: string | null;
+        file?: File | null;
+        title?: string | null;
+        artist?: string | null;
+        isPublic?: boolean;
       },
       params: RequestParams = {},
     ) =>
@@ -394,6 +396,20 @@ export class Api<
     songGetUserSongs: (params: RequestParams = {}) =>
       this.request<File, any>({
         path: `/api/song/getUserSongs`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Song
+     * @name SongGetSongs
+     * @request GET:/api/song/getSongs
+     */
+    songGetSongs: (params: RequestParams = {}) =>
+      this.request<File, any>({
+        path: `/api/song/getSongs`,
         method: "GET",
         ...params,
       }),
