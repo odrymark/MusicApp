@@ -23,7 +23,6 @@ export default function MyMusic() {
 
     return (
         <div className="h-screen flex flex-col overflow-hidden bg-base-200">
-            {/* Header */}
             <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
                 <div className="navbar px-4 md:px-8 py-3">
                     <span className="text-xl font-bold text-primary ml-2 md:ml-0">
@@ -85,7 +84,6 @@ export default function MyMusic() {
                                         </div>
                                     )}
 
-                                    {/* Play overlay on hover */}
                                     <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">

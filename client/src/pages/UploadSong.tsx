@@ -6,6 +6,8 @@ export default function UploadSong() {
 
     const [file, setFile] = useState<File | null>(null);
     const [title, setTitle] = useState("");
+    const [artist, setArtist] = useState("");
+    const [isPublic, setIsPublic] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
     const handleUpload = async () => {
@@ -16,10 +18,12 @@ export default function UploadSong() {
 
         try {
             setIsUploading(true);
-            await uploadSong(file, title);
+            await uploadSong(file, title, artist, isPublic);
             alert("Song uploaded successfully!");
             setFile(null);
             setTitle("");
+            setArtist("");
+            setIsPublic(false);
         } catch (error) {
             alert("Upload failed.");
         } finally {
@@ -61,6 +65,19 @@ export default function UploadSong() {
 
                         <div className="form-control w-full mt-4">
                             <label className="label">
+                                <span className="label-text">Artist</span>
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="Enter artist name"
+                                className="input input-bordered w-full"
+                                value={artist}
+                                onChange={(e) => setArtist(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="form-control w-full mt-4">
+                            <label className="label">
                                 <span className="label-text">Select MP3 File</span>
                             </label>
                             <input
@@ -71,6 +88,18 @@ export default function UploadSong() {
                                     setFile(e.target.files ? e.target.files[0] : null)
                                 }
                             />
+                        </div>
+
+                        <div className="form-control mt-4">
+                            <label className="label cursor-pointer justify-start gap-4">
+                                <span className="label-text">Visible to Others</span>
+                                <input
+                                    type="checkbox"
+                                    className="toggle toggle-primary"
+                                    checked={isPublic}
+                                    onChange={(e) => setIsPublic(e.target.checked)}
+                                />
+                            </label>
                         </div>
 
                         <div className="card-actions justify-end mt-6">

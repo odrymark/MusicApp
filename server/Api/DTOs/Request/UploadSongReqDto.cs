@@ -8,9 +8,16 @@ using System.ComponentModel.DataAnnotations;
 public class UploadSongReqDto
 {
     [Required]
-    public IFormFile File { get; set; } = null!;
+    public IFormFile file { get; set; } = null!;
 
     [Required]
     [MaxLength(100)]
-    public string Title { get; set; } = string.Empty;
+    public string title { get; set; } = string.Empty;
+    
+    [Required]
+    [MaxLength(100)]
+    public string artist { get; set; } = string.Empty;
+    
+    [Required]
+    public bool isPublic { get; set; }
 }

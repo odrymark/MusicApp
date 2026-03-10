@@ -21,6 +21,7 @@ export type Song = {
     title: string;
     songKey: string;
     url: string;
+    artist: string;
     image: string | null;
 }
 
@@ -71,11 +72,13 @@ export default function useMusicCrud() {
         }
     }
 
-    async function uploadSong(file: File, title: string): Promise<void> {
+    async function uploadSong(file: File, title: string, artist: string, isPublic: boolean): Promise<void> {
         try {
             const formData = new FormData();
             formData.append("file", file);
             formData.append("title", title);
+            formData.append("artist", artist);
+            formData.append("isPublic", isPublic);
 
             await api.api.songUploadSong(formData as any);
         } catch (error) {
@@ -87,6 +90,17 @@ export default function useMusicCrud() {
     async function getUserSongs(): Promise<Song[]> {
         try {
             const res = await api.api.songGetUserSongs();
+
+            return await res.json() as Song[];
+        } catch (error) {
+            console.error("Retrieving songs failed:", error);
+            throw error;
+        }
+    }
+
+    async function getSongs(): Promise<Song[]> {
+        try {
+            const res = await api.api.songGetSongs();
 
             return await res.json() as Song[];
         } catch (error) {
@@ -114,6 +128,7 @@ export default function useMusicCrud() {
         createUser,
         uploadSong,
         getUserSongs,
+        getSongs,
         getSongUrl,
     };
 }

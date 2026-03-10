@@ -20,8 +20,8 @@ public class SongController(R2Service r2Service, SongService songService) : Cont
             var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var id = Guid.Parse(idStr!);
 
-            var songKey = await r2Service.UploadSongStorage(dto.File);
-            await songService.CreateSong(id, dto.Title, songKey);
+            var songKey = await r2Service.UploadSongStorage(dto.file);
+            await songService.CreateSong(id, dto.title, songKey, dto.artist, dto.isPublic);
 
             return Ok();
         }
@@ -42,6 +42,20 @@ public class SongController(R2Service r2Service, SongService songService) : Cont
             
             var songs = await songService.GetUserSongsAsync(id);
             
+            return Ok(songs);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("getSongs")]
+    public async Task<IActionResult> GetSongs()
+    {
+        try
+        {
+            var songs = await songService.GetSongs();
             return Ok(songs);
         }
         catch (Exception ex)

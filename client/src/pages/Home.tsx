@@ -1,16 +1,20 @@
-import { useRef } from "react";
-import SongSection, { type Song } from "../components/SongSection.tsx";
+import {useEffect, useRef, useState} from "react";
+import { useSetAtom } from "jotai";
+import { currentSongAtom } from "../atoms/currentSongAtom";
+import SongSection from "../components/SongSection.tsx";
+import useMusicCrud, { type Song } from "../useMusicCrud.ts";
 
 export default function Home() {
     const topTrendingRef = useRef<HTMLDivElement>(null);
     const mostListenedRef = useRef<HTMLDivElement>(null);
     const recommendationsRef = useRef<HTMLDivElement>(null);
+    const [songs, setSongs] = useState<Song[]>([]);
+    const { getSongs } = useMusicCrud();
+    const setCurrentSong = useSetAtom(currentSongAtom);
 
-    const songs: Song[] = Array.from({ length: 15 }).map((_, i) => ({
-        id: i,
-        title: `Song ${i + 1}`,
-        cover: `https://picsum.photos/200?random=${i + 1}`,
-    }));
+    useEffect(() => {
+        getSongs().then((res) => setSongs(res));
+    }, []);
 
     const topPlaylists = Array.from({ length: 10 }).map((_, i) => ({
         id: i,
@@ -23,9 +27,9 @@ export default function Home() {
             <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
                 <div className="navbar px-4 md:px-8 py-3">
                     <div className="flex-1">
-            <span className="text-xl font-bold text-primary ml-2 md:ml-0">
-              Music App
-            </span>
+                        <span className="text-xl font-bold text-primary ml-2 md:ml-0">
+                            Music App
+                        </span>
                     </div>
                 </div>
             </header>
@@ -33,9 +37,9 @@ export default function Home() {
             <div className="flex flex-1 overflow-hidden">
                 <main className="flex-1 overflow-y-auto p-6 md:p-10">
                     <div className="max-w-6xl mx-auto">
-                        <SongSection ref={topTrendingRef} title="Top Trending" songs={songs} />
-                        <SongSection ref={mostListenedRef} title="Your Most Listened" songs={songs} />
-                        <SongSection ref={recommendationsRef} title="Recommendations For You" songs={songs} />
+                        <SongSection ref={topTrendingRef} title="Top Trending" songs={songs} onSongClick={setCurrentSong} />
+                        <SongSection ref={mostListenedRef} title="Your Most Listened" songs={songs} onSongClick={setCurrentSong} />
+                        <SongSection ref={recommendationsRef} title="Recommendations For You" songs={songs} onSongClick={setCurrentSong} />
                     </div>
                 </main>
 
