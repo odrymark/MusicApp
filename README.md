@@ -61,7 +61,7 @@ Database (PostgreSQL):
 ### Week 11
 **Feature 1:** Playing and controlling the user's own songs
 
-**Feature 2:** [...]
+**Feature 2:** Main Page has playable songs from the db
 
 ### Week 12
 **Feature 1:** [...]
