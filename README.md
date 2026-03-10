@@ -9,7 +9,7 @@ The project uses:
 - React for the frontend
 - PostgreSQL as the database
 - Neon for the database provider
-- CloudFlare R2 for saving songs
+- CloudFlare R2 for storing songs
 - SonarQube for static code analysis
 - fly.io for deployment
 
