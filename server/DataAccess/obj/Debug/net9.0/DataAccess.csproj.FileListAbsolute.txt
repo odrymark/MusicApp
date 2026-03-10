@@ -24,3 +24,5 @@
 /home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/refint/DataAccess.dll
 /home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.pdb
 /home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/ref/DataAccess.dll
+/home/odrymark/Projects/MusicApp/server/DataAccess/bin/Debug/net9.0/DataAccess.runtimeconfig.json
+/home/odrymark/Projects/MusicApp/server/DataAccess/obj/Debug/net9.0/DataAccess.genruntimeconfig.cache

@@ -12,10 +12,16 @@ public class Song
     [Required]
     [MaxLength(100)]
     public string title { get; set; } = string.Empty;
+    
+    [MaxLength(100)]
+    public string artist { get; set; }
 
     [Required]
     [MaxLength(100)]
     public string songKey { get; set; } = string.Empty;
+    
+    [Required]
+    public bool isPublic { get; set; }
 
     public string? image { get; set; }
 
