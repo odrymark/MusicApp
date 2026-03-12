@@ -4,14 +4,112 @@
     "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj": {}
   },
   "projects": {
-    "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj": {
+    "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
-        "projectName": "Test",
-        "projectPath": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
+        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj",
+        "projectName": "Api",
+        "projectPath": "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj",
         "packagesPath": "/home/odrymark/.nuget/packages/",
-        "outputPath": "/home/odrymark/Projects/MusicApp/server/Test/obj/",
+        "outputPath": "/home/odrymark/Projects/MusicApp/server/Api/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/odrymark/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
+                "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[4.0.18.6, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[9.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.13, )"
+            },
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[8.16.0, )"
+            },
+            "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.6.3, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.0.4, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.16.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
+        "projectName": "DataAccess",
+        "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj",
+        "packagesPath": "/home/odrymark/.nuget/packages/",
+        "outputPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/odrymark/.nuget/NuGet/NuGet.Config"
@@ -44,21 +142,125 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.*, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.13, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[9.*, )"
+            },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[9.*, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
+        "projectName": "Test",
+        "projectPath": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
+        "packagesPath": "/home/odrymark/.nuget/packages/",
+        "outputPath": "/home/odrymark/Projects/MusicApp/server/Test/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/odrymark/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj": {
+                "projectPath": "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj"
+              },
+              "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
+                "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.14, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.12.0, )"
+            },
+            "NSubstitute": {
+              "target": "Package",
+              "version": "[5.3.0, )"
+            },
+            "Testcontainers.PostgreSql": {
+              "target": "Package",
+              "version": "[4.10.0, )"
+            },
+            "Xunit.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.2.0, )"
             },
             "coverlet.collector": {
               "target": "Package",
               "version": "[6.0.2, )"
             },
-            "xunit": {
-              "target": "Package",
-              "version": "[2.9.2, )"
-            },
             "xunit.runner.visualstudio": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
               "target": "Package",
-              "version": "[2.8.2, )"
+              "version": "[3.1.5, )"
+            },
+            "xunit.v3": {
+              "target": "Package",
+              "version": "[3.2.1, )"
             }
           },
           "imports": [

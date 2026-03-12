@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
+namespace DataAccess;
+
 public class User
 {
     public Guid id { get; set; }

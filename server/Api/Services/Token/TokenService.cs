@@ -4,9 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Api.Services;
+namespace Api.Services.Token;
 
-public class TokenService
+public class TokenService :  ITokenService
 {
     private readonly IConfiguration _configuration;
 
@@ -20,7 +20,7 @@ public class TokenService
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
     }
     
-    public string GenerateToken(User user)
+    public string GenerateToken(DataAccess.User user)
     {
         var jwtSection = _configuration.GetSection("Jwt");
         var key = Encoding.UTF8.GetBytes(jwtSection["Key"]!);

@@ -2,9 +2,9 @@ using Api.DTOs.Response;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Services;
+namespace Api.Services.Song;
 
-public class SongService(MusicDbContext context)
+public class SongService(MusicDbContext context) : ISongService
 {
     public async Task CreateSong(Guid userId, string title, string songKey,  string artist, bool isPublic, string? image = null)
     {
@@ -13,7 +13,7 @@ public class SongService(MusicDbContext context)
         if (string.IsNullOrWhiteSpace(songKey))
             throw new ArgumentException("songKey cannot be empty", nameof(songKey));
 
-        var song = new Song
+        var song = new DataAccess.Song
         {
             id = Guid.NewGuid(),
             userId = userId,
