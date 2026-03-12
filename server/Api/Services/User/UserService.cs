@@ -1,10 +1,12 @@
 using Api.DTOs.Request;
+using Api.Services.Auth;
+using Api.Services.Password;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Services;
+namespace Api.Services.User;
 
-public class UserService(PasswordService passwordService, AuthService authService, MusicDbContext context)
+public class UserService(IPasswordService passwordService, IAuthService authService, MusicDbContext context) : IUserService
 {
     public async Task CreateUser(UserCreateReqDto userCreateReqDto)
     {
@@ -32,7 +34,7 @@ public class UserService(PasswordService passwordService, AuthService authServic
 
         var hashedPassword = passwordService.HashPassword(userCreateReqDto.password);
 
-        var newUser = new User
+        var newUser = new DataAccess.User
         {
             username = username,
             email = email,

@@ -1,5 +1,6 @@
 using Api.DTOs.Request;
 using Api.Services;
+using Api.Services.User;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;

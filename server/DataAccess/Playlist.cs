@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+namespace DataAccess;
+
 public class Playlist
 {
     public Guid id { get; set; }

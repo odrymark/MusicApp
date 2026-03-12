@@ -1,11 +1,13 @@
 using Api.DTOs.Request;
 using Api.DTOs.Response;
+using Api.Services.Password;
+using Api.Services.Token;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 
-namespace Api.Services;
+namespace Api.Services.Auth;
 
-public class AuthService(PasswordService passwordService, TokenService tokenService, MusicDbContext context)
+public class AuthService(IPasswordService passwordService, ITokenService tokenService, MusicDbContext context) : IAuthService
 {
     public async Task<UserLoginResDto> Login(UserLoginReqDto userLoginReqDto)
     {

@@ -1,4 +1,5 @@
 using Api.Services;
+using Api.Services.Password;
 using DataAccess;
 
 namespace Api;

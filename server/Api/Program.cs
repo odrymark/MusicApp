@@ -2,7 +2,12 @@ using System.Text;
 using Api;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
-using Api.Services;
+using Api.Services.Auth;
+using Api.Services.Password;
+using Api.Services.R2;
+using Api.Services.Song;
+using Api.Services.Token;
+using Api.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -59,12 +64,12 @@ builder.Services.AddAuthentication("JwtAuth")
     });
 
 builder.Services.AddScoped<ISeeder, Seeder>();
-builder.Services.AddScoped<AuthService>();
-builder.Services.AddScoped<UserService>();
-builder.Services.AddScoped<PasswordService>();
-builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<R2Service>();
-builder.Services.AddScoped<SongService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IR2Service, R2Service>();
+builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument();
 

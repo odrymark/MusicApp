@@ -5,7 +5,9 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Microsoft.AspNetCore.Http;
 
-public class R2Service
+namespace Api.Services.R2;
+
+public class R2Service : IR2Service
 {
     private readonly string _accessKey;
     private readonly string _secretKey;
