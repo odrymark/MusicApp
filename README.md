@@ -64,7 +64,7 @@ Database (PostgreSQL):
 **Feature 2:** Main Page has playable songs from the db
 
 ### Week 12
-**Feature 1:** [...]
+**Feature 1:** Song cover images
 
 **Feature 2:** [...]
 
