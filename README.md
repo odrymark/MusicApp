@@ -66,7 +66,7 @@ Database (PostgreSQL):
 ### Week 12
 **Feature 1:** Song cover images
 
-**Feature 2:** [...]
+**Feature 2:** Edit Songs
 
 ### Week 13
 **Feature 1:** [...]
