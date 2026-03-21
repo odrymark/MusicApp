@@ -96,4 +96,36 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
             return BadRequest(ex.Message);
         }
     }
+
+    [Authorize]
+    [HttpPost("editSong")]
+    public async Task<IActionResult> EditSong([FromForm] SongEditReqDto dto)
+    {
+        try
+        {
+            var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var id = Guid.Parse(idStr!);
+
+            string? imgKey = null;
+            if (dto.image != null)
+            {
+                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
+                imgKey = await r2Service.UploadImageStorage(dto.image);
+                Console.WriteLine($"Image uploaded with key: {imgKey}");
+                
+                await r2Service.DeleteFile(dto.prevImgKey);
+            }
+            else
+            {
+                Console.WriteLine("No image provided");
+            }
+            
+            await songService.EditSong(id, dto.id, dto.title, dto.artist, dto.isPublic, imgKey);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

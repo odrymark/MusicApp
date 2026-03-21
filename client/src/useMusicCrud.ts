@@ -23,6 +23,7 @@ export type Song = {
     url: string;
     artist: string;
     image: string | null;
+    isPublic: boolean;
 }
 
 export default function useMusicCrud() {
@@ -122,6 +123,23 @@ export default function useMusicCrud() {
         }
     }
 
+    async function editSong(id: string, title: string, artist: string, isPublic: boolean, prevImgKey?: string, image?: File): Promise<void> {
+        try {
+            const formData = new FormData();
+            formData.append("id", id);
+            formData.append("title", title);
+            formData.append("artist", artist);
+            formData.append("isPublic", String(isPublic));
+            if (prevImgKey) formData.append("prevImgKey", prevImgKey);
+            if (image) formData.append("image", image);
+
+            await api.api.songEditSong(formData as any);
+        } catch (error) {
+            console.error("Editing song failed:", error);
+            throw error;
+        }
+    }
+
     return {
         login,
         logout,
@@ -131,5 +149,6 @@ export default function useMusicCrud() {
         getUserSongs,
         getSongs,
         getSignedUrl,
+        editSong
     };
 }

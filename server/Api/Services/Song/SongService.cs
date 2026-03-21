@@ -44,7 +44,8 @@ public class SongService(MusicDbContext context) : ISongService
             title = s.title,
             songKey = s.songKey,
             artist =  s.artist,
-            image = s.image
+            image = s.image,
+            isPublic = s.isPublic
         });
 
         return songDtos;
@@ -63,9 +64,30 @@ public class SongService(MusicDbContext context) : ISongService
             title = s.title,
             songKey = s.songKey,
             artist = s.artist,
-            image = s.image
+            image = s.image,
+            isPublic = s.isPublic
         });
         
         return songDtos;
+    }
+
+    public async Task EditSong(Guid userId, Guid songId, string title, string artist, bool isPublic, string? imageKey = null)
+    {
+        var song = await context.Songs.FirstOrDefaultAsync(s => s.id == songId);
+
+        if (song == null)
+            throw new KeyNotFoundException("Song not found");
+
+        if (song.userId != userId)
+            throw new UnauthorizedAccessException("You do not own this song");
+
+        song.title = title;
+        song.artist = artist;
+        song.isPublic = isPublic;
+
+        if (imageKey != null)
+            song.image = imageKey;
+
+        await context.SaveChangesAsync();
     }
 }

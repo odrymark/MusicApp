@@ -439,6 +439,39 @@ export class Api<
     /**
      * No description
      *
+     * @tags Song
+     * @name SongEditSong
+     * @request POST:/api/song/editSong
+     */
+    songEditSong: (
+      data: {
+        /** @format binary */
+        image?: File | null;
+      },
+      query?: {
+        /** @format guid */
+        id?: string;
+        /** @maxLength 100 */
+        title?: string;
+        /** @maxLength 100 */
+        artist?: string;
+        isPublic?: boolean;
+        prevImgKey?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/api/song/editSong`,
+        method: "POST",
+        query: query,
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags User
      * @name UserCreateUser
      * @request POST:/api/user/createUser
