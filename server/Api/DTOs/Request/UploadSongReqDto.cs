@@ -20,4 +20,6 @@ public class UploadSongReqDto
     
     [Required]
     public bool isPublic { get; set; }
+    
+    public IFormFile? image { get; set; }
 }

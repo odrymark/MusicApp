@@ -5,10 +5,22 @@ export default function UploadSong() {
     const { uploadSong } = useMusicCrud();
 
     const [file, setFile] = useState<File | null>(null);
+    const [image, setImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [title, setTitle] = useState("");
     const [artist, setArtist] = useState("");
     const [isPublic, setIsPublic] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selected = e.target.files?.[0] ?? null;
+        setImage(selected);
+        if (selected) {
+            setImagePreview(URL.createObjectURL(selected));
+        } else {
+            setImagePreview(null);
+        }
+    };
 
     const handleUpload = async () => {
         if (!file) {
@@ -18,9 +30,11 @@ export default function UploadSong() {
 
         try {
             setIsUploading(true);
-            await uploadSong(file, title, artist, isPublic);
+            await uploadSong(file, title, artist, isPublic, image ?? undefined);
             alert("Song uploaded successfully!");
             setFile(null);
+            setImage(null);
+            setImagePreview(null);
             setTitle("");
             setArtist("");
             setIsPublic(false);
@@ -87,6 +101,31 @@ export default function UploadSong() {
                                 onChange={(e) =>
                                     setFile(e.target.files ? e.target.files[0] : null)
                                 }
+                            />
+                        </div>
+
+                        <div className="form-control w-full mt-4">
+                            <label className="label">
+                                <span className="label-text">Cover Image <span className="text-base-content/40">(optional)</span></span>
+                            </label>
+                            {imagePreview && (
+                                <div className="mb-3 relative w-32 h-32">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Cover preview"
+                                        className="w-32 h-32 object-cover rounded-lg shadow"
+                                    />
+                                    <button
+                                        className="btn btn-xs btn-circle btn-error absolute -top-2 -right-2"
+                                        onClick={() => { setImage(null); setImagePreview(null); }}
+                                    >✕</button>
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                className="file-input file-input-bordered w-full"
+                                onChange={handleImageChange}
                             />
                         </div>
 

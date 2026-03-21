@@ -13,13 +13,13 @@ namespace Api.Controllers;
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    private readonly AuthService _service;
+    private readonly IAuthService _service;
     private readonly IConfiguration _configuration;
 
     private readonly double JwtExpireMinutes;
     private readonly double RefreshExpireDays;
 
-    public AuthController(AuthService service, IConfiguration configuration)
+    public AuthController(IAuthService service, IConfiguration configuration)
     {
         _service = service;
         _configuration = configuration;

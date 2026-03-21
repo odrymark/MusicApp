@@ -6,7 +6,7 @@ namespace Api.Services.Song;
 
 public class SongService(MusicDbContext context) : ISongService
 {
-    public async Task CreateSong(Guid userId, string title, string songKey,  string artist, bool isPublic, string? image = null)
+    public async Task CreateSong(Guid userId, string title, string songKey,  string artist, bool isPublic, string? imageKey = null)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Title cannot be empty", nameof(title));
@@ -21,7 +21,7 @@ public class SongService(MusicDbContext context) : ISongService
             songKey = songKey,
             artist = artist,
             isPublic = isPublic,
-            image = image
+            image = imageKey
         };
 
         context.Songs.Add(song);

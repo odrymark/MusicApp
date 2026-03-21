@@ -17,12 +17,12 @@ namespace DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.13")
+                .HasAnnotation("ProductVersion", "9.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Playlist", b =>
+            modelBuilder.Entity("DataAccess.Playlist", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -46,22 +46,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Playlists");
                 });
 
-            modelBuilder.Entity("PlaylistSongs", b =>
-                {
-                    b.Property<Guid>("PlaylistId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SongId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("PlaylistId", "SongId");
-
-                    b.HasIndex("SongId");
-
-                    b.ToTable("PlaylistSongs");
-                });
-
-            modelBuilder.Entity("Song", b =>
+            modelBuilder.Entity("DataAccess.Song", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -98,7 +83,7 @@ namespace DataAccess.Migrations
                     b.ToTable("Songs");
                 });
 
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("DataAccess.User", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -131,10 +116,36 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Playlist", b =>
+            modelBuilder.Entity("PlaylistSongs", b =>
                 {
-                    b.HasOne("User", "user")
+                    b.Property<Guid>("PlaylistId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("SongId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("PlaylistId", "SongId");
+
+                    b.HasIndex("SongId");
+
+                    b.ToTable("PlaylistSongs");
+                });
+
+            modelBuilder.Entity("DataAccess.Playlist", b =>
+                {
+                    b.HasOne("DataAccess.User", "user")
                         .WithMany("playlists")
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("DataAccess.Song", b =>
+                {
+                    b.HasOne("DataAccess.User", "user")
+                        .WithMany("songs")
                         .HasForeignKey("userId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -144,31 +155,20 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("PlaylistSongs", b =>
                 {
-                    b.HasOne("Playlist", null)
+                    b.HasOne("DataAccess.Playlist", null)
                         .WithMany()
                         .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Song", null)
+                    b.HasOne("DataAccess.Song", null)
                         .WithMany()
                         .HasForeignKey("SongId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Song", b =>
-                {
-                    b.HasOne("User", "user")
-                        .WithMany("songs")
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
-            modelBuilder.Entity("User", b =>
+            modelBuilder.Entity("DataAccess.User", b =>
                 {
                     b.Navigation("playlists");
 
