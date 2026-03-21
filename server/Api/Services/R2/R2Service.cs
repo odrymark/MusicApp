@@ -147,5 +147,28 @@ public class R2Service : IR2Service
         };
 
         return s3Client.GetPreSignedURL(request);
-    } 
+    }
+    
+    public async Task DeleteFile(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return;
+
+        var s3Config = new AmazonS3Config
+        {
+            ServiceURL = _endpoint,
+            ForcePathStyle = true,
+            AuthenticationRegion = "auto"
+        };
+
+        using var s3Client = new AmazonS3Client(_accessKey, _secretKey, s3Config);
+
+        var deleteRequest = new DeleteObjectRequest
+        {
+            BucketName = _bucketName,
+            Key = key
+        };
+
+        await s3Client.DeleteObjectAsync(deleteRequest);
+    }
 }

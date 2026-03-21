@@ -11,4 +11,5 @@ public class SongResDto
     public string artist { get; set; }
 
     public string? image { get; set; }
+    public bool isPublic { get; set; }
 }
