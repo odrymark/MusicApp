@@ -6,7 +6,7 @@ import useMusicCrud, { type Song } from "../useMusicCrud.ts";
 
 export default function MyMusic() {
     const user = useAtomValue(userAtom);
-    const { getUserSongs } = useMusicCrud();
+    const { getUserSongs, getSignedUrl } = useMusicCrud();
     const setCurrentSong = useSetAtom(currentSongAtom);
 
     const [songs, setSongs] = useState<Song[]>([]);
@@ -14,7 +14,16 @@ export default function MyMusic() {
     const [activeTab, setActiveTab] = useState<"songs" | "playlists">("songs");
 
     useEffect(() => {
-        getUserSongs().then((res) => setSongs(res));
+        getUserSongs().then(async (res) => {
+            const songsWithUrls = await Promise.all(
+                res.map(async (song) => ({
+                    ...song,
+                    songUrl: await getSignedUrl(song.songKey),
+                    image: song.image ? await getSignedUrl(song.image) : null,
+                }))
+            );
+            setSongs(songsWithUrls);
+        });
     }, [user]);
 
     const filteredSongs = songs.filter((s) =>

@@ -9,12 +9,28 @@ export default function Home() {
     const mostListenedRef = useRef<HTMLDivElement>(null);
     const recommendationsRef = useRef<HTMLDivElement>(null);
     const [songs, setSongs] = useState<Song[]>([]);
-    const { getSongs } = useMusicCrud();
+    const [searchQuery, setSearchQuery] = useState("");
+    const { getSongs, getSignedUrl } = useMusicCrud();
     const setCurrentSong = useSetAtom(currentSongAtom);
 
     useEffect(() => {
-        getSongs().then((res) => setSongs(res));
+        getSongs().then(async (res) => {
+            const songsWithUrls = await Promise.all(
+                res.map(async (song) => ({
+                    ...song,
+                    songUrl: await getSignedUrl(song.songKey),
+                    image: song.image ? await getSignedUrl(song.image) : null,
+                }))
+            );
+            setSongs(songsWithUrls);
+        });
     }, []);
+
+    const filteredSongs = songs.filter((song) =>
+        song.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const isSearching = searchQuery.trim().length > 0;
 
     const topPlaylists = Array.from({ length: 10 }).map((_, i) => ({
         id: i,
@@ -25,11 +41,27 @@ export default function Home() {
     return (
         <div className="h-screen flex flex-col bg-base-200">
             <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
-                <div className="navbar px-4 md:px-8 py-3">
-                    <div className="flex-1">
-                        <span className="text-xl font-bold text-primary ml-2 md:ml-0">
-                            Music App
-                        </span>
+                <div className="px-4 md:px-8 py-3 flex flex-col gap-2">
+                    <span className="text-xl font-bold text-primary">
+                        Music App
+                    </span>
+                    <div className="relative w-full max-w-sm">
+                        <svg
+                            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/40"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+                        </svg>
+                        <input
+                            type="text"
+                            placeholder="Search songs..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="input input-bordered input-sm w-full pl-9 bg-base-200 focus:outline-none focus:border-primary"
+                        />
                     </div>
                 </div>
             </header>
@@ -37,9 +69,57 @@ export default function Home() {
             <div className="flex flex-1 overflow-hidden">
                 <main className="flex-1 overflow-y-auto p-6 md:p-10">
                     <div className="max-w-6xl mx-auto">
-                        <SongSection ref={topTrendingRef} title="Top Trending" songs={songs} onSongClick={setCurrentSong} />
-                        <SongSection ref={mostListenedRef} title="Your Most Listened" songs={songs} onSongClick={setCurrentSong} />
-                        <SongSection ref={recommendationsRef} title="Recommendations For You" songs={songs} onSongClick={setCurrentSong} />
+                        {isSearching ? (
+                            <>
+                                <p className="text-sm text-base-content/50 mb-4">
+                                    {filteredSongs.length} result{filteredSongs.length !== 1 ? "s" : ""} for "{searchQuery}"
+                                </p>
+                                <div className="grid gap-1 justify-center grid-cols-[repeat(auto-fit,minmax(200px,200px))]">
+                                    {filteredSongs.length === 0 && (
+                                        <div className="col-span-full text-center text-base-content/60">
+                                            No songs found.
+                                        </div>
+                                    )}
+                                    {filteredSongs.map((song) => (
+                                        <div
+                                            key={song.id}
+                                            onClick={() => setCurrentSong(song)}
+                                            className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full cursor-pointer group relative"
+                                        >
+                                            {song.image ? (
+                                                <img
+                                                    src={song.image}
+                                                    alt={song.title}
+                                                    className="w-full h-full object-cover rounded-md mb-2"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-base-300 rounded-md mb-2 flex items-center justify-center text-base-content/50">
+                                                    No Image
+                                                </div>
+                                            )}
+
+                                            <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">
+                                                        <path d="M8 5v14l11-7z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            <div className="font-semibold text-center text-sm mt-2">
+                                                {song.title}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <SongSection ref={topTrendingRef} title="Top Trending" songs={songs} onSongClick={setCurrentSong} />
+                                <SongSection ref={mostListenedRef} title="Your Most Listened" songs={songs} onSongClick={setCurrentSong} />
+                                <SongSection ref={recommendationsRef} title="Recommendations For You" songs={songs} onSongClick={setCurrentSong} />
+                            </>
+                        )}
                     </div>
                 </main>
 

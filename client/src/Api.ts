@@ -311,7 +311,7 @@ export class Api<
      * @request POST:/api/auth/login
      */
     authLogin: (data: UserLoginReqDto, params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/auth/login`,
         method: "POST",
         body: data,
@@ -327,7 +327,7 @@ export class Api<
      * @request POST:/api/auth/logout
      */
     authLogout: (params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/auth/logout`,
         method: "POST",
         ...params,
@@ -341,7 +341,7 @@ export class Api<
      * @request GET:/api/auth/me
      */
     authGetMe: (params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/auth/me`,
         method: "GET",
         ...params,
@@ -355,7 +355,7 @@ export class Api<
      * @request POST:/api/auth/refresh
      */
     authRefresh: (params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/auth/refresh`,
         method: "POST",
         ...params,
@@ -375,10 +375,12 @@ export class Api<
         title?: string | null;
         artist?: string | null;
         isPublic?: boolean;
+        /** @format binary */
+        image?: File | null;
       },
       params: RequestParams = {},
     ) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/song/uploadSong`,
         method: "POST",
         body: data,
@@ -394,7 +396,7 @@ export class Api<
      * @request GET:/api/song/getUserSongs
      */
     songGetUserSongs: (params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/song/getUserSongs`,
         method: "GET",
         ...params,
@@ -408,7 +410,7 @@ export class Api<
      * @request GET:/api/song/getSongs
      */
     songGetSongs: (params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/song/getSongs`,
         method: "GET",
         ...params,
@@ -418,17 +420,17 @@ export class Api<
      * No description
      *
      * @tags Song
-     * @name SongGetSongUrl
-     * @request GET:/api/song/getSongUrl
+     * @name SongGetSignedUrl
+     * @request GET:/api/song/getSignedUrl
      */
-    songGetSongUrl: (
+    songGetSignedUrl: (
       query?: {
         key?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<File, any>({
-        path: `/api/song/getSongUrl`,
+      this.request<Blob, any>({
+        path: `/api/song/getSignedUrl`,
         method: "GET",
         query: query,
         ...params,
@@ -442,7 +444,7 @@ export class Api<
      * @request POST:/api/user/createUser
      */
     userCreateUser: (data: UserCreateReqDto, params: RequestParams = {}) =>
-      this.request<File, any>({
+      this.request<Blob, any>({
         path: `/api/user/createUser`,
         method: "POST",
         body: data,

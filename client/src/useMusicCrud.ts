@@ -72,13 +72,14 @@ export default function useMusicCrud() {
         }
     }
 
-    async function uploadSong(file: File, title: string, artist: string, isPublic: boolean): Promise<void> {
+    async function uploadSong(file: File, title: string, artist: string, isPublic: boolean, image?: File): Promise<void> {
         try {
             const formData = new FormData();
             formData.append("file", file);
             formData.append("title", title);
             formData.append("artist", artist);
-            formData.append("isPublic", isPublic);
+            formData.append("isPublic", String(isPublic));
+            if (image) formData.append("image", image);
 
             await api.api.songUploadSong(formData as any);
         } catch (error) {
@@ -109,9 +110,9 @@ export default function useMusicCrud() {
         }
     }
 
-    async function getSongUrl(key: string): Promise<string> {
+    async function getSignedUrl(key: string): Promise<string> {
         try {
-            const res = await api.api.songGetSongUrl({ key });
+            const res = await api.api.songGetSignedUrl({ key });
 
             return await res.text();
         }
@@ -129,6 +130,6 @@ export default function useMusicCrud() {
         uploadSong,
         getUserSongs,
         getSongs,
-        getSongUrl,
+        getSignedUrl,
     };
 }

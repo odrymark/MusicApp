@@ -55,7 +55,9 @@ namespace DataAccess.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     userId = table.Column<Guid>(type: "uuid", nullable: false),
                     title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    artist = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     songKey = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    isPublic = table.Column<bool>(type: "boolean", nullable: false),
                     image = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

@@ -6,7 +6,7 @@ import useMusicCrud from "../useMusicCrud";
 import { useEffect, useRef, useState } from "react";
 
 export default function Sidebar() {
-    const { getMe, logout, getSongUrl } = useMusicCrud();
+    const { getMe, logout, getSignedUrl } = useMusicCrud();
     const user = useAtomValue(userAtom);
     const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ export default function Sidebar() {
             return;
         }
         setResolvedUrl(null);
-        getSongUrl(currentSong.songKey)
+        getSignedUrl(currentSong.songKey)
             .then(setResolvedUrl)
             .catch(() => setResolvedUrl(null));
     }, [currentSong]);
@@ -156,7 +156,7 @@ export default function Sidebar() {
 
                     {user && (
                         <div className="flex justify-center mt-4">
-                            <button className="btn btn-primary w-60" onClick={() => logout()}>
+                            <button className="btn btn-primary w-60" onClick={() => {logout(); navigate("/home")}}>
                                 Logout
                             </button>
                         </div>

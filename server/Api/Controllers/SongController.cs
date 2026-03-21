@@ -11,24 +11,41 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/song")]
-public class SongController(R2Service r2Service, SongService songService) : ControllerBase
+public class SongController(IR2Service r2Service, ISongService songService) : ControllerBase
 {
     [Authorize]
     [HttpPost("uploadSong")]
     public async Task<IActionResult> UploadSong([FromForm] UploadSongReqDto dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         try
         {
             var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var id = Guid.Parse(idStr!);
 
             var songKey = await r2Service.UploadSongStorage(dto.file);
-            await songService.CreateSong(id, dto.title, songKey, dto.artist, dto.isPublic);
+        
+            string? imgKey = null;
+            if (dto.image != null)
+            {
+                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
+                imgKey = await r2Service.UploadImageStorage(dto.image);
+                Console.WriteLine($"Image uploaded with key: {imgKey}");
+            }
+            else
+            {
+                Console.WriteLine("No image provided");
+            }
+
+            await songService.CreateSong(id, dto.title, songKey, dto.artist, dto.isPublic, imgKey);
 
             return Ok();
         }
         catch (Exception ex)
         {
+            Console.WriteLine($"Error: {ex}");
             return BadRequest(ex.Message);
         }
     }
@@ -66,8 +83,8 @@ public class SongController(R2Service r2Service, SongService songService) : Cont
         }
     }
 
-    [HttpGet("getSongUrl")]
-    public IActionResult GetSongUrl(string key)
+    [HttpGet("getSignedUrl")]
+    public IActionResult GetSignedUrl(string key)
     {
         try
         {

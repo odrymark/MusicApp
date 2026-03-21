@@ -71,7 +71,7 @@ public class R2Service : IR2Service
         using var s3Client = new AmazonS3Client(_accessKey, _secretKey, s3Config);
         var fileTransferUtility = new TransferUtility(s3Client);
 
-        var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+        var fileName = $"songs/{Guid.NewGuid()}_{file.FileName}";
 
         await using var stream = file.OpenReadStream();
 
@@ -81,6 +81,45 @@ public class R2Service : IR2Service
             BucketName = _bucketName,
             Key = fileName,
             ContentType = file.ContentType ?? "application/octet-stream",
+            DisablePayloadSigning = true,
+        };
+
+        await fileTransferUtility.UploadAsync(uploadRequest);
+
+        return fileName;
+    }
+    
+    public async Task<string> UploadImageStorage(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+            throw new ArgumentException("File is empty");
+
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+
+        if (!allowedExtensions.Contains(extension))
+            throw new ArgumentException("Invalid file type");
+
+        var s3Config = new AmazonS3Config
+        {
+            ServiceURL = _endpoint,
+            ForcePathStyle = true,
+            AuthenticationRegion = "auto"
+        };
+
+        using var s3Client = new AmazonS3Client(_accessKey, _secretKey, s3Config);
+        var fileTransferUtility = new TransferUtility(s3Client);
+
+        var fileName = $"images/{Guid.NewGuid()}{extension}";
+
+        await using var stream = file.OpenReadStream();
+
+        var uploadRequest = new TransferUtilityUploadRequest
+        {
+            InputStream = stream,
+            BucketName = _bucketName,
+            Key = fileName,
+            ContentType = file.ContentType ?? "image/jpeg",
             DisablePayloadSigning = true,
         };
 
