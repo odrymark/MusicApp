@@ -107,6 +107,9 @@ jobs:
           ConnectionStrings__DefaultConnection: ${{ secrets.NEON_STAGING_CONNECTION_STRING }}
           ASPNETCORE_ENVIRONMENT: Development
           ASPNETCORE_URLS: http://localhost:5249
+          Jwt__Key: ${{ secrets.JWT_SECRET }}
+          Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
+          Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
         run: |
           dotnet run \
             --project server/Api \
@@ -195,14 +198,14 @@ jobs:
           echo "Frontend did not start in time"
           exit 1
 
-      - name: Install Firefox
+      - name: Install Chrome
         run: |
           sudo apt-get update
-          sudo apt-get install -y firefox
+          sudo apt-get install -y google-chrome-stable
 
       - name: Run TestCafe tests
         run: |
-          npx testcafe firefox:headless \
+          npx testcafe chrome:headless \
             ../testcafe/home_test.js \
             ../testcafe/upload_song_test.js \
             --screenshots takeOnFails \
