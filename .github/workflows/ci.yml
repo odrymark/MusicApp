@@ -151,12 +151,12 @@ jobs:
 
       - name: Run auth load test
         run: |
-          k6 run k6/k6_auth_test.js \
+          k6 run k6/auth_test.js \
             --env BASE_URL=http://localhost:5249
 
       - name: Run song load test
         run: |
-          k6 run k6/k6_song_test.js \
+          k6 run k6/song_test.js \
             --env BASE_URL=http://localhost:5249
 
       - name: Stop API
