@@ -108,25 +108,37 @@ export default function UploadSong() {
                             <label className="label">
                                 <span className="label-text">Cover Image <span className="text-base-content/40">(optional)</span></span>
                             </label>
-                            {imagePreview && (
-                                <div className="mb-3 relative w-32 h-32">
-                                    <img
-                                        src={imagePreview}
-                                        alt="Cover preview"
-                                        className="w-32 h-32 object-cover rounded-lg shadow"
-                                    />
-                                    <button
-                                        className="btn btn-xs btn-circle btn-error absolute -top-2 -right-2"
-                                        onClick={() => { setImage(null); setImagePreview(null); }}
-                                    >✕</button>
+                            <div className="flex justify-center mb-2">
+                                <div className="relative w-36 h-36">
+                                    {imagePreview ? (
+                                        <img
+                                            src={imagePreview}
+                                            alt="Cover preview"
+                                            className="w-36 h-36 object-cover rounded-xl shadow"
+                                        />
+                                    ) : (
+                                        <div className="w-36 h-36 bg-base-300 rounded-xl flex items-center justify-center text-base-content/40 text-4xl">
+                                            🎵
+                                        </div>
+                                    )}
+                                    <label className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
+                                        <span className="text-white text-xs font-semibold">
+                                            {imagePreview ? "Change Image" : "Add Image"}
+                                        </span>
+                                        <input
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            className="hidden"
+                                            onChange={handleImageChange}
+                                        />
+                                    </label>
                                 </div>
+                            </div>
+                            {image && (
+                                <p className="text-center text-xs text-base-content/50 mb-1">
+                                    Selected: {image.name}
+                                </p>
                             )}
-                            <input
-                                type="file"
-                                accept="image/jpeg,image/png,image/webp"
-                                className="file-input file-input-bordered w-full"
-                                onChange={handleImageChange}
-                            />
                         </div>
 
                         <div className="form-control mt-4">
