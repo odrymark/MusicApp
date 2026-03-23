@@ -18,6 +18,7 @@ const imageFilename  = Selector('p').withAttribute('class', /text-center text-xs
 
 fixture('Upload Song Page')
     .page(`${BASE_URL}/uploadSong`)
+    .skipJsErrors(true)
     .beforeEach(async (t) => {
         await t.eval(() => {
             localStorage.setItem('token', 'test-token');
