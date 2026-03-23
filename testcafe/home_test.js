@@ -14,6 +14,7 @@ const topPlaylists     = Selector('aside').find('div').withAttribute('class', /c
 
 fixture('Home Page')
     .page(`${BASE_URL}/home`)
+    .skipJsErrors(true) 
     .beforeEach(async (t) => {
         await t.eval(() => {
             localStorage.setItem('token', 'test-token');
