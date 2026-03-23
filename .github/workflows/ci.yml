@@ -102,6 +102,10 @@ jobs:
       - name: Build API
         run: dotnet build server/server.sln --configuration Debug --no-restore
 
+      - name: Write R2 config file
+        run: |
+          echo '${{ secrets.R2_CONFIG_JSON }}' > ${{ secrets.R2_CONFIG_PATH }}
+
       - name: Start API
         env:
           ConnectionStrings__DefaultConnection: ${{ secrets.NEON_STAGING_CONNECTION_STRING }}
@@ -110,6 +114,7 @@ jobs:
           Jwt__Key: ${{ secrets.JWT_KEY }}
           Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
           Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
+          R2__ConfigPath: ${{ secrets.R2_CONFIG_PATH }}
         run: |
           dotnet run \
             --project server/Api \
