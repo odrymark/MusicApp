@@ -111,6 +111,8 @@ jobs:
           ConnectionStrings__DefaultConnection: ${{ secrets.NEON_STAGING_CONNECTION_STRING }}
           ASPNETCORE_ENVIRONMENT: Development
           ASPNETCORE_URLS: http://localhost:5249
+          Jwt__ExpireMinutes: 10
+          RefreshToken__ExpireDays: 7
           Jwt__Key: ${{ secrets.JWT_KEY }}
           Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
           Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
