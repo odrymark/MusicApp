@@ -3,15 +3,16 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { userAtom } from "../atoms/userAtom";
 import { currentSongAtom } from "../atoms/currentSongAtom";
-import useMusicCrud, { type Song } from "../useMusicCrud.ts";
+import useMusicCrud, { type Song, type Playlist } from "../useMusicCrud.ts";
 
 export default function MyMusic() {
     const user = useAtomValue(userAtom);
-    const { getUserSongs, getSignedUrl } = useMusicCrud();
+    const { getUserSongs, getUserPlaylists, getSignedUrl } = useMusicCrud();
     const setCurrentSong = useSetAtom(currentSongAtom);
     const navigate = useNavigate();
 
     const [songs, setSongs] = useState<Song[]>([]);
+    const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [search, setSearch] = useState("");
     const [activeTab, setActiveTab] = useState<"songs" | "playlists">("songs");
 
@@ -26,10 +27,24 @@ export default function MyMusic() {
             );
             setSongs(songsWithUrls);
         });
+
+        getUserPlaylists().then(async (res) => {
+            const playlistsWithUrls = await Promise.all(
+                res.map(async (playlist) => ({
+                    ...playlist,
+                    image: playlist.image ? await getSignedUrl(playlist.image) : null,
+                }))
+            );
+            setPlaylists(playlistsWithUrls);
+        });
     }, [user]);
 
     const filteredSongs = songs.filter((s) =>
         s.title.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const filteredPlaylists = playlists.filter((p) =>
+        p.title.toLowerCase().includes(search.toLowerCase())
     );
 
     return (
@@ -61,7 +76,7 @@ export default function MyMusic() {
                 <div className="flex justify-center mb-4">
                     <input
                         type="text"
-                        placeholder="Search songs..."
+                        placeholder={`Search ${activeTab}...`}
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         className="input input-bordered w-1/2"
@@ -76,7 +91,6 @@ export default function MyMusic() {
                                     No songs found.
                                 </div>
                             )}
-
                             {filteredSongs.map((song) => (
                                 <div
                                     key={song.id}
@@ -94,7 +108,6 @@ export default function MyMusic() {
                                             No Image
                                         </div>
                                     )}
-
                                     <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">
@@ -102,7 +115,6 @@ export default function MyMusic() {
                                             </svg>
                                         </div>
                                     </div>
-
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
@@ -115,7 +127,6 @@ export default function MyMusic() {
                                         </svg>
                                         Edit
                                     </button>
-
                                     <div className="font-semibold text-center text-sm mt-2">
                                         {song.title}
                                     </div>
@@ -125,8 +136,43 @@ export default function MyMusic() {
                     )}
 
                     {activeTab === "playlists" && (
-                        <div className="text-center text-lg text-base-content/70">
-                            Playlists content goes here.
+                        <div className="grid gap-1 justify-center grid-cols-[repeat(auto-fit,minmax(200px,200px))]">
+                            {filteredPlaylists.length === 0 && (
+                                <div className="col-span-full text-center text-base-content/60">
+                                    No playlists found.
+                                </div>
+                            )}
+                            {filteredPlaylists.map((playlist) => (
+                                <div
+                                    key={playlist.id}
+                                    className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full cursor-pointer group relative"
+                                >
+                                    {playlist.image ? (
+                                        <img
+                                            src={playlist.image}
+                                            alt={playlist.title}
+                                            className="w-full h-full object-cover rounded-md mb-2"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-base-300 rounded-md mb-2 flex items-center justify-center text-base-content/50">
+                                            No Image
+                                        </div>
+                                    )}
+                                    <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-6 h-6 ml-1">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div className="font-semibold text-center text-sm mt-2 truncate w-full text-center">
+                                        {playlist.title}
+                                    </div>
+                                    <div className="text-xs text-base-content/50">
+                                        {playlist.songs.length} songs
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     )}
                 </div>

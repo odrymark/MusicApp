@@ -103,7 +103,7 @@ public class SongServiceTests : TestBase
         await CreateSongAsync(user.id, "Song 1");
         await CreateSongAsync(user.id, "Song 2");
 
-        var result = await _songService.GetUserSongsAsync(user.id);
+        var result = await _songService.GetUserSongs(user.id);
 
         Assert.Equal(2, result.Count());
     }
@@ -116,7 +116,7 @@ public class SongServiceTests : TestBase
         await CreateSongAsync(user1.id, "User1 Song");
         await CreateSongAsync(user2.id, "User2 Song");
 
-        var result = await _songService.GetUserSongsAsync(user1.id);
+        var result = await _songService.GetUserSongs(user1.id);
 
         Assert.All(result, s => Assert.Equal("User1 Song", s.title));
     }
@@ -126,7 +126,7 @@ public class SongServiceTests : TestBase
     {
         var user = await CreateUserAsync("song_empty_" + Guid.NewGuid().ToString("N"));
 
-        var result = await _songService.GetUserSongsAsync(user.id);
+        var result = await _songService.GetUserSongs(user.id);
 
         Assert.Empty(result);
     }
@@ -137,7 +137,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_dto_" + Guid.NewGuid().ToString("N"));
         var song = await CreateSongAsync(user.id, "DTO Song", "dto-key", "DTO Artist", image: "img.jpg");
 
-        var result = await _songService.GetUserSongsAsync(user.id);
+        var result = await _songService.GetUserSongs(user.id);
         var dto = result.First();
 
         Assert.Equal(song.id, dto.id);
@@ -151,7 +151,7 @@ public class SongServiceTests : TestBase
     public async Task GetUserSongsAsync_Throws_When_UserId_Empty()
     {
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _songService.GetUserSongsAsync(Guid.Empty));
+            _songService.GetUserSongs(Guid.Empty));
     }
 
     // -------------------------

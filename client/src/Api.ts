@@ -364,6 +364,63 @@ export class Api<
     /**
      * No description
      *
+     * @tags Playlist
+     * @name PlaylistGetPlaylists
+     * @request GET:/api/playlist/getPlaylists
+     */
+    playlistGetPlaylists: (params: RequestParams = {}) =>
+      this.request<Blob, any>({
+        path: `/api/playlist/getPlaylists`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Playlist
+     * @name PlaylistGetUserPlaylists
+     * @request GET:/api/playlist/getUserPlaylists
+     */
+    playlistGetUserPlaylists: (params: RequestParams = {}) =>
+      this.request<Blob, any>({
+        path: `/api/playlist/getUserPlaylists`,
+        method: "GET",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Playlist
+     * @name PlaylistCreatePlaylist
+     * @request POST:/api/playlist/createPlaylist
+     */
+    playlistCreatePlaylist: (
+      data: {
+        title?: string | null;
+        /**
+         * @maxItems 100
+         * @minItems 2
+         */
+        songIds?: string[] | null;
+        /** @format binary */
+        image?: File | null;
+        isPublic?: boolean;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/api/playlist/createPlaylist`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Song
      * @name SongUploadSong
      * @request POST:/api/song/uploadSong
@@ -445,25 +502,20 @@ export class Api<
      */
     songEditSong: (
       data: {
-        /** @format binary */
-        image?: File | null;
-      },
-      query?: {
         /** @format guid */
         id?: string;
-        /** @maxLength 100 */
-        title?: string;
-        /** @maxLength 100 */
-        artist?: string;
+        title?: string | null;
+        artist?: string | null;
         isPublic?: boolean;
-        prevImgKey?: string;
+        /** @format binary */
+        image?: File | null;
+        prevImgKey?: string | null;
       },
       params: RequestParams = {},
     ) =>
       this.request<Blob, any>({
         path: `/api/song/editSong`,
         method: "POST",
-        query: query,
         body: data,
         type: ContentType.FormData,
         ...params,

@@ -11,10 +11,12 @@ public class UploadSongReqDto
     public IFormFile file { get; set; } = null!;
 
     [Required]
+    [MinLength(3)]
     [MaxLength(100)]
     public string title { get; set; } = string.Empty;
     
     [Required]
+    [MinLength(3)]
     [MaxLength(100)]
     public string artist { get; set; } = string.Empty;
     

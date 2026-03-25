@@ -59,7 +59,7 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
             var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var id = Guid.Parse(idStr!);
             
-            var songs = await songService.GetUserSongsAsync(id);
+            var songs = await songService.GetUserSongs(id);
             
             return Ok(songs);
         }

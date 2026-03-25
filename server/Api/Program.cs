@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Api.Services.Auth;
 using Api.Services.Password;
+using Api.Services.Playlist;
 using Api.Services.R2;
 using Api.Services.Song;
 using Api.Services.Token;
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IR2Service, R2Service>();
 builder.Services.AddScoped<ISongService, SongService>();
+builder.Services.AddScoped<IPlaylistService, PlaylistService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument();
 

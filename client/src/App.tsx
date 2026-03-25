@@ -6,6 +6,7 @@ import UploadSong from "./pages/UploadSong.tsx";
 import MyMusic from "./pages/MyMusic";
 import Sidebar from "./pages/Sidebar.tsx";
 import EditSong from "./pages/EditSong.tsx";
+import CreatePlaylist from "./pages/CreatePlaylist.tsx";
 
 const routes: RouteObject[] = [
     {
@@ -35,6 +36,10 @@ const routes: RouteObject[] = [
             {
                 path: "editSong/:id",
                 element: <EditSong/>
+            },
+            {
+                path: "createPlaylist",
+                element: <CreatePlaylist/>
             }
         ]
     },
