@@ -16,6 +16,8 @@ public class Playlist
     public string title { get; set; } = string.Empty;
 
     public string? image { get; set; }
+    
+    public bool isPublic { get; set; } = false;
 
     [ForeignKey(nameof(userId))]
     public User user { get; set; } = null!;

@@ -26,6 +26,15 @@ export type Song = {
     isPublic: boolean;
 }
 
+export type Playlist = {
+    id: string;
+    title: string;
+    creatorUser: string;
+    image: string | null;
+    isPublic: boolean;
+    songs: Song[];
+}
+
 export default function useMusicCrud() {
     const [,setUser] = useAtom(userAtom);
 
@@ -140,6 +149,41 @@ export default function useMusicCrud() {
         }
     }
 
+    async function createPlaylist(title: string, songIds: string[], isPublic: boolean, image?: File): Promise<void> {
+        try {
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("isPublic", String(isPublic));
+            songIds.forEach(id => formData.append("songIds", id));
+            if (image) formData.append("image", image);
+
+            await api.api.playlistCreatePlaylist(formData as any);
+        } catch (error) {
+            console.error("Creating playlist failed:", error);
+            throw error;
+        }
+    }
+
+    async function getPlaylists(): Promise<Playlist[]> {
+        try {
+            const res = await api.api.playlistGetPlaylists();
+            return await res.json() as Playlist[];
+        } catch (error) {
+            console.error("Retrieving playlists failed:", error);
+            throw error;
+        }
+    }
+
+    async function getUserPlaylists(): Promise<Playlist[]> {
+        try {
+            const res = await api.api.playlistGetUserPlaylists();
+            return await res.json() as Playlist[];
+        } catch (error) {
+            console.error("Retrieving user playlists failed:", error);
+            throw error;
+        }
+    }
+
     return {
         login,
         logout,
@@ -149,6 +193,9 @@ export default function useMusicCrud() {
         getUserSongs,
         getSongs,
         getSignedUrl,
-        editSong
+        editSong,
+        createPlaylist,
+        getPlaylists,
+        getUserPlaylists
     };
 }

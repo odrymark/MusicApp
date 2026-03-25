@@ -28,7 +28,7 @@ public class SongService(MusicDbContext context) : ISongService
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<SongResDto>> GetUserSongsAsync(Guid userId)
+    public async Task<IEnumerable<SongResDto>> GetUserSongs(Guid userId)
     {
         if (userId == Guid.Empty)
             throw new ArgumentException("Invalid user ID", nameof(userId));
