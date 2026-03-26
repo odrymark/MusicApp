@@ -3,12 +3,14 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { userAtom } from "../atoms/userAtom";
 import { currentSongAtom } from "../atoms/currentSongAtom";
+import { currentPlaylistAtom } from "../atoms/currentPlaylistAtom";
 import useMusicCrud, { type Song, type Playlist } from "../useMusicCrud.ts";
 
 export default function MyMusic() {
     const user = useAtomValue(userAtom);
     const { getUserSongs, getUserPlaylists, getSignedUrl } = useMusicCrud();
     const setCurrentSong = useSetAtom(currentSongAtom);
+    const setCurrentPlaylist = useSetAtom(currentPlaylistAtom);
     const navigate = useNavigate();
 
     const [songs, setSongs] = useState<Song[]>([]);
@@ -33,11 +35,24 @@ export default function MyMusic() {
                 res.map(async (playlist) => ({
                     ...playlist,
                     image: playlist.image ? await getSignedUrl(playlist.image) : null,
+                    songs: await Promise.all(
+                        playlist.songs.map(async (song) => ({
+                            ...song,
+                            songUrl: await getSignedUrl(song.songKey),
+                            image: song.image ? await getSignedUrl(song.image) : null,
+                        }))
+                    ),
                 }))
             );
             setPlaylists(playlistsWithUrls);
         });
     }, [user]);
+
+    const handlePlayPlaylist = async (playlist: Playlist) => {
+        if (playlist.songs.length === 0) return;
+        setCurrentPlaylist(playlist);
+        setCurrentSong(playlist.songs[0]);
+    };
 
     const filteredSongs = songs.filter((s) =>
         s.title.toLowerCase().includes(search.toLowerCase())
@@ -94,19 +109,13 @@ export default function MyMusic() {
                             {filteredSongs.map((song) => (
                                 <div
                                     key={song.id}
-                                    onClick={() => setCurrentSong(song)}
+                                    onClick={() => { setCurrentSong(song); setCurrentPlaylist(null)}}
                                     className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full cursor-pointer group relative"
                                 >
                                     {song.image ? (
-                                        <img
-                                            src={song.image}
-                                            alt={song.title}
-                                            className="w-full h-full object-cover rounded-md mb-2"
-                                        />
+                                        <img src={song.image} alt={song.title} className="w-full h-full object-cover rounded-md mb-2" />
                                     ) : (
-                                        <div className="w-full h-full bg-base-300 rounded-md mb-2 flex items-center justify-center text-base-content/50">
-                                            No Image
-                                        </div>
+                                        <div className="w-full h-full bg-base-300 rounded-md mb-2 flex items-center justify-center text-base-content/50">No Image</div>
                                     )}
                                     <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
@@ -116,10 +125,7 @@ export default function MyMusic() {
                                         </div>
                                     </div>
                                     <button
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            navigate(`/editSong/${song.id}`);
-                                        }}
+                                        onClick={(e) => { e.stopPropagation(); navigate(`/editSong/${song.id}`); }}
                                         className="absolute bottom-2 right-2 btn btn-xs btn-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-1"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
@@ -127,9 +133,7 @@ export default function MyMusic() {
                                         </svg>
                                         Edit
                                     </button>
-                                    <div className="font-semibold text-center text-sm mt-2">
-                                        {song.title}
-                                    </div>
+                                    <div className="font-semibold text-center text-sm mt-2">{song.title}</div>
                                 </div>
                             ))}
                         </div>
@@ -145,18 +149,13 @@ export default function MyMusic() {
                             {filteredPlaylists.map((playlist) => (
                                 <div
                                     key={playlist.id}
+                                    onClick={() => handlePlayPlaylist(playlist)}
                                     className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full cursor-pointer group relative"
                                 >
                                     {playlist.image ? (
-                                        <img
-                                            src={playlist.image}
-                                            alt={playlist.title}
-                                            className="w-full h-full object-cover rounded-md mb-2"
-                                        />
+                                        <img src={playlist.image} alt={playlist.title} className="w-full h-full object-cover rounded-md mb-2" />
                                     ) : (
-                                        <div className="w-full h-full bg-base-300 rounded-md mb-2 flex items-center justify-center text-base-content/50">
-                                            No Image
-                                        </div>
+                                        <div className="w-full h-full bg-base-300 rounded-md mb-2 flex items-center justify-center text-base-content/50">No Image</div>
                                     )}
                                     <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                         <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg">
@@ -165,12 +164,8 @@ export default function MyMusic() {
                                             </svg>
                                         </div>
                                     </div>
-                                    <div className="font-semibold text-center text-sm mt-2 truncate w-full text-center">
-                                        {playlist.title}
-                                    </div>
-                                    <div className="text-xs text-base-content/50">
-                                        {playlist.songs.length} songs
-                                    </div>
+                                    <div className="font-semibold text-center text-sm mt-2 truncate w-full">{playlist.title}</div>
+                                    <div className="text-xs text-base-content/50">{playlist.songs.length} songs</div>
                                 </div>
                             ))}
                         </div>

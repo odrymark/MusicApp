@@ -1,4 +1,4 @@
-import { createBrowserRouter, type RouteObject, RouterProvider } from "react-router-dom";
+import {createBrowserRouter, Navigate, type RouteObject, RouterProvider} from "react-router-dom";
 import Login from "./pages/Login.tsx";
 import SignUp from "./pages/SignUp.tsx";
 import Home from "./pages/Home.tsx";
@@ -13,6 +13,10 @@ const routes: RouteObject[] = [
         path: "/",
         element: <Sidebar/>,
         children: [
+            {
+                index: true,
+                element: <Navigate to="/home" replace />
+            },
             {
                 path: "login",
                 element: <Login/>

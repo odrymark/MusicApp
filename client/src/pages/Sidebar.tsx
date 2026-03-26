@@ -2,6 +2,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { useNavigate, Outlet } from "react-router-dom";
 import { userAtom } from "../atoms/userAtom";
 import { currentSongAtom } from "../atoms/currentSongAtom";
+import { currentPlaylistAtom } from "../atoms/currentPlaylistAtom";
 import useMusicCrud from "../useMusicCrud";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,6 +13,8 @@ export default function Sidebar() {
 
     const currentSong = useAtomValue(currentSongAtom);
     const setCurrentSong = useSetAtom(currentSongAtom);
+    const currentPlaylist = useAtomValue(currentPlaylistAtom);
+    const setCurrentPlaylist = useSetAtom(currentPlaylistAtom);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -25,14 +28,15 @@ export default function Sidebar() {
     }, []);
 
     useEffect(() => {
-        if (!currentSong) {
-            setResolvedUrl(null);
-            return;
-        }
-        setResolvedUrl(null);
+        if (!currentSong) return;
+
+        let cancelled = false;
+
         getSignedUrl(currentSong.songKey)
-            .then(setResolvedUrl)
-            .catch(() => setResolvedUrl(null));
+            .then(url => { if (!cancelled) setResolvedUrl(url); })
+            .catch(() => { if (!cancelled) setResolvedUrl(null); });
+
+        return () => { cancelled = true; };
     }, [currentSong]);
 
     useEffect(() => {
@@ -55,6 +59,14 @@ export default function Sidebar() {
         audio.addEventListener("ended", () => {
             setIsPlaying(false);
             setProgress(0);
+
+            if (currentPlaylist && currentSong) {
+                const idx = currentPlaylist.songs.findIndex(s => s.id === currentSong.id);
+                const nextSong = currentPlaylist.songs[idx + 1];
+                if (nextSong) {
+                    setCurrentSong(nextSong);
+                }
+            }
         });
 
         audio.play().then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
@@ -146,6 +158,14 @@ export default function Sidebar() {
                                     <span className="text-xl">⬆️</span>
                                     <span>Upload Song</span>
                                 </button>
+
+                                <button
+                                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors"
+                                    onClick={() => navigate("/createPlaylist")}
+                                >
+                                    <span className="text-xl">⬆️</span>
+                                    <span>Create Playlist</span>
+                                </button>
                             </>
                         )}
                         <button className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
@@ -172,6 +192,29 @@ export default function Sidebar() {
 
             {currentSong && (
                 <div className="fixed bottom-6 right-6 z-50 w-80 rounded-2xl shadow-2xl border border-base-300 bg-base-100 p-4 flex flex-col gap-3">
+
+                    {/* Playlist info */}
+                    {currentPlaylist && (
+                        <div className="flex items-center gap-2 pb-2 border-b border-base-300">
+                            {currentPlaylist.image ? (
+                                <img
+                                    src={currentPlaylist.image}
+                                    alt={currentPlaylist.title}
+                                    className="w-8 h-8 rounded-md object-cover flex-shrink-0"
+                                />
+                            ) : (
+                                <div className="w-8 h-8 rounded-md bg-base-300 flex items-center justify-center flex-shrink-0 text-base">
+                                    🎶
+                                </div>
+                            )}
+                            <div className="min-w-0">
+                                <div className="text-xs text-base-content/40 uppercase tracking-wide">Playing from</div>
+                                <div className="text-xs font-semibold truncate">{currentPlaylist.title}</div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Song info */}
                     <div className="flex items-center gap-3">
                         {currentSong.image ? (
                             <img
@@ -194,6 +237,7 @@ export default function Sidebar() {
                             onClick={() => {
                                 audioRef.current?.pause();
                                 setCurrentSong(null);
+                                setCurrentPlaylist(null);
                                 setIsPlaying(false);
                                 setProgress(0);
                             }}
