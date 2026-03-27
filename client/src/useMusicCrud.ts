@@ -35,15 +35,47 @@ export type Playlist = {
     songs: Song[];
 }
 
+let refreshPromise: Promise<boolean> | null = null;
+
 export default function useMusicCrud() {
-    const [,setUser] = useAtom(userAtom);
+    const [, setUser] = useAtom(userAtom);
+
+    async function refreshToken(): Promise<boolean> {
+        if (refreshPromise) return refreshPromise;
+
+        refreshPromise = api.api.authRefresh()
+            .then(res => res.ok)
+            .catch(() => false)
+            .finally(() => { refreshPromise = null; });
+
+        return refreshPromise;
+    }
+
+    async function withAuthRetry<T>(fn: () => Promise<Response>, transform: (res: Response) => Promise<T>): Promise<T> {
+        let response: Response;
+
+        try {
+            response = await fn();
+        } catch (err: any) {
+            if (err?.status === 401 || (err instanceof Response && err.status === 401)) {
+                const refreshed = await refreshToken();
+                if (!refreshed) {
+                    setUser(null);
+                    throw new Error("Session expired. Please log in again.");
+                }
+                response = await fn();
+            } else {
+                throw err;
+            }
+        }
+
+        return transform(response!);
+    }
 
     async function login(dto: UserLoginReqDto): Promise<void> {
         try {
             const response = await api.api.authLogin(dto);
-
             const userData = await response.json() as unknown as UserInfo;
-
             setUser(userData);
         } catch (error) {
             console.error("Login failed:", error);
@@ -64,18 +96,28 @@ export default function useMusicCrud() {
     async function getMe(): Promise<void> {
         try {
             const response = await api.api.authGetMe();
+            setUser(await response.json() as UserInfo);
+        } catch (err: any) {
+            if (err?.status === 401 || (err instanceof Response && err.status === 401)) {
+                const refreshed = await refreshToken();
+                if (!refreshed) { setUser(null); return; }
 
-            setUser(await response.json() as unknown as UserInfo);
-        } catch {
-            setUser(null);
+                try {
+                    const response = await api.api.authGetMe();
+                    setUser(await response.json() as UserInfo);
+                } catch {
+                    setUser(null);
+                }
+            } else {
+                setUser(null);
+            }
         }
     }
 
     async function createUser(dto: UserCreateReqDto): Promise<void> {
         try {
             await api.api.userCreateUser(dto);
-
-            await login({username: dto.username, password: dto.password});
+            await login({ username: dto.username, password: dto.password });
         } catch (error) {
             console.error("Creating user failed:", error);
             throw error;
@@ -83,105 +125,80 @@ export default function useMusicCrud() {
     }
 
     async function uploadSong(file: File, title: string, artist: string, isPublic: boolean, image?: File): Promise<void> {
-        try {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("title", title);
-            formData.append("artist", artist);
-            formData.append("isPublic", String(isPublic));
-            if (image) formData.append("image", image);
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("title", title);
+        formData.append("artist", artist);
+        formData.append("isPublic", String(isPublic));
+        if (image) formData.append("image", image);
 
-            await api.api.songUploadSong(formData as any);
-        } catch (error) {
-            console.error("Uploading song failed:", error);
-            throw error;
-        }
+        await withAuthRetry(
+            () => api.api.songUploadSong(formData as any),
+            () => Promise.resolve(undefined)
+        );
     }
 
     async function getUserSongs(): Promise<Song[]> {
-        try {
-            const res = await api.api.songGetUserSongs();
-
-            return await res.json() as Song[];
-        } catch (error) {
-            console.error("Retrieving songs failed:", error);
-            throw error;
-        }
+        return withAuthRetry(
+            () => api.api.songGetUserSongs(),
+            (res) => res.json() as Promise<Song[]>
+        );
     }
 
     async function getSongs(): Promise<Song[]> {
-        try {
-            const res = await api.api.songGetSongs();
-
-            return await res.json() as Song[];
-        } catch (error) {
-            console.error("Retrieving songs failed:", error);
-            throw error;
-        }
+        return withAuthRetry(
+            () => api.api.songGetSongs(),
+            (res) => res.json() as Promise<Song[]>
+        );
     }
 
     async function getSignedUrl(key: string): Promise<string> {
-        try {
-            const res = await api.api.songGetSignedUrl({ key });
-
-            return await res.text();
-        }
-        catch (error) {
-            console.error("Retrieving song url failed:", error);
-            throw error;
-        }
+        return withAuthRetry(
+            () => api.api.songGetSignedUrl({ key }),
+            (res) => res.text()
+        );
     }
 
     async function editSong(id: string, title: string, artist: string, isPublic: boolean, prevImgKey?: string, image?: File): Promise<void> {
-        try {
-            const formData = new FormData();
-            formData.append("id", id);
-            formData.append("title", title);
-            formData.append("artist", artist);
-            formData.append("isPublic", String(isPublic));
-            if (prevImgKey) formData.append("prevImgKey", prevImgKey);
-            if (image) formData.append("image", image);
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("title", title);
+        formData.append("artist", artist);
+        formData.append("isPublic", String(isPublic));
+        if (prevImgKey) formData.append("prevImgKey", prevImgKey);
+        if (image) formData.append("image", image);
 
-            await api.api.songEditSong(formData as any);
-        } catch (error) {
-            console.error("Editing song failed:", error);
-            throw error;
-        }
+        await withAuthRetry(
+            () => api.api.songEditSong(formData as any),
+            () => Promise.resolve(undefined)
+        );
     }
 
     async function createPlaylist(title: string, songIds: string[], isPublic: boolean, image?: File): Promise<void> {
-        try {
-            const formData = new FormData();
-            formData.append("title", title);
-            formData.append("isPublic", String(isPublic));
-            songIds.forEach(id => formData.append("songIds", id));
-            if (image) formData.append("image", image);
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("isPublic", String(isPublic));
+        songIds.forEach(id => formData.append("songIds", id));
+        if (image) formData.append("image", image);
 
-            await api.api.playlistCreatePlaylist(formData as any);
-        } catch (error) {
-            console.error("Creating playlist failed:", error);
-            throw error;
-        }
+        await withAuthRetry(
+            () => api.api.playlistCreatePlaylist(formData as any),
+            () => Promise.resolve(undefined)
+        );
     }
 
     async function getPlaylists(): Promise<Playlist[]> {
-        try {
-            const res = await api.api.playlistGetPlaylists();
-            return await res.json() as Playlist[];
-        } catch (error) {
-            console.error("Retrieving playlists failed:", error);
-            throw error;
-        }
+        return withAuthRetry(
+            () => api.api.playlistGetPlaylists(),
+            (res) => res.json() as Promise<Playlist[]>
+        );
     }
 
     async function getUserPlaylists(): Promise<Playlist[]> {
-        try {
-            const res = await api.api.playlistGetUserPlaylists();
-            return await res.json() as Playlist[];
-        } catch (error) {
-            console.error("Retrieving user playlists failed:", error);
-            throw error;
-        }
+        return withAuthRetry(
+            () => api.api.playlistGetUserPlaylists(),
+            (res) => res.json() as Promise<Playlist[]>
+        );
     }
 
     return {
