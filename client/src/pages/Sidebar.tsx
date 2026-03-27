@@ -107,6 +107,29 @@ export default function Sidebar() {
         return `${m}:${sec.toString().padStart(2, "0")}`;
     };
 
+    const currentSongIndex =
+        currentPlaylist && currentSong
+            ? currentPlaylist.songs.findIndex(s => s.id === currentSong.id)
+            : -1;
+
+    const hasPrev = currentSongIndex > 0;
+    const hasNext =
+        currentPlaylist != null &&
+        currentSongIndex >= 0 &&
+        currentSongIndex < currentPlaylist.songs.length - 1;
+
+    const handlePrev = () => {
+        if (!currentPlaylist || currentSongIndex <= 0) return;
+        setCurrentSong(currentPlaylist.songs[currentSongIndex - 1]);
+        setProgress(0);
+    };
+
+    const handleNext = () => {
+        if (!currentPlaylist || currentSongIndex < 0 || currentSongIndex >= currentPlaylist.songs.length - 1) return;
+        setCurrentSong(currentPlaylist.songs[currentSongIndex + 1]);
+        setProgress(0);
+    };
+
     const username = user?.username ?? "Guest";
 
     return (
@@ -276,23 +299,51 @@ export default function Sidebar() {
                             />
                         </div>
 
-                        <button
-                            onClick={togglePlay}
-                            className="btn btn-primary btn-sm btn-circle"
-                            disabled={!resolvedUrl}
-                        >
-                            {!resolvedUrl ? (
-                                <span className="loading loading-spinner loading-xs" />
-                            ) : isPlaying ? (
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-4 h-4">
-                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                        {/* Playback controls: prev, play/pause, next */}
+                        <div className="flex items-center gap-1">
+                            {/* Previous button */}
+                            <button
+                                onClick={handlePrev}
+                                className="btn btn-ghost btn-sm btn-circle"
+                                disabled={!hasPrev || !resolvedUrl}
+                                title="Previous song"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                    <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
                                 </svg>
-                            ) : (
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
-                                    <path d="M8 5v14l11-7z" />
+                            </button>
+
+                            {/* Play / Pause button */}
+                            <button
+                                onClick={togglePlay}
+                                className="btn btn-primary btn-sm btn-circle"
+                                disabled={!resolvedUrl}
+                            >
+                                {!resolvedUrl ? (
+                                    <span className="loading loading-spinner loading-xs" />
+                                ) : isPlaying ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-4 h-4">
+                                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                    </svg>
+                                ) : (
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-4 h-4 ml-0.5">
+                                        <path d="M8 5v14l11-7z" />
+                                    </svg>
+                                )}
+                            </button>
+
+                            {/* Next button */}
+                            <button
+                                onClick={handleNext}
+                                className="btn btn-ghost btn-sm btn-circle"
+                                disabled={!hasNext || !resolvedUrl}
+                                title="Next song"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                    <path d="M6 18l8.5-6L6 6v12zm8.5-6v6h2V6h-2v6z" />
                                 </svg>
-                            )}
-                        </button>
+                            </button>
+                        </div>
 
                         <div className="w-20" />
                     </div>
