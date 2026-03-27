@@ -50,6 +50,8 @@ builder.Services.AddAuthentication("JwtAuth")
         {
             OnMessageReceived = context =>
             {
+                
+
                 var token = context.Request.Cookies["jwt"];
                 if (!string.IsNullOrEmpty(token))
                     context.Token = token;
@@ -88,9 +90,9 @@ using (var scope = app.Services.CreateScope())
 
 app.UseOpenApi();
 app.UseSwaggerUi();
-app.MapControllers();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();     
 
 app.Run();
