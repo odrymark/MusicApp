@@ -73,4 +73,36 @@ public class PlaylistController(IPlaylistService playlistService, IR2Service r2S
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpPost("editPlaylist")]
+    [Authorize]
+    public async Task<IActionResult> EditPlaylist([FromForm] PlaylistEditReqDto dto)
+    {
+        try
+        {
+            var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var id = Guid.Parse(idStr!);
+
+            string? imgKey = null;
+            if (dto.image != null)
+            {
+                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
+                imgKey = await r2Service.UploadImageStorage(dto.image);
+                Console.WriteLine($"Image uploaded with key: {imgKey}");
+                
+                await r2Service.DeleteFile(dto.prevImgKey);
+            }
+            else
+            {
+                Console.WriteLine("No image provided");
+            }
+            
+            await playlistService.EditPlaylist(id, dto.id, dto.title, dto.songIds, dto.isPublic, imgKey);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

@@ -109,7 +109,7 @@ export default function MyMusic() {
                             {filteredSongs.map((song) => (
                                 <div
                                     key={song.id}
-                                    onClick={() => { setCurrentSong(song); setCurrentPlaylist(null)}}
+                                    onClick={() => { setCurrentSong(song); setCurrentPlaylist(null); }}
                                     className="bg-base-100 rounded-lg shadow transition-transform transform hover:scale-105 flex flex-col items-center p-3 aspect-square w-full cursor-pointer group relative"
                                 >
                                     {song.image ? (
@@ -164,6 +164,15 @@ export default function MyMusic() {
                                             </svg>
                                         </div>
                                     </div>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); navigate(`/editPlaylist/${playlist.id}`); }}
+                                        className="absolute bottom-2 right-2 btn btn-xs btn-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-1"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z" />
+                                        </svg>
+                                        Edit
+                                    </button>
                                     <div className="font-semibold text-center text-sm mt-2 truncate w-full">{playlist.title}</div>
                                     <div className="text-xs text-base-content/50">{playlist.songs.length} songs</div>
                                 </div>
