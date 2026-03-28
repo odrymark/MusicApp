@@ -421,6 +421,38 @@ export class Api<
     /**
      * No description
      *
+     * @tags Playlist
+     * @name PlaylistEditPlaylist
+     * @request POST:/api/playlist/editPlaylist
+     */
+    playlistEditPlaylist: (
+      data: {
+        /** @format guid */
+        id?: string;
+        title?: string | null;
+        /**
+         * @maxItems 100
+         * @minItems 2
+         */
+        songIds?: string[] | null;
+        isPublic?: boolean;
+        /** @format binary */
+        image?: File | null;
+        prevImgKey?: string | null;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<Blob, any>({
+        path: `/api/playlist/editPlaylist`,
+        method: "POST",
+        body: data,
+        type: ContentType.FormData,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
      * @tags Song
      * @name SongUploadSong
      * @request POST:/api/song/uploadSong

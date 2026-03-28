@@ -36,6 +36,36 @@ public class PlaylistService(MusicDbContext context) : IPlaylistService
         await context.SaveChangesAsync();
     }
     
+    public async Task EditPlaylist(Guid userId, Guid playlistId, string title, List<Guid> songIds, bool isPublic, string? imageKey = null)
+    {
+        var playlist = await context.Playlists
+            .Include(p => p.songs)
+            .FirstOrDefaultAsync(p => p.id == playlistId);
+
+        if (playlist == null)
+            throw new KeyNotFoundException("Playlist not found");
+
+        if (playlist.userId != userId)
+            throw new UnauthorizedAccessException("You do not own this playlist");
+
+        var songs = await context.Songs
+            .Where(s => songIds.Contains(s.id))
+            .ToListAsync();
+
+        var missingSongs = songIds.Except(songs.Select(s => s.id)).ToList();
+        if (missingSongs.Any())
+            throw new ArgumentException($"Songs not found: {string.Join(", ", missingSongs)}");
+
+        playlist.title = title;
+        playlist.isPublic = isPublic;
+        playlist.songs = songs;
+
+        if (imageKey != null)
+            playlist.image = imageKey;
+
+        await context.SaveChangesAsync();
+    }
+    
     public async Task<IEnumerable<PlaylistResDto>> GetUserPlaylists(Guid userId)
     {
         if (userId == Guid.Empty)

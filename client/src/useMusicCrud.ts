@@ -187,6 +187,21 @@ export default function useMusicCrud() {
         );
     }
 
+    async function editPlaylist(id: string, title: string, songIds: string[], isPublic: boolean, prevImgKey?: string, image?: File): Promise<void> {
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("title", title);
+        formData.append("isPublic", String(isPublic));
+        songIds.forEach(songId => formData.append("songIds", songId));
+        if (prevImgKey) formData.append("prevImgKey", prevImgKey);
+        if (image) formData.append("image", image);
+
+        await withAuthRetry(
+            () => api.api.playlistEditPlaylist(formData as any),
+            () => Promise.resolve(undefined)
+        );
+    }
+
     async function getPlaylists(): Promise<Playlist[]> {
         return withAuthRetry(
             () => api.api.playlistGetPlaylists(),
@@ -213,6 +228,7 @@ export default function useMusicCrud() {
         editSong,
         createPlaylist,
         getPlaylists,
-        getUserPlaylists
+        getUserPlaylists,
+        editPlaylist
     };
 }
