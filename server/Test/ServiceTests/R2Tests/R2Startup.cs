@@ -1,5 +1,5 @@
+using Amazon.S3;
 using Api.Services.R2;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 
@@ -9,12 +9,9 @@ public class R2Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        var r2Mock = Substitute.For<IR2Service>();
-        r2Mock.UploadSongStorage(Arg.Any<IFormFile>())
-            .Returns("uploaded_file.mp3");
-        r2Mock.GenerateSignedUrl(Arg.Any<string>(), Arg.Any<int>())
-            .Returns("https://signed-url.example.com/file.mp3");
+        var s3Mock = Substitute.For<IAmazonS3>();
+        services.AddSingleton(s3Mock);
 
-        services.AddSingleton(r2Mock);
+        services.AddScoped<IR2Service, R2Service>();
     }
 }

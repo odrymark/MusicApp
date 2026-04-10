@@ -94,7 +94,9 @@ public class SongControllerTests
             id = Guid.NewGuid(),
             title = "Updated Title",
             image = Substitute.For<IFormFile>(),
-            prevImgKey = "old-image-key"
+            prevImgKey = "old-image-key",
+            artist = "TestArtist",
+            isPublic = true
         };
 
         await _controller.EditSong(dto);

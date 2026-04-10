@@ -4,11 +4,11 @@ public class PlaylistResDto
 {
     public Guid id { get; set; }
 
-    public string title { get; set; }
+    public required string title { get; set; }
     
-    public List<SongResDto> songs { get; set; }
+    public required List<SongResDto> songs { get; set; }
     
-    public string creatorUser { get; set; }
+    public required string creatorUser { get; set; }
 
     public string? image { get; set; }
     

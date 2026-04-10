@@ -82,7 +82,9 @@ public class PlaylistControllerTests
             id = Guid.NewGuid(),
             title = "Updated", 
             image = mockFile, 
-            prevImgKey = "old-key" 
+            prevImgKey = "old-key",
+            songIds = new List<Guid>(), 
+            isPublic = true
         };
 
         _mockR2Service.UploadImageStorage(mockFile).Returns("new-key");

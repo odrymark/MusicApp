@@ -1,3 +1,4 @@
+using Amazon.S3;
 using Api.Services.R2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -9,12 +10,14 @@ namespace Test.ServiceTests.R2Tests;
 public class R2ServiceTests
 {
     private readonly IConfiguration _mockConfig;
+    private readonly IAmazonS3 _s3Mock;
     private readonly R2Service _r2Service;
 
     public R2ServiceTests()
     {
         _mockConfig = CreateMockConfig();
         _r2Service = new R2Service(_mockConfig);
+        _s3Mock = Substitute.For<IAmazonS3>();
     }
 
     private static IConfiguration CreateMockConfig()
@@ -86,9 +89,9 @@ public class R2ServiceTests
     [Fact]
     public async Task UploadSongStorage_Accepts_Mp3_Extension()
     {
-        var file = CreateFormFile("song.mp3", "audio/mpeg");
+        var file = CreateFormFile("song.mp3");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadSongStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadSongStorage(file));
         Assert.NotNull(exception);
     }
 
@@ -97,16 +100,16 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("song.wav", "audio/wav");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadSongStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadSongStorage(file));
         Assert.NotNull(exception);
     }
 
     [Fact]
     public async Task UploadSongStorage_Case_Insensitive_Extension()
     {
-        var file = CreateFormFile("song.MP3", "audio/mpeg");
+        var file = CreateFormFile("song.MP3");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadSongStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadSongStorage(file));
         Assert.NotNull(exception);
     }
 
@@ -141,7 +144,7 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.jpg", "image/jpeg");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadImageStorage(file));
         Assert.NotNull(exception);
     }
 
@@ -150,7 +153,7 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.jpeg", "image/jpeg");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadImageStorage(file));
         Assert.NotNull(exception);
     }
 
@@ -159,7 +162,7 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.png", "image/png");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadImageStorage(file));
         Assert.NotNull(exception);
     }
 
@@ -168,7 +171,7 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.webp", "image/webp");
 
-        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        var exception = await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.UploadImageStorage(file));
         Assert.NotNull(exception);
     }
 
@@ -221,24 +224,30 @@ public class R2ServiceTests
     public async Task DeleteFile_Returns_Early_When_Key_Is_Null()
     {
         await _r2Service.DeleteFile(null!);
+        
+        await _s3Mock.Received(0).DeleteObjectAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<CancellationToken>());
     }
 
     [Fact]
     public async Task DeleteFile_Returns_Early_When_Key_Is_Empty()
     {
         await _r2Service.DeleteFile("");
+
+        await _s3Mock.DidNotReceiveWithAnyArgs().DeleteObjectAsync(default!, TestContext.Current.CancellationToken);
     }
 
     [Fact]
     public async Task DeleteFile_Returns_Early_When_Key_Is_Whitespace()
     {
         await _r2Service.DeleteFile("   ");
+
+        await _s3Mock.DidNotReceiveWithAnyArgs().DeleteObjectAsync(default!, TestContext.Current.CancellationToken);
     }
 
     [Fact]
     public async Task DeleteFile_Attempts_Delete_With_Valid_Key()
     {
-        await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.DeleteFile("songs/some-file.mp3"));
+        await Assert.ThrowsAsync<HttpRequestException>(() => _r2Service.DeleteFile("songs/some-file.mp3"));
     }
 
     // -------------------------
@@ -249,7 +258,7 @@ public class R2ServiceTests
     public void Constructor_Throws_When_Config_Path_Is_Null()
     {
         var badConfig = Substitute.For<IConfiguration>();
-        badConfig["R2:ConfigPath"].Returns((string)null);
+        badConfig["R2:ConfigPath"].Returns((string)null!);
 
         Assert.Throws<InvalidOperationException>(() => new R2Service(badConfig));
     }

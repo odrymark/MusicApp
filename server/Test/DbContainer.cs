@@ -9,7 +9,7 @@ public class DbContainer : IAsyncLifetime
 
     public DbContainer()
     {
-        Container = new PostgreSqlBuilder()
+        Container = new PostgreSqlBuilder("postgres:17")
             .WithDatabase("pigeons_test")
             .WithUsername("test")
             .WithPassword("test")
