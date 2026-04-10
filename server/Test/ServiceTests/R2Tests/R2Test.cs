@@ -1,19 +1,42 @@
 using Api.Services.R2;
-using DataAccess;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
-using Xunit.DependencyInjection;
+using Xunit;
 
 namespace Test.ServiceTests.R2Tests;
 
-[Startup(typeof(R2Startup))]
 public class R2ServiceTests
 {
-    private readonly IR2Service _r2Service;
+    private readonly IConfiguration _mockConfig;
+    private readonly R2Service _r2Service;
 
-    public R2ServiceTests(IR2Service r2Service)
+    public R2ServiceTests()
     {
-        _r2Service = r2Service;
+        _mockConfig = CreateMockConfig();
+        _r2Service = new R2Service(_mockConfig);
+    }
+
+    private static IConfiguration CreateMockConfig()
+    {
+        var config = Substitute.For<IConfiguration>();
+        var configSection = Substitute.For<IConfigurationSection>();
+        
+        var tempDir = Path.GetTempPath();
+        var configPath = Path.Combine(tempDir, "r2-config.json");
+        var configJson = """
+        {
+            "AccessKey": "test-access-key",
+            "SecretKey": "test-secret-key",
+            "BucketName": "test-bucket",
+            "Endpoint": "https://test-endpoint.r2.cloudflarestorage.com"
+        }
+        """;
+        File.WriteAllText(configPath, configJson);
+
+        config["R2:ConfigPath"].Returns(configPath);
+        
+        return config;
     }
 
     private static IFormFile CreateFormFile(string fileName, string contentType = "audio/mpeg", int size = 1024)
@@ -31,40 +54,8 @@ public class R2ServiceTests
     // -------------------------
 
     [Fact]
-    public async Task UploadSongStorage_Returns_FileName_When_Valid_Mp3()
-    {
-        var file = CreateFormFile("song.mp3");
-
-        var result = await _r2Service.UploadSongStorage(file);
-
-        Assert.False(string.IsNullOrWhiteSpace(result));
-    }
-
-    [Fact]
-    public async Task UploadSongStorage_Returns_FileName_When_Valid_Wav()
-    {
-        var file = CreateFormFile("song.wav", "audio/wav");
-
-        var result = await _r2Service.UploadSongStorage(file);
-
-        Assert.False(string.IsNullOrWhiteSpace(result));
-    }
-
-    [Fact]
-    public async Task UploadSongStorage_Calls_Service_Once()
-    {
-        var file = CreateFormFile("song.mp3");
-
-        await _r2Service.UploadSongStorage(file);
-
-        await _r2Service.Received(1).UploadSongStorage(file);
-    }
-
-    [Fact]
     public async Task UploadSongStorage_Throws_When_File_Is_Null()
     {
-        _r2Service.UploadSongStorage(null!).Returns<Task<string>>(_ => throw new ArgumentException("File is empty"));
-
         await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadSongStorage(null!));
     }
 
@@ -72,7 +63,6 @@ public class R2ServiceTests
     public async Task UploadSongStorage_Throws_When_File_Is_Empty()
     {
         var file = CreateFormFile("song.mp3", size: 0);
-        _r2Service.UploadSongStorage(file).Returns<Task<string>>(_ => throw new ArgumentException("File is empty"));
 
         await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadSongStorage(file));
     }
@@ -81,9 +71,105 @@ public class R2ServiceTests
     public async Task UploadSongStorage_Throws_When_Invalid_Extension()
     {
         var file = CreateFormFile("song.exe", "application/octet-stream");
-        _r2Service.UploadSongStorage(file).Returns<Task<string>>(_ => throw new ArgumentException("Invalid file type"));
 
         await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadSongStorage(file));
+    }
+
+    [Fact]
+    public async Task UploadSongStorage_Throws_When_Invalid_Audio_Extension()
+    {
+        var file = CreateFormFile("song.txt", "text/plain");
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadSongStorage(file));
+    }
+
+    [Fact]
+    public async Task UploadSongStorage_Accepts_Mp3_Extension()
+    {
+        var file = CreateFormFile("song.mp3", "audio/mpeg");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadSongStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
+    }
+
+    [Fact]
+    public async Task UploadSongStorage_Accepts_Wav_Extension()
+    {
+        var file = CreateFormFile("song.wav", "audio/wav");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadSongStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
+    }
+
+    [Fact]
+    public async Task UploadSongStorage_Case_Insensitive_Extension()
+    {
+        var file = CreateFormFile("song.MP3", "audio/mpeg");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadSongStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
+    }
+
+    // -------------------------
+    // UploadImageStorage Tests
+    // -------------------------
+
+    [Fact]
+    public async Task UploadImageStorage_Throws_When_File_Is_Null()
+    {
+        await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadImageStorage(null!));
+    }
+
+    [Fact]
+    public async Task UploadImageStorage_Throws_When_File_Is_Empty()
+    {
+        var file = CreateFormFile("image.jpg", "image/jpeg", size: 0);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadImageStorage(file));
+    }
+
+    [Fact]
+    public async Task UploadImageStorage_Throws_When_Invalid_Extension()
+    {
+        var file = CreateFormFile("image.bmp", "image/bmp");
+
+        await Assert.ThrowsAsync<ArgumentException>(() => _r2Service.UploadImageStorage(file));
+    }
+
+    [Fact]
+    public async Task UploadImageStorage_Accepts_Jpg_Extension()
+    {
+        var file = CreateFormFile("image.jpg", "image/jpeg");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
+    }
+
+    [Fact]
+    public async Task UploadImageStorage_Accepts_Jpeg_Extension()
+    {
+        var file = CreateFormFile("image.jpeg", "image/jpeg");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
+    }
+
+    [Fact]
+    public async Task UploadImageStorage_Accepts_Png_Extension()
+    {
+        var file = CreateFormFile("image.png", "image/png");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
+    }
+
+    [Fact]
+    public async Task UploadImageStorage_Accepts_Webp_Extension()
+    {
+        var file = CreateFormFile("image.webp", "image/webp");
+
+        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
+        Assert.IsNotType<ArgumentException>(exception);
     }
 
     // -------------------------
@@ -91,43 +177,124 @@ public class R2ServiceTests
     // -------------------------
 
     [Fact]
-    public void GenerateSignedUrl_Returns_Url_For_Valid_Key()
+    public void GenerateSignedUrl_Throws_On_S3_Connection_Failure()
     {
-        var result = _r2Service.GenerateSignedUrl("some-file-key.mp3");
-
-        Assert.False(string.IsNullOrWhiteSpace(result));
+        Assert.Throws<Exception>(() => _r2Service.GenerateSignedUrl("some-file-key.mp3"));
     }
 
     [Fact]
-    public void GenerateSignedUrl_Returns_Different_Urls_For_Different_Keys()
+    public void GenerateSignedUrl_With_Default_Expiration()
     {
-        _r2Service.GenerateSignedUrl("key1.mp3").Returns("https://signed-url.example.com/key1.mp3");
-        _r2Service.GenerateSignedUrl("key2.mp3").Returns("https://signed-url.example.com/key2.mp3");
-
-        var url1 = _r2Service.GenerateSignedUrl("key1.mp3");
-        var url2 = _r2Service.GenerateSignedUrl("key2.mp3");
-
-        Assert.NotEqual(url1, url2);
+        Assert.Throws<Exception>(() => _r2Service.GenerateSignedUrl("key.mp3"));
     }
 
     [Fact]
-    public void GenerateSignedUrl_Called_With_Correct_Key()
+    public void GenerateSignedUrl_With_Custom_Expiration()
     {
-        var key = "my-song-" + Guid.NewGuid().ToString("N") + ".mp3";
+        Assert.Throws<Exception>(() => _r2Service.GenerateSignedUrl("key.mp3", 48));
+    }
 
-        _r2Service.GenerateSignedUrl(key);
+    // -------------------------
+    // DeleteFile Tests
+    // -------------------------
 
-        _r2Service.Received(1).GenerateSignedUrl(key);
+    [Fact]
+    public async Task DeleteFile_Returns_Early_When_Key_Is_Null()
+    {
+        await _r2Service.DeleteFile(null!);
     }
 
     [Fact]
-    public void GenerateSignedUrl_Respects_Custom_Expiration()
+    public async Task DeleteFile_Returns_Early_When_Key_Is_Empty()
     {
-        _r2Service.GenerateSignedUrl("key.mp3", 48).Returns("https://signed-url.example.com/key.mp3?exp=48");
+        await _r2Service.DeleteFile("");
+    }
 
-        var result = _r2Service.GenerateSignedUrl("key.mp3", 48);
+    [Fact]
+    public async Task DeleteFile_Returns_Early_When_Key_Is_Whitespace()
+    {
+        await _r2Service.DeleteFile("   ");
+    }
 
-        _r2Service.Received(1).GenerateSignedUrl("key.mp3", 48);
-        Assert.False(string.IsNullOrWhiteSpace(result));
+    [Fact]
+    public async Task DeleteFile_Attempts_Delete_With_Valid_Key()
+    {
+        await Assert.ThrowsAsync<Exception>(() => _r2Service.DeleteFile("songs/some-file.mp3"));
+    }
+
+    // -------------------------
+    // Constructor Tests
+    // -------------------------
+
+    [Fact]
+    public void Constructor_Throws_When_Config_Path_Is_Null()
+    {
+        var badConfig = Substitute.For<IConfiguration>();
+        badConfig["R2:ConfigPath"].Returns((string)null);
+
+        Assert.Throws<InvalidOperationException>(() => new R2Service(badConfig));
+    }
+
+    [Fact]
+    public void Constructor_Throws_When_Config_File_Does_Not_Exist()
+    {
+        var badConfig = Substitute.For<IConfiguration>();
+        badConfig["R2:ConfigPath"].Returns("/nonexistent/path/config.json");
+
+        Assert.Throws<InvalidOperationException>(() => new R2Service(badConfig));
+    }
+
+    [Fact]
+    public void Constructor_Throws_When_Config_Json_Is_Invalid()
+    {
+        var tempDir = Path.GetTempPath();
+        var configPath = Path.Combine(tempDir, "invalid-config.json");
+        File.WriteAllText(configPath, "{ invalid json");
+
+        var badConfig = Substitute.For<IConfiguration>();
+        badConfig["R2:ConfigPath"].Returns(configPath);
+
+        Assert.Throws<Exception>(() => new R2Service(badConfig));
+    }
+
+    [Fact]
+    public void Constructor_Throws_When_AccessKey_Is_Missing()
+    {
+        var tempDir = Path.GetTempPath();
+        var configPath = Path.Combine(tempDir, "missing-key-config.json");
+        var configJson = """
+        {
+            "SecretKey": "test-secret-key",
+            "BucketName": "test-bucket",
+            "Endpoint": "https://test-endpoint.r2.cloudflarestorage.com"
+        }
+        """;
+        File.WriteAllText(configPath, configJson);
+
+        var badConfig = Substitute.For<IConfiguration>();
+        badConfig["R2:ConfigPath"].Returns(configPath);
+
+        Assert.Throws<ArgumentNullException>(() => new R2Service(badConfig));
+    }
+
+    [Fact]
+    public void Constructor_Throws_When_Endpoint_Is_Empty()
+    {
+        var tempDir = Path.GetTempPath();
+        var configPath = Path.Combine(tempDir, "empty-endpoint-config.json");
+        var configJson = """
+        {
+            "AccessKey": "test-access-key",
+            "SecretKey": "test-secret-key",
+            "BucketName": "test-bucket",
+            "Endpoint": "   "
+        }
+        """;
+        File.WriteAllText(configPath, configJson);
+
+        var badConfig = Substitute.For<IConfiguration>();
+        badConfig["R2:ConfigPath"].Returns(configPath);
+
+        Assert.Throws<InvalidOperationException>(() => new R2Service(badConfig));
     }
 }

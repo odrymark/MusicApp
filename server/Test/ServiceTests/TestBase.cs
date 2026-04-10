@@ -74,19 +74,21 @@ public abstract class TestBase : IAsyncLifetime
     }
 
     protected async Task<Playlist> CreatePlaylistAsync(
-        Guid userId,
-        string title = "Test Playlist",
+        Guid userId, 
+        string title, 
+        List<Guid> songIds,
+        bool isPublic = true,
         string? image = null)
     {
         var playlist = new Playlist
         {
-            id = Guid.NewGuid(),
             userId = userId,
             title = title,
-            image = image
+            isPublic = isPublic,
+            image = image,
+            songs = Db.Songs.Where(s => songIds.Contains(s.id)).ToList()
         };
-
-        await Db.Playlists.AddAsync(playlist);
+        Db.Playlists.Add(playlist);
         await Db.SaveChangesAsync();
         return playlist;
     }
