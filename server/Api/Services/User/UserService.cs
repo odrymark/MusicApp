@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Services.User;
 
-public class UserService(IPasswordService passwordService, IAuthService authService, MusicDbContext context) : IUserService
+public class UserService(IPasswordService passwordService, MusicDbContext context) : IUserService
 {
     public async Task CreateUser(UserCreateReqDto userCreateReqDto)
     {

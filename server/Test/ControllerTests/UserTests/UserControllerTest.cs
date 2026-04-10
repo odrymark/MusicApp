@@ -30,8 +30,10 @@ public class UserControllerTests
     {
         var dto = new UserCreateReqDto 
         { 
-            username = "newuser", 
-            password = "securePassword123" 
+            username = "newuser",
+            password = "securePassword123",
+            email = "test123456789@email.com",
+            passwordConfirm = "securePassword123"
         };
 
         var result = await _controller.CreateUser(dto);
@@ -43,7 +45,7 @@ public class UserControllerTests
     [Fact]
     public async Task CreateUser_Returns_BadRequest_On_Exception()
     {
-        var dto = new UserCreateReqDto { username = "existinguser" };
+        var dto = new UserCreateReqDto { username = "existinguser", password = "securePassword123", passwordConfirm = "securePassword123", email = "existinguser@email.com"};
         var errorMessage = "Username already taken";
         
         _mockUserService.CreateUser(dto).Throws(new Exception(errorMessage));

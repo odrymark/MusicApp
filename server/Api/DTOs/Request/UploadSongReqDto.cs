@@ -13,15 +13,15 @@ public class UploadSongReqDto
     [Required]
     [MinLength(3)]
     [MaxLength(100)]
-    public string title { get; set; } = string.Empty;
+    public required string title { get; set; } = string.Empty;
     
     [Required]
     [MinLength(3)]
     [MaxLength(100)]
-    public string artist { get; set; } = string.Empty;
+    public required string artist { get; set; } = string.Empty;
     
     [Required]
-    public bool isPublic { get; set; }
+    public required bool isPublic { get; set; }
     
     public IFormFile? image { get; set; }
 }
