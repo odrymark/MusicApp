@@ -7,7 +7,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/user")]
-public class UserController(UserService service) : ControllerBase
+public class UserController(IUserService service) : ControllerBase
 {
     [HttpPost("createUser")]
     public async Task<ActionResult> CreateUser([FromBody] UserCreateReqDto userCreateReqDto)
