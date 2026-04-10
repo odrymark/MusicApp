@@ -88,8 +88,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("song.mp3", "audio/mpeg");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadSongStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadSongStorage(file));
+        Assert.NotNull(exception);
     }
 
     [Fact]
@@ -97,8 +97,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("song.wav", "audio/wav");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadSongStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadSongStorage(file));
+        Assert.NotNull(exception);
     }
 
     [Fact]
@@ -106,8 +106,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("song.MP3", "audio/mpeg");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadSongStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadSongStorage(file));
+        Assert.NotNull(exception);
     }
 
     // -------------------------
@@ -141,8 +141,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.jpg", "image/jpeg");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        Assert.NotNull(exception);
     }
 
     [Fact]
@@ -150,8 +150,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.jpeg", "image/jpeg");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        Assert.NotNull(exception);
     }
 
     [Fact]
@@ -159,8 +159,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.png", "image/png");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        Assert.NotNull(exception);
     }
 
     [Fact]
@@ -168,8 +168,8 @@ public class R2ServiceTests
     {
         var file = CreateFormFile("image.webp", "image/webp");
 
-        var exception = await Assert.ThrowsAsync<Exception>(() => _r2Service.UploadImageStorage(file));
-        Assert.IsNotType<ArgumentException>(exception);
+        var exception = await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.UploadImageStorage(file));
+        Assert.NotNull(exception);
     }
 
     // -------------------------
@@ -177,21 +177,40 @@ public class R2ServiceTests
     // -------------------------
 
     [Fact]
-    public void GenerateSignedUrl_Throws_On_S3_Connection_Failure()
+    public void GenerateSignedUrl_Returns_Url_String()
     {
-        Assert.Throws<Exception>(() => _r2Service.GenerateSignedUrl("some-file-key.mp3"));
+        var result = _r2Service.GenerateSignedUrl("some-file-key.mp3");
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+        Assert.StartsWith("https://", result);
     }
 
     [Fact]
     public void GenerateSignedUrl_With_Default_Expiration()
     {
-        Assert.Throws<Exception>(() => _r2Service.GenerateSignedUrl("key.mp3"));
+        var result = _r2Service.GenerateSignedUrl("key.mp3");
+
+        Assert.NotNull(result);
+        Assert.Contains("key.mp3", result);
     }
 
     [Fact]
     public void GenerateSignedUrl_With_Custom_Expiration()
     {
-        Assert.Throws<Exception>(() => _r2Service.GenerateSignedUrl("key.mp3", 48));
+        var result = _r2Service.GenerateSignedUrl("key.mp3", 48);
+
+        Assert.NotNull(result);
+        Assert.NotEmpty(result);
+    }
+
+    [Fact]
+    public void GenerateSignedUrl_Returns_Different_Urls_For_Different_Keys()
+    {
+        var url1 = _r2Service.GenerateSignedUrl("key1.mp3");
+        var url2 = _r2Service.GenerateSignedUrl("key2.mp3");
+
+        Assert.NotEqual(url1, url2);
     }
 
     // -------------------------
@@ -219,7 +238,7 @@ public class R2ServiceTests
     [Fact]
     public async Task DeleteFile_Attempts_Delete_With_Valid_Key()
     {
-        await Assert.ThrowsAsync<Exception>(() => _r2Service.DeleteFile("songs/some-file.mp3"));
+        await Assert.ThrowsAsync<System.Net.Http.HttpRequestException>(() => _r2Service.DeleteFile("songs/some-file.mp3"));
     }
 
     // -------------------------
@@ -254,7 +273,7 @@ public class R2ServiceTests
         var badConfig = Substitute.For<IConfiguration>();
         badConfig["R2:ConfigPath"].Returns(configPath);
 
-        Assert.Throws<Exception>(() => new R2Service(badConfig));
+        Assert.Throws<System.Text.Json.JsonException>(() => new R2Service(badConfig));
     }
 
     [Fact]

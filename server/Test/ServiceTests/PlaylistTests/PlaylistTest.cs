@@ -16,6 +16,11 @@ public class PlaylistTests : TestBase
         _playlistService = playlistService;
     }
 
+    private string GetUniqueUsername()
+    {
+        return "u_" + Guid.NewGuid().ToString("N").Substring(0, 30);
+    }
+
     // -------------------------
     // CreatePlaylist Tests
     // -------------------------
@@ -23,7 +28,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Saves_Playlist_To_Db()
     {
-        var user = await CreateUserAsync("playlist_create_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
 
         await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, true);
@@ -35,7 +40,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Saves_Correct_Fields()
     {
-        var user = await CreateUserAsync("playlist_fields_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
 
         await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, true, "playlist.jpg");
@@ -49,7 +54,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Image_Is_Null_When_Not_Provided()
     {
-        var user = await CreateUserAsync("playlist_noimage_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
 
         await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, false);
@@ -61,7 +66,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Associates_Songs()
     {
-        var user = await CreateUserAsync("playlist_songs_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song1 = await CreateSongAsync(user.id, "Song 1");
         var song2 = await CreateSongAsync(user.id, "Song 2");
 
@@ -76,7 +81,8 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Throws_When_UserId_Empty()
     {
-        var song = await CreateSongAsync(Guid.NewGuid(), "Song 1");
+        var user = await CreateUserAsync(GetUniqueUsername());
+        var song = await CreateSongAsync(user.id, "Song 1");
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
             _playlistService.CreatePlaylist(Guid.Empty, "Playlist", new List<Guid> { song.id }, true));
@@ -94,7 +100,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Throws_When_Song_Not_Found()
     {
-        var user = await CreateUserAsync("playlist_badsong_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Real Song");
         var fakeId = Guid.NewGuid();
 
@@ -105,7 +111,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Throws_When_Multiple_Songs_Not_Found()
     {
-        var user = await CreateUserAsync("playlist_multibad_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var fakeId1 = Guid.NewGuid();
         var fakeId2 = Guid.NewGuid();
 
@@ -118,7 +124,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task CreatePlaylist_Allows_Empty_SongList()
     {
-        var user = await CreateUserAsync("playlist_empty_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
 
         await _playlistService.CreatePlaylist(user.id, "Empty Playlist", new List<Guid>(), true);
 
@@ -133,7 +139,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Updates_Title()
     {
-        var user = await CreateUserAsync("playlist_edittitle_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Old Title", new List<Guid> { song.id });
 
@@ -146,7 +152,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Updates_IsPublic()
     {
-        var user = await CreateUserAsync("playlist_editpublic_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id }, isPublic: false);
 
@@ -159,7 +165,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Updates_Image()
     {
-        var user = await CreateUserAsync("playlist_editimage_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id }, image: "old.jpg");
 
@@ -172,7 +178,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Updates_Songs()
     {
-        var user = await CreateUserAsync("playlist_editsongs_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song1 = await CreateSongAsync(user.id, "Song 1");
         var song2 = await CreateSongAsync(user.id, "Song 2");
         var song3 = await CreateSongAsync(user.id, "Song 3");
@@ -190,7 +196,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Throws_When_Playlist_Not_Found()
     {
-        var user = await CreateUserAsync("playlist_notfound_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
 
         await Assert.ThrowsAsync<KeyNotFoundException>(() =>
             _playlistService.EditPlaylist(user.id, Guid.NewGuid(), "Playlist", new List<Guid>(), true));
@@ -199,8 +205,8 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Throws_When_Not_Owner()
     {
-        var user1 = await CreateUserAsync("playlist_owner1_" + Guid.NewGuid().ToString("N"));
-        var user2 = await CreateUserAsync("playlist_owner2_" + Guid.NewGuid().ToString("N"));
+        var user1 = await CreateUserAsync(GetUniqueUsername());
+        var user2 = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user1.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user1.id, "Playlist", new List<Guid> { song.id });
 
@@ -211,7 +217,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Throws_When_Song_Not_Found()
     {
-        var user = await CreateUserAsync("playlist_editmissing_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id });
         var fakeId = Guid.NewGuid();
@@ -223,7 +229,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task EditPlaylist_Clears_Image_When_Not_Provided()
     {
-        var user = await CreateUserAsync("playlist_editclearimage_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id }, image: "old.jpg");
 
@@ -240,7 +246,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetUserPlaylists_Returns_Playlists_For_User()
     {
-        var user = await CreateUserAsync("playlist_getuser_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         await CreatePlaylistAsync(user.id, "Playlist 1", new List<Guid> { song.id });
         await CreatePlaylistAsync(user.id, "Playlist 2", new List<Guid> { song.id });
@@ -253,8 +259,8 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetUserPlaylists_Returns_Only_Users_Own_Playlists()
     {
-        var user1 = await CreateUserAsync("playlist_own1_" + Guid.NewGuid().ToString("N"));
-        var user2 = await CreateUserAsync("playlist_own2_" + Guid.NewGuid().ToString("N"));
+        var user1 = await CreateUserAsync(GetUniqueUsername());
+        var user2 = await CreateUserAsync(GetUniqueUsername());
         var song1 = await CreateSongAsync(user1.id, "Song 1");
         var song2 = await CreateSongAsync(user2.id, "Song 2");
         await CreatePlaylistAsync(user1.id, "User1 Playlist", new List<Guid> { song1.id });
@@ -268,7 +274,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetUserPlaylists_Returns_Empty_When_No_Playlists()
     {
-        var user = await CreateUserAsync("playlist_empty_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
 
         var result = await _playlistService.GetUserPlaylists(user.id);
 
@@ -278,7 +284,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetUserPlaylists_Returns_Correct_Dto_Fields()
     {
-        var user = await CreateUserAsync("playlist_dto_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "DTO Song", "dto-key", "DTO Artist", image: "song.jpg");
         var playlist = await CreatePlaylistAsync(user.id, "DTO Playlist", new List<Guid> { song.id }, image: "playlist.jpg");
 
@@ -314,7 +320,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetUserPlaylists_Returns_Songs_In_Playlist()
     {
-        var user = await CreateUserAsync("playlist_getsongs_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song1 = await CreateSongAsync(user.id, "Song 1");
         var song2 = await CreateSongAsync(user.id, "Song 2");
         await CreatePlaylistAsync(user.id, "Multi Song Playlist", new List<Guid> { song1.id, song2.id });
@@ -332,7 +338,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetPlaylists_Returns_Only_Public_Playlists()
     {
-        var user = await CreateUserAsync("playlist_public_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         await CreatePlaylistAsync(user.id, "Public Playlist", new List<Guid> { song.id }, isPublic: true);
         await CreatePlaylistAsync(user.id, "Private Playlist", new List<Guid> { song.id }, isPublic: false);
@@ -346,7 +352,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetPlaylists_Returns_Empty_When_No_Public_Playlists()
     {
-        var user = await CreateUserAsync("playlist_nopublic_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
         await CreatePlaylistAsync(user.id, "Private Playlist", new List<Guid> { song.id }, isPublic: false);
 
@@ -358,7 +364,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetPlaylists_Returns_Correct_Dto_Fields()
     {
-        var user = await CreateUserAsync("playlist_pubdto_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Public DTO Song", "pub-key", "Pub Artist", image: "song.jpg");
         var playlist = await CreatePlaylistAsync(user.id, "Public DTO Playlist", new List<Guid> { song.id }, isPublic: true, image: "pub.jpg");
 
@@ -375,7 +381,7 @@ public class PlaylistTests : TestBase
     [Fact]
     public async Task GetPlaylists_Includes_Songs_In_Response()
     {
-        var user = await CreateUserAsync("playlist_pubsongs_" + Guid.NewGuid().ToString("N"));
+        var user = await CreateUserAsync(GetUniqueUsername());
         var song1 = await CreateSongAsync(user.id, "Song 1", isPublic: true);
         var song2 = await CreateSongAsync(user.id, "Song 2", isPublic: true);
         await CreatePlaylistAsync(user.id, "Public Multi Playlist", new List<Guid> { song1.id, song2.id }, isPublic: true);

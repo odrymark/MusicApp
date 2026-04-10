@@ -38,7 +38,7 @@ public abstract class TestBase : IAsyncLifetime
             id = Guid.NewGuid(),
             username = username,
             password = password,
-            email = email ?? $"{username}@example.com",
+            email = email ?? "t_" + Guid.NewGuid().ToString("N").Substring(0, 12) + "@test.com",
             isAdmin = isAdmin,
             refreshToken = refreshToken,
             refreshTokenExpiry = refreshTokenExpiry
