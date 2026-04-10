@@ -36,7 +36,7 @@ jobs:
             /d:sonar.coverageReportPaths="coverage-report/SonarQube.xml" \
             /d:sonar.qualitygate.wait=false \
             /d:sonar.qualitygate.timeout=300 \
-            /d:sonar.exclusions="client/**,**/Migrations/**" \
+            /d:sonar.exclusions="client/**,**/Migrations/**,k6/**,testcafe/** " \
             /d:sonar.coverage.exclusions="**/DTOs/**,**/*Dto.cs,**/Program.cs"
 
       - name: Build
