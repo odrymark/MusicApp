@@ -46,10 +46,10 @@ public class R2Service : IR2Service
 
     private sealed class R2Config
     {
-        public string? AccessKey { get; init; }
-        public string? SecretKey { get; init; }
-        public string? BucketName { get; init; }
-        public string? Endpoint { get; init; }
+        public required string AccessKey { get; init; }
+        public required string SecretKey { get; init; }
+        public required string BucketName { get; init; }
+        public required string Endpoint { get; init; }
     }
 
     public async Task<string> UploadSongStorage(IFormFile file)
