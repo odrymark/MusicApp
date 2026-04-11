@@ -1,9 +1,7 @@
 using System.Text.Json;
-using Amazon;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using Microsoft.AspNetCore.Http;
 
 namespace Api.Services.R2;
 
@@ -46,12 +44,12 @@ public class R2Service : IR2Service
         }
     }
 
-    private class R2Config
+    private sealed class R2Config
     {
-        public string? AccessKey { get; set; }
-        public string? SecretKey { get; set; }
-        public string? BucketName { get; set; }
-        public string? Endpoint { get; set; }
+        public string? AccessKey { get; init; }
+        public string? SecretKey { get; init; }
+        public string? BucketName { get; init; }
+        public string? Endpoint { get; init; }
     }
 
     public async Task<string> UploadSongStorage(IFormFile file)
@@ -84,7 +82,7 @@ public class R2Service : IR2Service
             InputStream = stream,
             BucketName = _bucketName,
             Key = fileName,
-            ContentType = file.ContentType ?? "application/octet-stream",
+            ContentType = file.ContentType,
             DisablePayloadSigning = true,
         };
 
@@ -123,7 +121,7 @@ public class R2Service : IR2Service
             InputStream = stream,
             BucketName = _bucketName,
             Key = fileName,
-            ContentType = file.ContentType ?? "image/jpeg",
+            ContentType = file.ContentType,
             DisablePayloadSigning = true,
         };
 

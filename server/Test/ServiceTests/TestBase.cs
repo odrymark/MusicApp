@@ -21,8 +21,15 @@ public abstract class TestBase : IAsyncLifetime
 
     public async ValueTask DisposeAsync()
     {
-        await _transaction.RollbackAsync();
-        await _transaction.DisposeAsync();
+        try
+        {
+            await _transaction.RollbackAsync();
+            await _transaction.DisposeAsync();
+        }
+        finally
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 
     protected async Task<User> CreateUserAsync(
@@ -38,7 +45,7 @@ public abstract class TestBase : IAsyncLifetime
             id = Guid.NewGuid(),
             username = username,
             password = password,
-            email = email ?? "t_" + Guid.NewGuid().ToString("N").Substring(0, 12) + "@test.com",
+            email = email ?? $"t_{Guid.NewGuid().ToString("N").AsSpan(0, 12)}@test.com",
             isAdmin = isAdmin,
             refreshToken = refreshToken,
             refreshTokenExpiry = refreshTokenExpiry
