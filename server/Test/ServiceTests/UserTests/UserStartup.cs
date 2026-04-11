@@ -12,7 +12,7 @@ public class UserStartup
 {
     private static DbContainer? _container;
 
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
     {
         if (_container == null)
         {

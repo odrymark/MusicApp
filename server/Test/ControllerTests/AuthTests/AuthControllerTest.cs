@@ -19,14 +19,14 @@ public class AuthControllerTests
         _mockAuthService = mockAuthService;
         _startup = startup;
         _provider = provider;
-        _controller = startup.GetController(provider);
+        _controller = AuthControllerStartup.GetController(provider);
     }
 
     [Fact]
     public async Task Refresh_Returns_Ok_With_Valid_RefreshToken()
     {
         var refreshToken = "valid-rt";
-        _startup.SetupRequestCookies(_controller, new() { ["refreshToken"] = refreshToken });
+        AuthControllerStartup.SetupRequestCookies(_controller, new() { ["refreshToken"] = refreshToken });
         
         _mockAuthService.RefreshToken(refreshToken, 7).Returns(("new-jwt", "new-rt"));
 
@@ -39,7 +39,7 @@ public class AuthControllerTests
     [Fact]
     public async Task Refresh_Returns_Unauthorized_When_No_RefreshToken()
     {
-        _startup.SetupRequestCookies(_controller, new Dictionary<string, string>());
+        AuthControllerStartup.SetupRequestCookies(_controller, new Dictionary<string, string>());
         
         var result = await _controller.Refresh();
 
@@ -50,7 +50,7 @@ public class AuthControllerTests
     [Fact]
     public async Task Logout_Clears_Cookies_Properly()
     {
-        _startup.SetupRequestCookies(_controller, new() { ["refreshToken"] = "active-token" });
+        AuthControllerStartup.SetupRequestCookies(_controller, new() { ["refreshToken"] = "active-token" });
 
         var result = await _controller.Logout();
 

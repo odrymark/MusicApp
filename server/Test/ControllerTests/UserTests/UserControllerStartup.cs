@@ -9,7 +9,7 @@ namespace Test.ControllerTests.UserTests;
 
 public class UserControllerStartup
 {
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton(Substitute.For<IUserService>());
         services.AddTransient<UserController>();

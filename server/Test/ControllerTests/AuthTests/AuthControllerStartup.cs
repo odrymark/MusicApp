@@ -28,7 +28,7 @@ public class AuthControllerStartup
         services.AddSingleton(this);
     }
 
-    public AuthController GetController(IServiceProvider provider)
+    public static AuthController GetController(IServiceProvider provider)
     {
         var controller = provider.GetRequiredService<AuthController>();
         controller.ControllerContext = new ControllerContext
@@ -39,7 +39,7 @@ public class AuthControllerStartup
     }
 
    
-    public void SetupRequestCookies(AuthController controller, Dictionary<string, string> cookies)
+    public static void SetupRequestCookies(AuthController controller, Dictionary<string, string> cookies)
     {
         var mockCookies = Substitute.For<IRequestCookieCollection>();
 
