@@ -4,7 +4,6 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Xunit;
 using Xunit.DependencyInjection;
  
 namespace Test.SeederTests;
@@ -18,7 +17,11 @@ public class SeederStartup
         if (_container == null)
         {
             _container = new DbContainer();
-            _container.InitializeAsync().GetAwaiter().GetResult();
+            var initTask = _container.InitializeAsync();
+            if (!initTask.IsCompleted)
+            {
+                initTask.GetAwaiter().GetResult();
+            }
         }
  
         services.AddSingleton(_container);

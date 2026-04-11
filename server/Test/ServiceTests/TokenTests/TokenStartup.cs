@@ -16,7 +16,11 @@ public class TokenStartup
         if (_container == null)
         {
             _container = new DbContainer();
-            _container.InitializeAsync().GetAwaiter().GetResult();
+            var initTask = _container.InitializeAsync();
+            if (!initTask.IsCompleted)
+            {
+                initTask.GetAwaiter().GetResult();
+            }
         }
 
         services.AddSingleton(_container);

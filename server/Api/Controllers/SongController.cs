@@ -113,7 +113,7 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
                 imgKey = await r2Service.UploadImageStorage(dto.image);
                 Console.WriteLine($"Image uploaded with key: {imgKey}");
                 
-                await r2Service.DeleteFile(dto.prevImgKey);
+                await r2Service.DeleteFile(dto.prevImgKey!);
             }
             else
             {

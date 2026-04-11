@@ -90,7 +90,7 @@ public class PlaylistController(IPlaylistService playlistService, IR2Service r2S
                 imgKey = await r2Service.UploadImageStorage(dto.image);
                 Console.WriteLine($"Image uploaded with key: {imgKey}");
                 
-                await r2Service.DeleteFile(dto.prevImgKey);
+                await r2Service.DeleteFile(dto.prevImgKey!);
             }
             else
             {
