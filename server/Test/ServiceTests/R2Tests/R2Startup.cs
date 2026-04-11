@@ -7,7 +7,7 @@ namespace Test.ServiceTests.R2Tests;
 
 public class R2Startup
 {
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
     {
         var s3Mock = Substitute.For<IAmazonS3>();
         services.AddSingleton(s3Mock);

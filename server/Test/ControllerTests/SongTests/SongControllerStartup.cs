@@ -19,7 +19,7 @@ public class SongControllerStartup
         services.AddSingleton(this);
     }
 
-    public SongController GetController(IServiceProvider provider)
+    public static SongController GetController(IServiceProvider provider)
     {
         var controller = provider.GetRequiredService<SongController>();
         controller.ControllerContext = new ControllerContext
@@ -29,7 +29,7 @@ public class SongControllerStartup
         return controller;
     }
 
-    public void SetupUserClaims(SongController controller, Guid userId)
+    public static void SetupUserClaims(SongController controller, Guid userId)
     {
         var claims = new List<Claim>
         {

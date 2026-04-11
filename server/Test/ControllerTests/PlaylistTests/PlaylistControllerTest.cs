@@ -24,14 +24,14 @@ public class PlaylistControllerTests
         _mockPlaylistService = mockPlaylistService;
         _mockR2Service = mockR2Service;
         _startup = startup;
-        _controller = startup.GetController(provider);
+        _controller = PlaylistControllerStartup.GetController(provider);
     }
 
     [Fact]
     public async Task GetUserPlaylists_Returns_Ok_With_User_Id_From_Claims()
     {
         var userId = Guid.NewGuid();
-        _startup.SetupUserClaims(_controller, userId);
+        PlaylistControllerStartup.SetupUserClaims(_controller, userId);
         
         _mockPlaylistService.GetUserPlaylists(userId).Returns(new List<PlaylistResDto>());
 
@@ -45,7 +45,7 @@ public class PlaylistControllerTests
     public async Task CreatePlaylist_Uploads_Image_If_Provided()
     {
         var userId = Guid.NewGuid();
-        _startup.SetupUserClaims(_controller, userId);
+        PlaylistControllerStartup.SetupUserClaims(_controller, userId);
 
         var mockFile = Substitute.For<IFormFile>();
         mockFile.FileName.Returns("test.png");
@@ -72,7 +72,7 @@ public class PlaylistControllerTests
     public async Task EditPlaylist_Deletes_Old_Image_When_New_One_Uploaded()
     {
         var userId = Guid.NewGuid();
-        _startup.SetupUserClaims(_controller, userId);
+        PlaylistControllerStartup.SetupUserClaims(_controller, userId);
 
         var mockFile = Substitute.For<IFormFile>();
         var dto = new PlaylistEditReqDto 

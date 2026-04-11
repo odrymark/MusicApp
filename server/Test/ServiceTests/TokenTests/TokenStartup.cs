@@ -11,12 +11,12 @@ public class TokenStartup
 {
     private static DbContainer? _container;
 
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
     {
         if (_container == null)
         {
             _container = new DbContainer();
-            _container.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            _container.InitializeAsync().AsTask().GetAwaiter().GetResult();
         }
 
         services.AddSingleton(_container);

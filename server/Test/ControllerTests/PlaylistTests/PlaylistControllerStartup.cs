@@ -20,7 +20,7 @@ public class PlaylistControllerStartup
         services.AddSingleton(this);
     }
 
-    public PlaylistController GetController(IServiceProvider provider)
+    public static PlaylistController GetController(IServiceProvider provider)
     {
         var controller = provider.GetRequiredService<PlaylistController>();
         controller.ControllerContext = new ControllerContext
@@ -30,7 +30,7 @@ public class PlaylistControllerStartup
         return controller;
     }
     
-    public void SetupUserClaims(PlaylistController controller, Guid userId)
+    public static void SetupUserClaims(PlaylistController controller, Guid userId)
     {
         var claims = new List<Claim>
         {

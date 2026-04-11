@@ -24,14 +24,14 @@ public class SongControllerTests
         _mockSongService = mockSongService;
         _mockR2Service = mockR2Service;
         _startup = startup;
-        _controller = startup.GetController(provider);
+        _controller = SongControllerStartup.GetController(provider);
     }
 
     [Fact]
     public async Task UploadSong_Calls_R2_For_Both_Song_And_Image()
     {
         var userId = Guid.NewGuid();
-        _startup.SetupUserClaims(_controller, userId);
+        SongControllerStartup.SetupUserClaims(_controller, userId);
 
         var mockSongFile = Substitute.For<IFormFile>();
         var mockImgFile = Substitute.For<IFormFile>();
@@ -60,7 +60,7 @@ public class SongControllerTests
     public async Task GetUserSongs_Returns_Songs_For_Logged_In_User()
     {
         var userId = Guid.NewGuid();
-        _startup.SetupUserClaims(_controller, userId);
+        SongControllerStartup.SetupUserClaims(_controller, userId);
         _mockSongService.GetUserSongs(userId).Returns(new List<SongResDto>());
 
         var result = await _controller.GetUserSongs();
@@ -85,7 +85,7 @@ public class SongControllerTests
     public async Task EditSong_Deletes_Old_Image_Only_If_New_One_Provided()
     {
         var userId = Guid.NewGuid();
-        _startup.SetupUserClaims(_controller, userId);
+        SongControllerStartup.SetupUserClaims(_controller, userId);
 
         var dto = new SongEditReqDto 
         { 
