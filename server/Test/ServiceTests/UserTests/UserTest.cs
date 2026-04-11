@@ -19,7 +19,7 @@ public class UserServiceTests : TestBase
         _passwordService = passwordService;
     }
 
-    private UserCreateReqDto BuildDto(
+    private static UserCreateReqDto BuildDto(
         string? username = null,
         string? email = null,
         string password = "password123",
