@@ -10,7 +10,7 @@ public class PasswordService :  IPasswordService
 
     public string HashPassword(string password)
     {
-        return _hasher.HashPassword(null, password);
+        return _hasher.HashPassword(null!, password);
     }
 
     public bool VerifyHashedPassword(string hashedPassword, string providedPassword)

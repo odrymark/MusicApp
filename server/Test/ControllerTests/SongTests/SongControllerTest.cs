@@ -5,11 +5,12 @@ using Api.Services.Song;
 using Api.Services.R2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Xunit.DependencyInjection;
 
 namespace Test.ControllerTests.SongTests;
 
+[Startup(typeof(SongControllerStartup))]
 public class SongControllerTests
 {
     private readonly ISongService _mockSongService;
@@ -17,16 +18,13 @@ public class SongControllerTests
     private readonly SongController _controller;
     private readonly SongControllerStartup _startup;
 
-    public SongControllerTests()
+    public SongControllerTests(ISongService mockSongService, IR2Service mockR2Service, 
+        IServiceProvider provider, SongControllerStartup startup)
     {
-        var services = new ServiceCollection();
-        _startup = new SongControllerStartup();
-        _startup.ConfigureServices(services);
-
-        var provider = services.BuildServiceProvider();
-        _mockSongService = provider.GetRequiredService<ISongService>();
-        _mockR2Service = provider.GetRequiredService<IR2Service>();
-        _controller = _startup.GetController(provider);
+        _mockSongService = mockSongService;
+        _mockR2Service = mockR2Service;
+        _startup = startup;
+        _controller = startup.GetController(provider);
     }
 
     [Fact]

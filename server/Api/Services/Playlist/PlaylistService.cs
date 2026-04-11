@@ -20,7 +20,7 @@ public class PlaylistService(MusicDbContext context) : IPlaylistService
             .ToListAsync();
 
         var missingSongs = songIds.Except(songs.Select(s => s.id)).ToList();
-        if (missingSongs.Any())
+        if (missingSongs.Count != 0)
             throw new ArgumentException($"Songs not found: {string.Join(", ", missingSongs)}");
 
         var playlist = new DataAccess.Playlist
@@ -53,7 +53,7 @@ public class PlaylistService(MusicDbContext context) : IPlaylistService
             .ToListAsync();
 
         var missingSongs = songIds.Except(songs.Select(s => s.id)).ToList();
-        if (missingSongs.Any())
+        if (missingSongs.Count != 0)
             throw new ArgumentException($"Songs not found: {string.Join(", ", missingSongs)}");
 
         playlist.title = title;
@@ -78,7 +78,7 @@ public class PlaylistService(MusicDbContext context) : IPlaylistService
             .OrderByDescending(p => p.id)
             .ToListAsync();
 
-        if (!playlists.Any())
+        if (playlists.Count == 0)
         {
             var userExists = await context.Users.AnyAsync(u => u.id == userId);
             if (!userExists)

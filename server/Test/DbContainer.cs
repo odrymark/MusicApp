@@ -17,5 +17,9 @@ public class DbContainer : IAsyncLifetime
     }
     
     public async ValueTask InitializeAsync() => await Container.StartAsync();
-    public async ValueTask DisposeAsync() => await Container.DisposeAsync().AsTask();
+    public async ValueTask DisposeAsync()
+    {
+        await Container.DisposeAsync().AsTask();
+        GC.SuppressFinalize(this);
+    }
 }

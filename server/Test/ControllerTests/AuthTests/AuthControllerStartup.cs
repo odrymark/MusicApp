@@ -25,6 +25,7 @@ public class AuthControllerStartup
         services.AddSingleton(config);
         services.AddSingleton(Substitute.For<IAuthService>());
         services.AddTransient<AuthController>();
+        services.AddSingleton(this);
     }
 
     public AuthController GetController(IServiceProvider provider)
