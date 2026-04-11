@@ -22,7 +22,7 @@ public class TokenServiceTests : TestBase
         _configuration = configuration;
     }
 
-    private User BuildUser(bool isAdmin = false) => new()
+    private static User BuildUser(bool isAdmin = false) => new()
     {
         id = Guid.NewGuid(),
         username = "testuser_" + Guid.NewGuid().ToString("N"),

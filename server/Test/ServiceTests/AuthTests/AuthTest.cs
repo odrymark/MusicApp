@@ -14,7 +14,7 @@ public class AuthServiceTests : TestBase
     private readonly IPasswordService _passwordService;
     private readonly ITokenService _tokenService;
 
-    private CancellationToken Ct => TestContext.Current.CancellationToken;
+    private static CancellationToken Ct => TestContext.Current.CancellationToken;
 
     public AuthServiceTests(MusicDbContext db, IAuthService authService,
         IPasswordService passwordService, ITokenService tokenService)

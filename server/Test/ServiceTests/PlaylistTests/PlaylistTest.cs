@@ -16,9 +16,9 @@ public class PlaylistTests : TestBase
         _playlistService = playlistService;
     }
 
-    private string GetUniqueUsername()
+    private static string GetUniqueUsername()
     {
-        return "u_" + Guid.NewGuid().ToString("N").Substring(0, 30);
+        return $"u_{Guid.NewGuid().ToString("N").AsSpan(0, 30)}";
     }
 
     // -------------------------

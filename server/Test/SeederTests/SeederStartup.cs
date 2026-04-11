@@ -12,16 +12,12 @@ public class SeederStartup
 {
     private static DbContainer? _container;
  
-    public void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
     {
         if (_container == null)
         {
             _container = new DbContainer();
-            var initTask = _container.InitializeAsync();
-            if (!initTask.IsCompleted)
-            {
-                initTask.GetAwaiter().GetResult();
-            }
+            _container.InitializeAsync().AsTask().GetAwaiter().GetResult();
         }
  
         services.AddSingleton(_container);
