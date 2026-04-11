@@ -17,7 +17,7 @@ public class UserStartup
         if (_container == null)
         {
             _container = new DbContainer();
-            _container.InitializeAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            _container.InitializeAsync().AsTask().GetAwaiter().GetResult();
         }
 
         services.AddSingleton(_container);
