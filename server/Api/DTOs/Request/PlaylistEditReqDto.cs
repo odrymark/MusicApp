@@ -21,5 +21,5 @@ public class PlaylistEditReqDto
     public required bool isPublic { get; set; }
     
     public IFormFile? image { get; set; }
-    public string prevImgKey { get; set; }
+    public string? prevImgKey { get; set; }
 }

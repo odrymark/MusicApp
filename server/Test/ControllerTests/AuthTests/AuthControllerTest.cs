@@ -1,26 +1,25 @@
 using Api.Controllers;
 using Api.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Xunit.DependencyInjection;
 
 namespace Test.ControllerTests.AuthTests;
 
+[Startup(typeof(AuthControllerStartup))]
 public class AuthControllerTests
 {
     private readonly IAuthService _mockAuthService;
     private readonly AuthController _controller;
     private readonly AuthControllerStartup _startup;
+    private readonly IServiceProvider _provider;
 
-    public AuthControllerTests()
+    public AuthControllerTests(IAuthService mockAuthService, IServiceProvider provider, AuthControllerStartup startup)
     {
-        var services = new ServiceCollection();
-        _startup = new AuthControllerStartup();
-        _startup.ConfigureServices(services);
-
-        var provider = services.BuildServiceProvider();
-        _mockAuthService = provider.GetRequiredService<IAuthService>();
-        _controller = _startup.GetController(provider);
+        _mockAuthService = mockAuthService;
+        _startup = startup;
+        _provider = provider;
+        _controller = startup.GetController(provider);
     }
 
     [Fact]
@@ -56,7 +55,7 @@ public class AuthControllerTests
         var result = await _controller.Logout();
 
         Assert.IsType<OkResult>(result);
-        var setCookieHeader = _controller.Response.Headers["Set-Cookie"];
+        var setCookieHeader = _controller.Response.Headers.SetCookie;
         Assert.True(setCookieHeader.Count > 0, "The Set-Cookie header should not be empty.");
     }
 }

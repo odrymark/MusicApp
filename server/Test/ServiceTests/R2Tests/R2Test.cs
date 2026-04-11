@@ -291,18 +291,19 @@ public class R2ServiceTests
         var tempDir = Path.GetTempPath();
         var configPath = Path.Combine(tempDir, "missing-key-config.json");
         var configJson = """
-        {
-            "SecretKey": "test-secret-key",
-            "BucketName": "test-bucket",
-            "Endpoint": "https://test-endpoint.r2.cloudflarestorage.com"
-        }
-        """;
+                         {
+                             "SecretKey": "test-secret-key",
+                             "BucketName": "test-bucket",
+                             "Endpoint": "https://test-endpoint.r2.cloudflarestorage.com"
+                         }
+                         """;
         File.WriteAllText(configPath, configJson);
 
         var badConfig = Substitute.For<IConfiguration>();
         badConfig["R2:ConfigPath"].Returns(configPath);
 
-        Assert.Throws<ArgumentNullException>(() => new R2Service(badConfig));
+        var exception = Assert.Throws<InvalidOperationException>(() => new R2Service(badConfig));
+        Assert.Contains("AccessKey", exception.Message);
     }
 
     [Fact]

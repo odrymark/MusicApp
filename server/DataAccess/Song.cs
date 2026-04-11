@@ -16,7 +16,7 @@ public class Song
     public string title { get; set; } = string.Empty;
     
     [MaxLength(100)]
-    public string artist { get; set; }
+    public required string artist { get; set; }
 
     [Required]
     [MaxLength(100)]

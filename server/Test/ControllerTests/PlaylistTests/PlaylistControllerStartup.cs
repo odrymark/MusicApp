@@ -17,6 +17,7 @@ public class PlaylistControllerStartup
         services.AddSingleton(Substitute.For<IR2Service>());
         
         services.AddTransient<PlaylistController>();
+        services.AddSingleton(this);
     }
 
     public PlaylistController GetController(IServiceProvider provider)

@@ -14,14 +14,4 @@ public class UserControllerStartup
         services.AddSingleton(Substitute.For<IUserService>());
         services.AddTransient<UserController>();
     }
-
-    public UserController GetController(IServiceProvider provider)
-    {
-        var controller = provider.GetRequiredService<UserController>();
-        controller.ControllerContext = new ControllerContext
-        {
-            HttpContext = new DefaultHttpContext()
-        };
-        return controller;
-    }
 }

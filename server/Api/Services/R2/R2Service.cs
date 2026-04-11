@@ -26,15 +26,19 @@ public class R2Service : IR2Service
 
         var r2Config = JsonSerializer.Deserialize<R2Config>(json);
 
-        if (r2Config == null)
+        if (r2Config == null || 
+            string.IsNullOrEmpty(r2Config.AccessKey) ||
+            string.IsNullOrEmpty(r2Config.SecretKey) ||
+            string.IsNullOrEmpty(r2Config.BucketName) ||
+            string.IsNullOrEmpty(r2Config.Endpoint))
         {
-            throw new InvalidOperationException("Failed to deserialize R2 config JSON");
+            throw new InvalidOperationException("Failed to deserialize R2 config JSON: AccessKey, SecretKey, BucketName, and Endpoint are all required");
         }
 
-        _accessKey = r2Config.AccessKey ?? throw new ArgumentNullException(nameof(r2Config.AccessKey));
-        _secretKey = r2Config.SecretKey ?? throw new ArgumentNullException(nameof(r2Config.SecretKey));
-        _bucketName = r2Config.BucketName ?? throw new ArgumentNullException(nameof(r2Config.BucketName));
-        _endpoint = r2Config.Endpoint ?? throw new ArgumentNullException(nameof(r2Config.Endpoint));
+        _accessKey = r2Config.AccessKey;
+        _secretKey = r2Config.SecretKey;
+        _bucketName = r2Config.BucketName;
+        _endpoint = r2Config.Endpoint;
 
         if (string.IsNullOrWhiteSpace(_endpoint))
         {
@@ -44,10 +48,10 @@ public class R2Service : IR2Service
 
     private class R2Config
     {
-        public string AccessKey { get; set; }
-        public string SecretKey { get; set; }
-        public string BucketName { get; set; }
-        public string Endpoint { get; set; }
+        public string? AccessKey { get; set; }
+        public string? SecretKey { get; set; }
+        public string? BucketName { get; set; }
+        public string? Endpoint { get; set; }
     }
 
     public async Task<string> UploadSongStorage(IFormFile file)

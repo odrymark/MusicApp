@@ -5,11 +5,12 @@ using Api.Services.Playlist;
 using Api.Services.R2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Xunit.DependencyInjection;
 
 namespace Test.ControllerTests.PlaylistTests;
 
+[Startup(typeof(PlaylistControllerStartup))]
 public class PlaylistControllerTests
 {
     private readonly IPlaylistService _mockPlaylistService;
@@ -17,16 +18,13 @@ public class PlaylistControllerTests
     private readonly PlaylistController _controller;
     private readonly PlaylistControllerStartup _startup;
 
-    public PlaylistControllerTests()
+    public PlaylistControllerTests(IPlaylistService mockPlaylistService, IR2Service mockR2Service, 
+        IServiceProvider provider, PlaylistControllerStartup startup)
     {
-        var services = new ServiceCollection();
-        _startup = new PlaylistControllerStartup();
-        _startup.ConfigureServices(services);
-
-        var provider = services.BuildServiceProvider();
-        _mockPlaylistService = provider.GetRequiredService<IPlaylistService>();
-        _mockR2Service = provider.GetRequiredService<IR2Service>();
-        _controller = _startup.GetController(provider);
+        _mockPlaylistService = mockPlaylistService;
+        _mockR2Service = mockR2Service;
+        _startup = startup;
+        _controller = startup.GetController(provider);
     }
 
     [Fact]

@@ -16,6 +16,7 @@ public class SongControllerStartup
         services.AddSingleton(Substitute.For<ISongService>());
         services.AddSingleton(Substitute.For<IR2Service>());
         services.AddTransient<SongController>();
+        services.AddSingleton(this);
     }
 
     public SongController GetController(IServiceProvider provider)
