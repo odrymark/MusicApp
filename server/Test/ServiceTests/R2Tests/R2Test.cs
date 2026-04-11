@@ -302,7 +302,7 @@ public class R2ServiceTests
         var badConfig = Substitute.For<IConfiguration>();
         badConfig["R2:ConfigPath"].Returns(configPath);
 
-        var exception = Assert.Throws<InvalidOperationException>(() => new R2Service(badConfig));
+        var exception = Assert.Throws<System.Text.Json.JsonException>(() => new R2Service(badConfig));
         Assert.Contains("AccessKey", exception.Message);
     }
 
