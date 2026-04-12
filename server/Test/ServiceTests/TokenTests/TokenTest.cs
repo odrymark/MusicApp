@@ -10,18 +10,9 @@ using Xunit.DependencyInjection;
 namespace Test.ServiceTests.TokenTests;
 
 [Startup(typeof(TokenStartup))]
-public class TokenServiceTests : TestBase
+public class TokenServiceTests(MusicDbContext db, ITokenService tokenService, IConfiguration configuration)
+    : TestBase(db)
 {
-    private readonly ITokenService _tokenService;
-    private readonly IConfiguration _configuration;
-
-    public TokenServiceTests(MusicDbContext db, ITokenService tokenService, IConfiguration configuration)
-        : base(db)
-    {
-        _tokenService = tokenService;
-        _configuration = configuration;
-    }
-
     private static User BuildUser(bool isAdmin = false) => new()
     {
         id = Guid.NewGuid(),
@@ -35,16 +26,16 @@ public class TokenServiceTests : TestBase
     {
         var handler = new JwtSecurityTokenHandler();
         handler.InboundClaimTypeMap.Clear();
-        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
+        var key = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!);
 
         handler.ValidateToken(token, new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = true,
-            ValidIssuer = _configuration["Jwt:Issuer"],
+            ValidIssuer = configuration["Jwt:Issuer"],
             ValidateAudience = true,
-            ValidAudience = _configuration["Jwt:Audience"],
+            ValidAudience = configuration["Jwt:Audience"],
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         }, out var validated);
@@ -59,7 +50,7 @@ public class TokenServiceTests : TestBase
     [Fact]
     public void GenerateRefreshToken_Returns_NonEmpty_String()
     {
-        var result = _tokenService.GenerateRefreshToken();
+        var result = tokenService.GenerateRefreshToken();
 
         Assert.False(string.IsNullOrWhiteSpace(result));
     }
@@ -67,7 +58,7 @@ public class TokenServiceTests : TestBase
     [Fact]
     public void GenerateRefreshToken_Returns_Valid_Base64()
     {
-        var result = _tokenService.GenerateRefreshToken();
+        var result = tokenService.GenerateRefreshToken();
 
         var decoded = Convert.FromBase64String(result);
         Assert.Equal(64, decoded.Length);
@@ -76,8 +67,8 @@ public class TokenServiceTests : TestBase
     [Fact]
     public void GenerateRefreshToken_Returns_Unique_Values()
     {
-        var token1 = _tokenService.GenerateRefreshToken();
-        var token2 = _tokenService.GenerateRefreshToken();
+        var token1 = tokenService.GenerateRefreshToken();
+        var token2 = tokenService.GenerateRefreshToken();
 
         Assert.NotEqual(token1, token2);
     }
@@ -89,7 +80,7 @@ public class TokenServiceTests : TestBase
     [Fact]
     public void GenerateToken_Returns_NonEmpty_String()
     {
-        var result = _tokenService.GenerateToken(BuildUser());
+        var result = tokenService.GenerateToken(BuildUser());
 
         Assert.False(string.IsNullOrWhiteSpace(result));
     }
@@ -99,7 +90,7 @@ public class TokenServiceTests : TestBase
     {
         var user = BuildUser();
 
-        var token = _tokenService.GenerateToken(user);
+        var token = tokenService.GenerateToken(user);
         var parsed = ParseToken(token);
 
         Assert.NotNull(parsed);
@@ -110,7 +101,7 @@ public class TokenServiceTests : TestBase
     {
         var user = BuildUser();
 
-        var token = _tokenService.GenerateToken(user);
+        var token = tokenService.GenerateToken(user);
         var parsed = ParseToken(token);
 
         var sub = parsed.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub)?.Value;
@@ -122,7 +113,7 @@ public class TokenServiceTests : TestBase
     {
         var user = BuildUser();
 
-        var token = _tokenService.GenerateToken(user);
+        var token = tokenService.GenerateToken(user);
         var parsed = ParseToken(token);
 
         var username = parsed.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.UniqueName)?.Value;
@@ -134,7 +125,7 @@ public class TokenServiceTests : TestBase
     {
         var user = BuildUser(isAdmin: false);
 
-        var token = _tokenService.GenerateToken(user);
+        var token = tokenService.GenerateToken(user);
         var parsed = ParseToken(token);
 
         var role = parsed.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
@@ -146,7 +137,7 @@ public class TokenServiceTests : TestBase
     {
         var user = BuildUser(isAdmin: true);
 
-        var token = _tokenService.GenerateToken(user);
+        var token = tokenService.GenerateToken(user);
         var parsed = ParseToken(token);
 
         var role = parsed.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
@@ -156,7 +147,7 @@ public class TokenServiceTests : TestBase
     [Fact]
     public void GenerateToken_Has_Correct_Issuer_And_Audience()
     {
-        var token = _tokenService.GenerateToken(BuildUser());
+        var token = tokenService.GenerateToken(BuildUser());
         var parsed = ParseToken(token);
 
         Assert.Equal("test_issuer", parsed.Issuer);
@@ -170,7 +161,7 @@ public class TokenServiceTests : TestBase
         var before = DateTime.UtcNow.AddMinutes(14);
         var after = DateTime.UtcNow.AddMinutes(16);
 
-        var token = _tokenService.GenerateToken(user);
+        var token = tokenService.GenerateToken(user);
         var parsed = ParseToken(token);
 
         Assert.True(parsed.ValidTo > before && parsed.ValidTo < after);
@@ -179,8 +170,8 @@ public class TokenServiceTests : TestBase
     [Fact]
     public void GenerateToken_Returns_Different_Tokens_For_Different_Users()
     {
-        var token1 = _tokenService.GenerateToken(BuildUser());
-        var token2 = _tokenService.GenerateToken(BuildUser());
+        var token1 = tokenService.GenerateToken(BuildUser());
+        var token2 = tokenService.GenerateToken(BuildUser());
 
         Assert.NotEqual(token1, token2);
     }

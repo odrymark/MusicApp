@@ -1,10 +1,8 @@
-using Api;
 using Api.Services.Password;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
-using Xunit.DependencyInjection;
  
 namespace Test.SeederTests;
  

@@ -3,38 +3,36 @@ using Api.Services.R2;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
-using Xunit;
 
 namespace Test.ServiceTests.R2Tests;
 
 public class R2ServiceTests
 {
-    private readonly IConfiguration _mockConfig;
     private readonly IAmazonS3 _s3Mock;
     private readonly R2Service _r2Service;
 
     public R2ServiceTests()
     {
-        _mockConfig = CreateMockConfig();
-        _r2Service = new R2Service(_mockConfig);
+        var mockConfig = CreateMockConfig();
+        _r2Service = new R2Service(mockConfig);
         _s3Mock = Substitute.For<IAmazonS3>();
     }
 
     private static IConfiguration CreateMockConfig()
     {
         var config = Substitute.For<IConfiguration>();
-        var configSection = Substitute.For<IConfigurationSection>();
+        Substitute.For<IConfigurationSection>();
         
         var tempDir = Path.GetTempPath();
         var configPath = Path.Combine(tempDir, "r2-config.json");
-        var configJson = """
-        {
-            "AccessKey": "test-access-key",
-            "SecretKey": "test-secret-key",
-            "BucketName": "test-bucket",
-            "Endpoint": "https://test-endpoint.r2.cloudflarestorage.com"
-        }
-        """;
+        const string configJson = """
+                                  {
+                                      "AccessKey": "test-access-key",
+                                      "SecretKey": "test-secret-key",
+                                      "BucketName": "test-bucket",
+                                      "Endpoint": "https://test-endpoint.r2.cloudflarestorage.com"
+                                  }
+                                  """;
         File.WriteAllText(configPath, configJson);
 
         config["R2:ConfigPath"].Returns(configPath);

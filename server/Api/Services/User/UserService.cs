@@ -16,7 +16,7 @@ public class UserService(IPasswordService passwordService, MusicDbContext contex
         var passwordConfirm = userCreateReqDto.passwordConfirm;
         
         if (password != passwordConfirm)
-            throw new Exception("Passwords do not match.");
+            throw new ArgumentException("Passwords do not match.");
         
         var existingUser = await context.Users
             .FirstOrDefaultAsync(u =>
@@ -26,10 +26,10 @@ public class UserService(IPasswordService passwordService, MusicDbContext contex
         if (existingUser != null)
         {
             if (existingUser.username == username)
-                throw new Exception("Username already exists.");
+                throw new InvalidOperationException("Username already exists.");
 
             if (existingUser.email == email)
-                throw new Exception("Email already exists.");
+                throw new InvalidOperationException("Email already exists.");
         }
 
         var hashedPassword = passwordService.HashPassword(userCreateReqDto.password);

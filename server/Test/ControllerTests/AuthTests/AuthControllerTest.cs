@@ -7,20 +7,9 @@ using Xunit.DependencyInjection;
 namespace Test.ControllerTests.AuthTests;
 
 [Startup(typeof(AuthControllerStartup))]
-public class AuthControllerTests
+public class AuthControllerTests(IAuthService mockAuthService, IServiceProvider provider)
 {
-    private readonly IAuthService _mockAuthService;
-    private readonly AuthController _controller;
-    private readonly AuthControllerStartup _startup;
-    private readonly IServiceProvider _provider;
-
-    public AuthControllerTests(IAuthService mockAuthService, IServiceProvider provider, AuthControllerStartup startup)
-    {
-        _mockAuthService = mockAuthService;
-        _startup = startup;
-        _provider = provider;
-        _controller = AuthControllerStartup.GetController(provider);
-    }
+    private readonly AuthController _controller = AuthControllerStartup.GetController(provider);
 
     [Fact]
     public async Task Refresh_Returns_Ok_With_Valid_RefreshToken()
@@ -28,23 +17,28 @@ public class AuthControllerTests
         var refreshToken = "valid-rt";
         AuthControllerStartup.SetupRequestCookies(_controller, new() { ["refreshToken"] = refreshToken });
         
-        _mockAuthService.RefreshToken(refreshToken, 7).Returns(("new-jwt", "new-rt"));
+        mockAuthService.RefreshToken(refreshToken, 7).Returns(("new-jwt", "new-rt"));
 
         var result = await _controller.Refresh();
 
         Assert.IsType<OkResult>(result);
-        await _mockAuthService.Received(1).RefreshToken(refreshToken, 7);
+        await mockAuthService.Received(1).RefreshToken(refreshToken, 7);
     }
 
     [Fact]
     public async Task Refresh_Returns_Unauthorized_When_No_RefreshToken()
     {
         AuthControllerStartup.SetupRequestCookies(_controller, new Dictionary<string, string>());
-        
+    
         var result = await _controller.Refresh();
 
         var unauthorizedResult = Assert.IsType<UnauthorizedObjectResult>(result);
-        Assert.Equal("Missing refresh token", unauthorizedResult.Value);
+    
+        var errorObject = unauthorizedResult.Value;
+        var messageProperty = errorObject?.GetType().GetProperty("message");
+        var message = messageProperty?.GetValue(errorObject)?.ToString();
+    
+        Assert.Equal("Missing refresh token", message);
     }
 
     [Fact]

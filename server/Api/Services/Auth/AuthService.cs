@@ -15,7 +15,7 @@ public class AuthService(IPasswordService passwordService, ITokenService tokenSe
             .FirstOrDefaultAsync(u => u.username == userLoginReqDto.username);
         
         if (user == null || !passwordService.VerifyHashedPassword(user.password, userLoginReqDto.password))
-            throw new Exception("Invalid login credentials");
+            throw new UnauthorizedAccessException("Invalid login credentials");
         
         var token = tokenService.GenerateToken(user);
         var refresh = tokenService.GenerateRefreshToken();
@@ -36,35 +36,24 @@ public class AuthService(IPasswordService passwordService, ITokenService tokenSe
 
     public async Task<(string token, string refresh)> RefreshToken(string refreshToken, double refreshTokenDays)
     {
-        try
-        {
-            var user = await context.Users
-                .FirstOrDefaultAsync(u => u.refreshToken == passwordService.HashRefreshToken(refreshToken));
+        var user = await context.Users
+            .FirstOrDefaultAsync(u => u.refreshToken == passwordService.HashRefreshToken(refreshToken));
 
-            if (user == null)
-            {
-                throw new Exception("Invalid refresh token");
-            }
+        if (user == null)
+            throw new UnauthorizedAccessException("Invalid refresh token");
 
-            if (user.refreshTokenExpiry < DateTime.UtcNow)
-            {
-                throw new Exception("Refresh token expired");
-            }
-            
-            var newRefresh = tokenService.GenerateRefreshToken();
-            user.refreshToken = passwordService.HashRefreshToken(newRefresh);
-            user.refreshTokenExpiry = DateTime.UtcNow.AddDays((int)refreshTokenDays);
-   
-            await context.SaveChangesAsync();
-            
-            var newToken = tokenService.GenerateToken(user);
+        if (user.refreshTokenExpiry < DateTime.UtcNow)
+            throw new UnauthorizedAccessException("Refresh token expired");
         
-            return (newToken, newRefresh);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
+        var newRefresh = tokenService.GenerateRefreshToken();
+        user.refreshToken = passwordService.HashRefreshToken(newRefresh);
+        user.refreshTokenExpiry = DateTime.UtcNow.AddDays((int)refreshTokenDays);
+
+        await context.SaveChangesAsync();
+        
+        var newToken = tokenService.GenerateToken(user);
+    
+        return (newToken, newRefresh);
     }
 
     public async Task Logout(string refreshToken)
@@ -72,8 +61,9 @@ public class AuthService(IPasswordService passwordService, ITokenService tokenSe
         var user = await context.Users
             .AsTracking()
             .FirstOrDefaultAsync(u => u.refreshToken == passwordService.HashRefreshToken(refreshToken));
+        
         if (user == null)
-            throw new Exception("User not found");
+            throw new KeyNotFoundException("User not found");
         
         user.refreshToken = null;
         user.refreshTokenExpiry = null;

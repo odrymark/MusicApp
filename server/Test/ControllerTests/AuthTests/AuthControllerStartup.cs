@@ -1,9 +1,11 @@
 using Api.Controllers;
 using Api.Services.Auth;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NSubstitute;
 
 namespace Test.ControllerTests.AuthTests;
@@ -22,7 +24,11 @@ public class AuthControllerStartup
         refreshSection["ExpireDays"].Returns("7");
         config.GetSection("RefreshToken").Returns(refreshSection);
 
+        var env = Substitute.For<IWebHostEnvironment>();
+        env.EnvironmentName.Returns(Environments.Development);
+
         services.AddSingleton(config);
+        services.AddSingleton(env);
         services.AddSingleton(Substitute.For<IAuthService>());
         services.AddTransient<AuthController>();
         services.AddSingleton(this);
