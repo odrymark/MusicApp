@@ -11,21 +11,12 @@ using Xunit.DependencyInjection;
 namespace Test.ControllerTests.PlaylistTests;
 
 [Startup(typeof(PlaylistControllerStartup))]
-public class PlaylistControllerTests
+public class PlaylistControllerTests(
+    IPlaylistService mockPlaylistService,
+    IR2Service mockR2Service,
+    IServiceProvider provider)
 {
-    private readonly IPlaylistService _mockPlaylistService;
-    private readonly IR2Service _mockR2Service;
-    private readonly PlaylistController _controller;
-    private readonly PlaylistControllerStartup _startup;
-
-    public PlaylistControllerTests(IPlaylistService mockPlaylistService, IR2Service mockR2Service, 
-        IServiceProvider provider, PlaylistControllerStartup startup)
-    {
-        _mockPlaylistService = mockPlaylistService;
-        _mockR2Service = mockR2Service;
-        _startup = startup;
-        _controller = PlaylistControllerStartup.GetController(provider);
-    }
+    private readonly PlaylistController _controller = PlaylistControllerStartup.GetController(provider);
 
     [Fact]
     public async Task GetUserPlaylists_Returns_Ok_With_User_Id_From_Claims()
@@ -33,12 +24,12 @@ public class PlaylistControllerTests
         var userId = Guid.NewGuid();
         PlaylistControllerStartup.SetupUserClaims(_controller, userId);
         
-        _mockPlaylistService.GetUserPlaylists(userId).Returns(new List<PlaylistResDto>());
+        mockPlaylistService.GetUserPlaylists(userId).Returns(new List<PlaylistResDto>());
 
         var result = await _controller.GetUserPlaylists();
 
         Assert.IsType<OkObjectResult>(result);
-        await _mockPlaylistService.Received(1).GetUserPlaylists(userId);
+        await mockPlaylistService.Received(1).GetUserPlaylists(userId);
     }
 
     [Fact]
@@ -59,13 +50,13 @@ public class PlaylistControllerTests
             isPublic = true 
         };
 
-        _mockR2Service.UploadImageStorage(mockFile).Returns("generated-image-key");
+        mockR2Service.UploadImageStorage(mockFile).Returns("generated-image-key");
 
         var result = await _controller.CreatePlaylist(dto);
 
         Assert.IsType<OkResult>(result);
-        await _mockR2Service.Received(1).UploadImageStorage(mockFile);
-        await _mockPlaylistService.Received(1).CreatePlaylist(userId, dto.title, dto.songIds, dto.isPublic, "generated-image-key");
+        await mockR2Service.Received(1).UploadImageStorage(mockFile);
+        await mockPlaylistService.Received(1).CreatePlaylist(userId, dto.title, dto.songIds, dto.isPublic, "generated-image-key");
     }
 
     [Fact]
@@ -85,11 +76,11 @@ public class PlaylistControllerTests
             isPublic = true
         };
 
-        _mockR2Service.UploadImageStorage(mockFile).Returns("new-key");
+        mockR2Service.UploadImageStorage(mockFile).Returns("new-key");
 
         await _controller.EditPlaylist(dto);
 
-        await _mockR2Service.Received(1).DeleteFile("old-key");
-        await _mockPlaylistService.Received(1).EditPlaylist(userId, dto.id, dto.title, Arg.Any<List<Guid>>(), Arg.Any<bool>(), "new-key");
+        await mockR2Service.Received(1).DeleteFile("old-key");
+        await mockPlaylistService.Received(1).EditPlaylist(userId, dto.id, dto.title, Arg.Any<List<Guid>>(), Arg.Any<bool>(), "new-key");
     }
 }

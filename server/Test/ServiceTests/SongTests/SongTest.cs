@@ -5,16 +5,8 @@ using Xunit.DependencyInjection;
 namespace Test.ServiceTests.SongTests;
 
 [Startup(typeof(SongStartup))]
-public class SongServiceTests : TestBase
+public class SongServiceTests(MusicDbContext db, ISongService songService) : TestBase(db)
 {
-    private readonly ISongService _songService;
-
-    public SongServiceTests(MusicDbContext db, ISongService songService)
-        : base(db)
-    {
-        _songService = songService;
-    }
-
     // -------------------------
     // CreateSong Tests
     // -------------------------
@@ -24,7 +16,7 @@ public class SongServiceTests : TestBase
     {
         var user = await CreateUserAsync("song_create_" + Guid.NewGuid().ToString("N"));
 
-        await _songService.CreateSong(user.id, "My Song", "song-key", "Artist", true);
+        await songService.CreateSong(user.id, "My Song", "song-key", "Artist", true);
 
         var song = Db.Songs.FirstOrDefault(s => s.userId == user.id);
         Assert.NotNull(song);
@@ -35,7 +27,7 @@ public class SongServiceTests : TestBase
     {
         var user = await CreateUserAsync("song_fields_" + Guid.NewGuid().ToString("N"));
 
-        await _songService.CreateSong(user.id, "My Song", "song-key", "Artist", true, "image.jpg");
+        await songService.CreateSong(user.id, "My Song", "song-key", "Artist", true, "image.jpg");
 
         var song = Db.Songs.First(s => s.userId == user.id);
         Assert.Equal("My Song", song.title);
@@ -50,7 +42,7 @@ public class SongServiceTests : TestBase
     {
         var user = await CreateUserAsync("song_noimage_" + Guid.NewGuid().ToString("N"));
 
-        await _songService.CreateSong(user.id, "My Song", "song-key", "Artist", false);
+        await songService.CreateSong(user.id, "My Song", "song-key", "Artist", false);
 
         var song = Db.Songs.First(s => s.userId == user.id);
         Assert.Null(song.image);
@@ -62,7 +54,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_notitle_" + Guid.NewGuid().ToString("N"));
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _songService.CreateSong(user.id, "", "song-key", "Artist", true));
+            songService.CreateSong(user.id, "", "song-key", "Artist", true));
     }
 
     [Fact]
@@ -71,7 +63,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_wstitle_" + Guid.NewGuid().ToString("N"));
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _songService.CreateSong(user.id, "   ", "song-key", "Artist", true));
+            songService.CreateSong(user.id, "   ", "song-key", "Artist", true));
     }
 
     [Fact]
@@ -80,7 +72,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_nokey_" + Guid.NewGuid().ToString("N"));
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _songService.CreateSong(user.id, "My Song", "", "Artist", true));
+            songService.CreateSong(user.id, "My Song", "", "Artist", true));
     }
 
     [Fact]
@@ -89,7 +81,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_wskey_" + Guid.NewGuid().ToString("N"));
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _songService.CreateSong(user.id, "My Song", "   ", "Artist", true));
+            songService.CreateSong(user.id, "My Song", "   ", "Artist", true));
     }
 
     // -------------------------
@@ -103,7 +95,7 @@ public class SongServiceTests : TestBase
         await CreateSongAsync(user.id, "Song 1");
         await CreateSongAsync(user.id, "Song 2");
 
-        var result = await _songService.GetUserSongs(user.id);
+        var result = await songService.GetUserSongs(user.id);
 
         Assert.Equal(2, result.Count());
     }
@@ -116,7 +108,7 @@ public class SongServiceTests : TestBase
         await CreateSongAsync(user1.id, "User1 Song");
         await CreateSongAsync(user2.id, "User2 Song");
 
-        var result = await _songService.GetUserSongs(user1.id);
+        var result = await songService.GetUserSongs(user1.id);
 
         Assert.All(result, s => Assert.Equal("User1 Song", s.title));
     }
@@ -126,7 +118,7 @@ public class SongServiceTests : TestBase
     {
         var user = await CreateUserAsync("song_empty_" + Guid.NewGuid().ToString("N"));
 
-        var result = await _songService.GetUserSongs(user.id);
+        var result = await songService.GetUserSongs(user.id);
 
         Assert.Empty(result);
     }
@@ -137,7 +129,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_dto_" + Guid.NewGuid().ToString("N"));
         var song = await CreateSongAsync(user.id, "DTO Song", "dto-key", "DTO Artist", image: "img.jpg");
 
-        var result = await _songService.GetUserSongs(user.id);
+        var result = await songService.GetUserSongs(user.id);
         var dto = result.First();
 
         Assert.Equal(song.id, dto.id);
@@ -151,7 +143,7 @@ public class SongServiceTests : TestBase
     public async Task GetUserSongsAsync_Throws_When_UserId_Empty()
     {
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _songService.GetUserSongs(Guid.Empty));
+            songService.GetUserSongs(Guid.Empty));
     }
 
     // -------------------------
@@ -165,7 +157,7 @@ public class SongServiceTests : TestBase
         await CreateSongAsync(user.id, "Public Song", isPublic: true);
         await CreateSongAsync(user.id, "Private Song", isPublic: false);
 
-        var result = await _songService.GetSongs();
+        var result = await songService.GetSongs();
 
         Assert.DoesNotContain(result, s => s.title == "Private Song");
         Assert.Contains(result, s => s.title == "Public Song");
@@ -177,7 +169,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_nopublic_" + Guid.NewGuid().ToString("N"));
         await CreateSongAsync(user.id, "Private Song", isPublic: false);
 
-        var result = await _songService.GetSongs();
+        var result = await songService.GetSongs();
 
         Assert.DoesNotContain(result, s => s.title == "Private Song");
     }
@@ -188,7 +180,7 @@ public class SongServiceTests : TestBase
         var user = await CreateUserAsync("song_pubdto_" + Guid.NewGuid().ToString("N"));
         var song = await CreateSongAsync(user.id, "Public DTO Song", "pub-key", "Pub Artist", isPublic: true, image: "pub.jpg");
 
-        var result = await _songService.GetSongs();
+        var result = await songService.GetSongs();
         var dto = result.First(s => s.id == song.id);
 
         Assert.Equal(song.title, dto.title);

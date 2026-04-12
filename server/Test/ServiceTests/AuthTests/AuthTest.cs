@@ -8,29 +8,24 @@ using Xunit.DependencyInjection;
 namespace Test.ServiceTests.AuthTests;
 
 [Startup(typeof(AuthStartup))]
-public class AuthServiceTests : TestBase
+public class AuthServiceTests(
+    MusicDbContext db,
+    IAuthService authService,
+    IPasswordService passwordService,
+    ITokenService tokenService)
+    : TestBase(db)
 {
-    private readonly IAuthService _authService;
-    private readonly IPasswordService _passwordService;
-    private readonly ITokenService _tokenService;
+    private readonly IPasswordService _passwordService = passwordService;
+    private readonly ITokenService _tokenService = tokenService;
 
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
-
-    public AuthServiceTests(MusicDbContext db, IAuthService authService,
-        IPasswordService passwordService, ITokenService tokenService)
-        : base(db)
-    {
-        _authService = authService;
-        _passwordService = passwordService;
-        _tokenService = tokenService;
-    }
 
     [Fact]
     public async Task Login_Returns_Dto_When_Valid()
     {
         var user = await CreateUserAsync("login_valid_" + Guid.NewGuid().ToString("N"), password: "hashed_pw");
 
-        var result = await _authService.Login(new UserLoginReqDto
+        var result = await authService.Login(new UserLoginReqDto
         {
             username = user.username,
             password = "plaintext"
@@ -45,7 +40,7 @@ public class AuthServiceTests : TestBase
     {
         var user = await CreateUserAsync("login_hash_" + Guid.NewGuid().ToString("N"), password: "hashed_pw");
 
-        await _authService.Login(new UserLoginReqDto { username = user.username, password = "plaintext" });
+        await authService.Login(new UserLoginReqDto { username = user.username, password = "plaintext" });
 
         await Db.Entry(user).ReloadAsync(Ct); 
         Assert.Equal("HASH_refresh_token_new", user.refreshToken);
@@ -57,7 +52,7 @@ public class AuthServiceTests : TestBase
         var user = await CreateUserAsync("login_expiry_" + Guid.NewGuid().ToString("N"), password: "hashed_pw");
         var before = DateTime.UtcNow.AddDays(6);
 
-        await _authService.Login(new UserLoginReqDto { username = user.username, password = "plaintext" });
+        await authService.Login(new UserLoginReqDto { username = user.username, password = "plaintext" });
 
         await Db.Entry(user).ReloadAsync(Ct);
         Assert.True(user.refreshTokenExpiry > before);
@@ -72,7 +67,7 @@ public class AuthServiceTests : TestBase
             refreshToken: "HASH_" + plainRefresh,
             refreshTokenExpiry: DateTime.UtcNow.AddDays(1));
 
-        await _authService.RefreshToken(plainRefresh, 7);
+        await authService.RefreshToken(plainRefresh, 7);
 
         await Db.Entry(user).ReloadAsync(Ct);
         Assert.Equal("HASH_refresh_token_new", user.refreshToken);
@@ -87,7 +82,7 @@ public class AuthServiceTests : TestBase
             refreshToken: "HASH_" + plainRefresh,
             refreshTokenExpiry: DateTime.UtcNow.AddDays(5));
 
-        await _authService.Logout(plainRefresh);
+        await authService.Logout(plainRefresh);
 
         await Db.Entry(user).ReloadAsync(Ct);
         Assert.Null(user.refreshToken);

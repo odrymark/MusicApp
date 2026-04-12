@@ -7,10 +7,8 @@ using Xunit.DependencyInjection;
 namespace Test.SeederTests;
 
 [Startup(typeof(SeederStartup))]
-public class SeederTests : TestBase
+public class SeederTests(MusicDbContext db) : TestBase(db)
 {
-    public SeederTests(MusicDbContext db) : base(db) { }
- 
     [Fact]
     public async Task Seed_Creates_Admin_User()
     {

@@ -6,16 +6,8 @@ using Xunit.DependencyInjection;
 namespace Test.ServiceTests.PlaylistTests;
 
 [Startup(typeof(PlaylistStartup))]
-public class PlaylistTests : TestBase
+public class PlaylistTests(MusicDbContext db, IPlaylistService playlistService) : TestBase(db)
 {
-    private readonly IPlaylistService _playlistService;
-
-    public PlaylistTests(MusicDbContext db, IPlaylistService playlistService)
-        : base(db)
-    {
-        _playlistService = playlistService;
-    }
-
     private static string GetUniqueUsername()
     {
         return $"u_{Guid.NewGuid().ToString("N").AsSpan(0, 30)}";
@@ -31,7 +23,7 @@ public class PlaylistTests : TestBase
         var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
 
-        await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, true);
+        await playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, true);
 
         var playlist = Db.Playlists.FirstOrDefault(p => p.userId == user.id);
         Assert.NotNull(playlist);
@@ -43,7 +35,7 @@ public class PlaylistTests : TestBase
         var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
 
-        await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, true, "playlist.jpg");
+        await playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, true, "playlist.jpg");
 
         var playlist = Db.Playlists.First(p => p.userId == user.id);
         Assert.Equal("My Playlist", playlist.title);
@@ -57,7 +49,7 @@ public class PlaylistTests : TestBase
         var user = await CreateUserAsync(GetUniqueUsername());
         var song = await CreateSongAsync(user.id, "Song 1");
 
-        await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, false);
+        await playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song.id }, false);
 
         var playlist = Db.Playlists.First(p => p.userId == user.id);
         Assert.Null(playlist.image);
@@ -70,7 +62,7 @@ public class PlaylistTests : TestBase
         var song1 = await CreateSongAsync(user.id, "Song 1");
         var song2 = await CreateSongAsync(user.id, "Song 2");
 
-        await _playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song1.id, song2.id }, true);
+        await playlistService.CreatePlaylist(user.id, "My Playlist", new List<Guid> { song1.id, song2.id }, true);
 
         var playlist = Db.Playlists.Include(p => p.songs).First(p => p.userId == user.id);
         Assert.Equal(2, playlist.songs.Count);
@@ -85,7 +77,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Song 1");
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.CreatePlaylist(Guid.Empty, "Playlist", new List<Guid> { song.id }, true));
+            playlistService.CreatePlaylist(Guid.Empty, "Playlist", new List<Guid> { song.id }, true));
     }
 
     [Fact]
@@ -94,7 +86,7 @@ public class PlaylistTests : TestBase
         var nonexistentUserId = Guid.NewGuid();
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.CreatePlaylist(nonexistentUserId, "Playlist", new List<Guid>(), true));
+            playlistService.CreatePlaylist(nonexistentUserId, "Playlist", new List<Guid>(), true));
     }
 
     [Fact]
@@ -105,7 +97,7 @@ public class PlaylistTests : TestBase
         var fakeId = Guid.NewGuid();
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.CreatePlaylist(user.id, "Playlist", new List<Guid> { song.id, fakeId }, true));
+            playlistService.CreatePlaylist(user.id, "Playlist", new List<Guid> { song.id, fakeId }, true));
     }
 
     [Fact]
@@ -116,7 +108,7 @@ public class PlaylistTests : TestBase
         var fakeId2 = Guid.NewGuid();
 
         var exception = await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.CreatePlaylist(user.id, "Playlist", new List<Guid> { fakeId1, fakeId2 }, true));
+            playlistService.CreatePlaylist(user.id, "Playlist", new List<Guid> { fakeId1, fakeId2 }, true));
 
         Assert.Contains("Songs not found", exception.Message);
     }
@@ -126,7 +118,7 @@ public class PlaylistTests : TestBase
     {
         var user = await CreateUserAsync(GetUniqueUsername());
 
-        await _playlistService.CreatePlaylist(user.id, "Empty Playlist", new List<Guid>(), true);
+        await playlistService.CreatePlaylist(user.id, "Empty Playlist", new List<Guid>(), true);
 
         var playlist = Db.Playlists.Include(p => p.songs).First(p => p.userId == user.id);
         Assert.Empty(playlist.songs);
@@ -143,7 +135,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Old Title", new List<Guid> { song.id });
 
-        await _playlistService.EditPlaylist(user.id, playlist.id, "New Title", new List<Guid> { song.id }, true);
+        await playlistService.EditPlaylist(user.id, playlist.id, "New Title", new List<Guid> { song.id }, true);
 
         var updated = Db.Playlists.First(p => p.id == playlist.id);
         Assert.Equal("New Title", updated.title);
@@ -156,7 +148,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id }, isPublic: false);
 
-        await _playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id }, true);
+        await playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id }, true);
 
         var updated = Db.Playlists.First(p => p.id == playlist.id);
         Assert.True(updated.isPublic);
@@ -169,7 +161,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id }, image: "old.jpg");
 
-        await _playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id }, true, "new.jpg");
+        await playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id }, true, "new.jpg");
 
         var updated = Db.Playlists.First(p => p.id == playlist.id);
         Assert.Equal("new.jpg", updated.image);
@@ -184,7 +176,7 @@ public class PlaylistTests : TestBase
         var song3 = await CreateSongAsync(user.id, "Song 3");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song1.id, song2.id });
 
-        await _playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song2.id, song3.id }, true);
+        await playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song2.id, song3.id }, true);
 
         var updated = Db.Playlists.Include(p => p.songs).First(p => p.id == playlist.id);
         Assert.Equal(2, updated.songs.Count);
@@ -199,7 +191,7 @@ public class PlaylistTests : TestBase
         var user = await CreateUserAsync(GetUniqueUsername());
 
         await Assert.ThrowsAsync<KeyNotFoundException>(() =>
-            _playlistService.EditPlaylist(user.id, Guid.NewGuid(), "Playlist", new List<Guid>(), true));
+            playlistService.EditPlaylist(user.id, Guid.NewGuid(), "Playlist", new List<Guid>(), true));
     }
 
     [Fact]
@@ -211,7 +203,7 @@ public class PlaylistTests : TestBase
         var playlist = await CreatePlaylistAsync(user1.id, "Playlist", new List<Guid> { song.id });
 
         await Assert.ThrowsAsync<UnauthorizedAccessException>(() =>
-            _playlistService.EditPlaylist(user2.id, playlist.id, "Hacked", new List<Guid> { song.id }, true));
+            playlistService.EditPlaylist(user2.id, playlist.id, "Hacked", new List<Guid> { song.id }, true));
     }
 
     [Fact]
@@ -223,7 +215,7 @@ public class PlaylistTests : TestBase
         var fakeId = Guid.NewGuid();
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id, fakeId }, true));
+            playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id, fakeId }, true));
     }
 
     [Fact]
@@ -233,7 +225,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Song 1");
         var playlist = await CreatePlaylistAsync(user.id, "Playlist", new List<Guid> { song.id }, image: "old.jpg");
 
-        await _playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id }, true, null);
+        await playlistService.EditPlaylist(user.id, playlist.id, "Playlist", new List<Guid> { song.id }, true, null);
 
         var updated = Db.Playlists.First(p => p.id == playlist.id);
         Assert.Equal("old.jpg", updated.image);
@@ -251,7 +243,7 @@ public class PlaylistTests : TestBase
         await CreatePlaylistAsync(user.id, "Playlist 1", new List<Guid> { song.id });
         await CreatePlaylistAsync(user.id, "Playlist 2", new List<Guid> { song.id });
 
-        var result = await _playlistService.GetUserPlaylists(user.id);
+        var result = await playlistService.GetUserPlaylists(user.id);
 
         Assert.Equal(2, result.Count());
     }
@@ -266,7 +258,7 @@ public class PlaylistTests : TestBase
         await CreatePlaylistAsync(user1.id, "User1 Playlist", new List<Guid> { song1.id });
         await CreatePlaylistAsync(user2.id, "User2 Playlist", new List<Guid> { song2.id });
 
-        var result = await _playlistService.GetUserPlaylists(user1.id);
+        var result = await playlistService.GetUserPlaylists(user1.id);
 
         Assert.All(result, p => Assert.Equal("User1 Playlist", p.title));
     }
@@ -276,7 +268,7 @@ public class PlaylistTests : TestBase
     {
         var user = await CreateUserAsync(GetUniqueUsername());
 
-        var result = await _playlistService.GetUserPlaylists(user.id);
+        var result = await playlistService.GetUserPlaylists(user.id);
 
         Assert.Empty(result);
     }
@@ -288,7 +280,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "DTO Song", "dto-key", "DTO Artist", image: "song.jpg");
         var playlist = await CreatePlaylistAsync(user.id, "DTO Playlist", new List<Guid> { song.id }, image: "playlist.jpg");
 
-        var result = await _playlistService.GetUserPlaylists(user.id);
+        var result = await playlistService.GetUserPlaylists(user.id);
         var dto = result.First();
 
         Assert.Equal(playlist.id, dto.id);
@@ -305,7 +297,7 @@ public class PlaylistTests : TestBase
     public async Task GetUserPlaylists_Throws_When_UserId_Empty()
     {
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.GetUserPlaylists(Guid.Empty));
+            playlistService.GetUserPlaylists(Guid.Empty));
     }
 
     [Fact]
@@ -314,7 +306,7 @@ public class PlaylistTests : TestBase
         var nonexistentUserId = Guid.NewGuid();
 
         await Assert.ThrowsAsync<ArgumentException>(() =>
-            _playlistService.GetUserPlaylists(nonexistentUserId));
+            playlistService.GetUserPlaylists(nonexistentUserId));
     }
 
     [Fact]
@@ -325,7 +317,7 @@ public class PlaylistTests : TestBase
         var song2 = await CreateSongAsync(user.id, "Song 2");
         await CreatePlaylistAsync(user.id, "Multi Song Playlist", new List<Guid> { song1.id, song2.id });
 
-        var result = await _playlistService.GetUserPlaylists(user.id);
+        var result = await playlistService.GetUserPlaylists(user.id);
         var dto = result.First();
 
         Assert.Equal(2, dto.songs.Count);
@@ -343,7 +335,7 @@ public class PlaylistTests : TestBase
         await CreatePlaylistAsync(user.id, "Public Playlist", new List<Guid> { song.id }, isPublic: true);
         await CreatePlaylistAsync(user.id, "Private Playlist", new List<Guid> { song.id }, isPublic: false);
 
-        var result = await _playlistService.GetPlaylists();
+        var result = await playlistService.GetPlaylists();
 
         Assert.DoesNotContain(result, p => p.title == "Private Playlist");
         Assert.Contains(result, p => p.title == "Public Playlist");
@@ -356,7 +348,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Song 1");
         await CreatePlaylistAsync(user.id, "Private Playlist", new List<Guid> { song.id }, isPublic: false);
 
-        var result = await _playlistService.GetPlaylists();
+        var result = await playlistService.GetPlaylists();
 
         Assert.DoesNotContain(result, p => p.title == "Private Playlist");
     }
@@ -368,7 +360,7 @@ public class PlaylistTests : TestBase
         var song = await CreateSongAsync(user.id, "Public DTO Song", "pub-key", "Pub Artist", image: "song.jpg");
         var playlist = await CreatePlaylistAsync(user.id, "Public DTO Playlist", new List<Guid> { song.id }, isPublic: true, image: "pub.jpg");
 
-        var result = await _playlistService.GetPlaylists();
+        var result = await playlistService.GetPlaylists();
         var dto = result.First(p => p.id == playlist.id);
 
         Assert.Equal(playlist.title, dto.title);
@@ -386,7 +378,7 @@ public class PlaylistTests : TestBase
         var song2 = await CreateSongAsync(user.id, "Song 2", isPublic: true);
         await CreatePlaylistAsync(user.id, "Public Multi Playlist", new List<Guid> { song1.id, song2.id }, isPublic: true);
 
-        var result = await _playlistService.GetPlaylists();
+        var result = await playlistService.GetPlaylists();
         var dto = result.First(p => p.title == "Public Multi Playlist");
 
         Assert.Equal(2, dto.songs.Count);
