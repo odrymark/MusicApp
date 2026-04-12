@@ -85,7 +85,9 @@ public class AuthController : ControllerBase
                 await _service.Logout(refreshToken);
             }
             catch (KeyNotFoundException)
-            {}
+            {
+                //Clear Cookies
+            }
         }
 
         Response.Cookies.Delete("jwt");
