@@ -31,6 +31,7 @@ public class AuthControllerTests(IAuthService mockAuthService, IServiceProvider 
             isAdmin = false
         };
         
+        mockAuthService.ClearReceivedCalls();
         mockAuthService.Login(loginRequest).Returns(Task.FromResult(loginResponse));
 
         var result = await controller.Login(loginRequest);
@@ -140,7 +141,7 @@ public class AuthControllerTests(IAuthService mockAuthService, IServiceProvider 
         var controller = GetFreshController();
         var refreshToken = "valid-rt";
         AuthControllerStartup.SetupRequestCookies(controller, new() { ["refreshToken"] = refreshToken });
-        
+        mockAuthService.ClearReceivedCalls();
         mockAuthService.RefreshToken(refreshToken, 7).Returns(("new-jwt", "new-rt"));
 
         var result = await controller.Refresh();
@@ -271,6 +272,7 @@ public class AuthControllerTests(IAuthService mockAuthService, IServiceProvider 
         var controller = GetFreshController();
         var refreshToken = "active-token";
         AuthControllerStartup.SetupRequestCookies(controller, new() { ["refreshToken"] = refreshToken });
+        mockAuthService.ClearReceivedCalls();
         mockAuthService.Logout(refreshToken).Returns(Task.CompletedTask);
 
         await controller.Logout();
