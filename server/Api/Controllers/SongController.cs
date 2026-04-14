@@ -4,6 +4,7 @@ using Api.DTOs.Request;
 using Api.Services;
 using Api.Services.R2;
 using Api.Services.Song;
+using FHHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/song")]
-public class SongController(IR2Service r2Service, ISongService songService) : ControllerBase
+public class SongController(IR2Service r2Service, ISongService songService, IFeatureStateProvider stateProvider) : ControllerBase
 {
     [Authorize]
     [HttpPost("uploadSong")]
@@ -101,6 +102,13 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
     [HttpPost("editSong")]
     public async Task<IActionResult> EditSong([FromForm] SongEditReqDto dto)
     {
+        if (!stateProvider.IsEnabled("edit_song"))
+            return Problem(
+                detail: "Song editing is currently not available",
+                statusCode: StatusCodes.Status403Forbidden,
+                title: "Feature Disabled"
+            );
+        
         try
         {
             var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

@@ -92,7 +92,7 @@ export enum ContentType {
 }
 
 export class HttpClient<SecurityDataType = unknown> {
-  public baseUrl: string = "http://localhost:5249";
+  public baseUrl: string = "http://0.0.0.0:8080";
   private securityData: SecurityDataType | null = null;
   private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private abortControllers = new Map<CancelToken, AbortController>();
@@ -297,7 +297,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title My Title
  * @version 1.0.0
- * @baseUrl http://localhost:5249
+ * @baseUrl http://0.0.0.0:8080
  */
 export class Api<
   SecurityDataType extends unknown,
@@ -358,6 +358,22 @@ export class Api<
       this.request<Blob, any>({
         path: `/api/auth/refresh`,
         method: "POST",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Fh
+     * @name FhGetFeatureStatus
+     * @request POST:/api/featurehub/getFeatureState
+     */
+    fhGetFeatureStatus: (data: string, params: RequestParams = {}) =>
+      this.request<Blob, any>({
+        path: `/api/featurehub/getFeatureState`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         ...params,
       }),
 

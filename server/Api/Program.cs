@@ -9,6 +9,7 @@ using Api.Services.R2;
 using Api.Services.Song;
 using Api.Services.Token;
 using Api.Services.User;
+using FHHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -65,6 +66,14 @@ builder.Services.AddAuthentication("JwtAuth")
             }
         };
     });
+
+
+var featureHubUrl = builder.Configuration["FeatureHub:Url"];
+var sdkKey = builder.Configuration["FeatureHub:SdkKey"];
+
+builder.Services.AddSingleton<IFeatureStateProvider>(
+    new FeatureStateProvider(featureHubUrl!, sdkKey!)
+);
 
 builder.Services.AddScoped<ISeeder, Seeder>();
 builder.Services.AddScoped<IAuthService, AuthService>();

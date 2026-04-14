@@ -5,7 +5,7 @@ import useMusicCrud from "../useMusicCrud";
 export default function EditSong() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { getUserSongs, getSignedUrl, editSong } = useMusicCrud();
+    const { getUserSongs, getSignedUrl, editSong, getFunctionState } = useMusicCrud();
 
     const [title, setTitle] = useState("");
     const [artist, setArtist] = useState("");
@@ -15,9 +15,13 @@ export default function EditSong() {
     const [prevImgKey, setPrevImgKey] = useState<string | undefined>(undefined);
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isSongEditOn, setIsSongEditOn] = useState(false);
+
+    const editSongFeatureKey = "edit_song";
 
     useEffect(() => {
-        getUserSongs().then(async (songs) => {
+        const loadData = async () => {
+            const songs = await getUserSongs();
             const song = songs.find((s) => s.id === id);
             if (!song) return navigate("/myMusic");
 
@@ -31,8 +35,13 @@ export default function EditSong() {
                 setImagePreview(url);
             }
 
+            const isEditOn = await getFunctionState(editSongFeatureKey);
+            setIsSongEditOn(isEditOn);
+
             setIsLoading(false);
-        });
+        };
+
+        loadData();
     }, [id]);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +69,25 @@ export default function EditSong() {
         return (
             <div className="h-full flex items-center justify-center">
                 <span className="loading loading-spinner loading-lg text-primary" />
+            </div>
+        );
+    }
+
+    if (!isSongEditOn) {
+        return (
+            <div className="h-screen flex flex-col overflow-hidden bg-base-200">
+                <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
+                    <div className="navbar px-4 md:px-8 py-3">
+                        <div className="flex-1">
+                            <span className="text-xl font-bold text-primary">Edit Playlist</span>
+                        </div>
+                    </div>
+                </header>
+                <main className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                        <p className="text-2xl font-semibold text-base-content">This functionality is currently not available</p>
+                    </div>
+                </main>
             </div>
         );
     }
