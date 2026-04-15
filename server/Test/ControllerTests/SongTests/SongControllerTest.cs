@@ -213,7 +213,7 @@ public class SongControllerTests(
         mockSongService.ClearReceivedCalls();
         mockR2Service.ClearReceivedCalls();
         mockStateProvider.ClearReceivedCalls();
-    
+
         var userId = Guid.NewGuid();
         var songId = Guid.NewGuid();
         SongControllerStartup.SetupUserClaims(_controller, userId);
@@ -230,6 +230,9 @@ public class SongControllerTests(
             isPublic = false
         };
 
+        mockSongService.EditSong(userId, songId, dto.title, dto.artist, dto.isPublic, null)
+            .Returns(Task.CompletedTask);
+
         var result = await _controller.EditSong(dto);
 
         Assert.IsType<OkResult>(result);
@@ -243,7 +246,7 @@ public class SongControllerTests(
         mockSongService.ClearReceivedCalls();
         mockR2Service.ClearReceivedCalls();
         mockStateProvider.ClearReceivedCalls();
-    
+
         var userId = Guid.NewGuid();
         var songId = Guid.NewGuid();
         SongControllerStartup.SetupUserClaims(_controller, userId);
@@ -262,6 +265,9 @@ public class SongControllerTests(
         };
 
         mockR2Service.UploadImageStorage(mockImgFile).Returns("new-image-key");
+        
+        mockSongService.EditSong(userId, songId, dto.title, dto.artist, dto.isPublic, "new-image-key")
+            .Returns(Task.CompletedTask);
 
         var result = await _controller.EditSong(dto);
 
