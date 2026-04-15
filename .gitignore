@@ -14,6 +14,8 @@
 .vscode/
 .vs/
 **/appsettings.Development.json
+**/api.json
+**/featurehub/
 
 # --------------------------
 # Node / React ignores

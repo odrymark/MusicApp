@@ -5,7 +5,7 @@ import useMusicCrud, { type Song } from "../useMusicCrud";
 export default function EditPlaylist() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { getPlaylists, getSongs, getSignedUrl, editPlaylist } = useMusicCrud();
+    const { getPlaylists, getSongs, getSignedUrl, editPlaylist, getFunctionState } = useMusicCrud();
 
     const [title, setTitle] = useState("");
     const [isPublic, setIsPublic] = useState(false);
@@ -18,6 +18,9 @@ export default function EditPlaylist() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
 
+    const [isPlaylistEditOn, setIsPlaylistEditOn] = useState(false);
+    const editPlaylistFeatureKey = "edit_playlist";
+
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
     const dragState = useRef<{
         fromIndex: number;
@@ -27,7 +30,8 @@ export default function EditPlaylist() {
     } | null>(null);
 
     useEffect(() => {
-        Promise.all([getPlaylists(), getSongs()]).then(async ([playlists, songs]) => {
+        const loadData = async () => {
+            const [playlists, songs] = await Promise.all([getPlaylists(), getSongs()]);
             const playlist = playlists.find((p) => p.id === id);
             if (!playlist) return navigate("/myMusic");
 
@@ -48,15 +52,19 @@ export default function EditPlaylist() {
             );
             setAllSongs(songsWithUrls);
 
-            // Pre-select and order the songs already in the playlist
             const playlistSongIds: string[] = playlist.songs.map((s: Song) => s.id);
             const preSelected = playlistSongIds
                 .map((sid) => songsWithUrls.find((s) => s.id === sid))
                 .filter(Boolean) as Song[];
             setOrderedSelected(preSelected);
 
+            const isEditOn = await getFunctionState(editPlaylistFeatureKey);
+            setIsPlaylistEditOn(isEditOn);
+
             setIsLoading(false);
-        });
+        };
+
+        loadData();
     }, [id]);
 
     const selectedIds = new Set(orderedSelected.map((s) => s.id));
@@ -141,6 +149,25 @@ export default function EditPlaylist() {
         );
     }
 
+    if (!isPlaylistEditOn) {
+        return (
+            <div className="h-screen flex flex-col overflow-hidden bg-base-200">
+                <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
+                    <div className="navbar px-4 md:px-8 py-3">
+                        <div className="flex-1">
+                            <span className="text-xl font-bold text-primary">Edit Playlist</span>
+                        </div>
+                    </div>
+                </header>
+                <main className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                        <p className="text-2xl font-semibold text-base-content">This functionality is currently not available</p>
+                    </div>
+                </main>
+            </div>
+        );
+    }
+
     return (
         <div className="h-screen flex flex-col overflow-hidden bg-base-200">
             <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
@@ -154,12 +181,10 @@ export default function EditPlaylist() {
             <main className="flex-1 overflow-hidden p-6">
                 <div className="flex gap-6 h-full max-w-5xl mx-auto">
 
-                    {/* Left panel — playlist details */}
                     <div className="card bg-base-100 shadow-xl w-80 flex-shrink-0 overflow-y-auto">
                         <div className="card-body">
                             <h2 className="card-title text-primary">Playlist Details</h2>
 
-                            {/* Cover image */}
                             <div className="flex justify-center mt-2 mb-2">
                                 <div className="relative w-36 h-36">
                                     {imagePreview ? (
@@ -193,7 +218,6 @@ export default function EditPlaylist() {
                                 </p>
                             )}
 
-                            {/* Title */}
                             <div className="form-control w-full mt-2">
                                 <label className="label">
                                     <span className="label-text">Playlist Title</span>
@@ -207,7 +231,6 @@ export default function EditPlaylist() {
                                 />
                             </div>
 
-                            {/* Song order */}
                             {orderedSelected.length > 0 && (
                                 <div className="mt-4">
                                     <label className="label pt-0">
@@ -249,7 +272,6 @@ export default function EditPlaylist() {
                                 </div>
                             )}
 
-                            {/* Visibility */}
                             <div className="form-control mt-4">
                                 <label className="label cursor-pointer justify-start gap-4">
                                     <span className="label-text">Visible to Others</span>
@@ -262,7 +284,6 @@ export default function EditPlaylist() {
                                 </label>
                             </div>
 
-                            {/* Actions */}
                             <div className="card-actions justify-between mt-6">
                                 <button
                                     className="btn btn-ghost"

@@ -1,6 +1,7 @@
 using Api.Controllers;
 using Api.Services.Song;
 using Api.Services.R2;
+using FHHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public class SongControllerStartup
     {
         services.AddSingleton(Substitute.For<ISongService>());
         services.AddSingleton(Substitute.For<IR2Service>());
+        services.AddSingleton(Substitute.For<IFeatureStateProvider>());
         services.AddTransient<SongController>();
         services.AddSingleton(this);
     }

@@ -4,7 +4,7 @@ import { userAtom } from "./atoms/userAtom.ts";
 import { useAtom } from "jotai";
 
 const api = new Api({
-    baseUrl: "http://localhost:5249",
+    baseUrl: "http://localhost:8080",
     baseApiParams: {
         credentials: "include"
     }
@@ -216,6 +216,11 @@ export default function useMusicCrud() {
         );
     }
 
+    async function getFunctionState(featureKey: string): Promise<boolean> {
+        const res = await api.api.fhGetFeatureStatus(featureKey);
+        return await res.json() as boolean;
+    }
+
     return {
         login,
         logout,
@@ -229,6 +234,7 @@ export default function useMusicCrud() {
         createPlaylist,
         getPlaylists,
         getUserPlaylists,
-        editPlaylist
+        editPlaylist,
+        getFunctionState
     };
 }

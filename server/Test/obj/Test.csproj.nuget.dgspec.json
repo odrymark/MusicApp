@@ -28,6 +28,9 @@
             "projectReferences": {
               "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
                 "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj"
+              },
+              "/home/odrymark/Projects/MusicApp/server/FHHelper/FHHelper.csproj": {
+                "projectPath": "/home/odrymark/Projects/MusicApp/server/FHHelper/FHHelper.csproj"
               }
             }
           }
@@ -181,6 +184,71 @@
         }
       }
     },
+    "/home/odrymark/Projects/MusicApp/server/FHHelper/FHHelper.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/FHHelper/FHHelper.csproj",
+        "projectName": "FHHelper",
+        "projectPath": "/home/odrymark/Projects/MusicApp/server/FHHelper/FHHelper.csproj",
+        "packagesPath": "/home/odrymark/.nuget/packages/",
+        "outputPath": "/home/odrymark/Projects/MusicApp/server/FHHelper/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/odrymark/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "FeatureHub.SDK": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -230,7 +298,7 @@
           "dependencies": {
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[9.0.14, )"
+              "version": "[9.0.15, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
@@ -260,7 +328,7 @@
             },
             "xunit.v3": {
               "target": "Package",
-              "version": "[3.2.1, )"
+              "version": "[3.2.2, )"
             }
           },
           "imports": [

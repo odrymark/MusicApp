@@ -8,10 +8,15 @@ import useMusicCrud, { type Song, type Playlist } from "../useMusicCrud.ts";
 
 export default function MyMusic() {
     const user = useAtomValue(userAtom);
-    const { getUserSongs, getUserPlaylists, getSignedUrl } = useMusicCrud();
+    const { getUserSongs, getUserPlaylists, getSignedUrl, getFunctionState } = useMusicCrud();
     const setCurrentSong = useSetAtom(currentSongAtom);
     const setCurrentPlaylist = useSetAtom(currentPlaylistAtom);
     const navigate = useNavigate();
+
+    const editSongFeatureKey = "edit_song";
+    const editPlaylistFeatureKey = "edit_playlist";
+    const [isSongEditOn, setIsSongEditOn] = useState(false);
+    const [isPlaylistEditOn, setIsPlaylistEditOn] = useState(false);
 
     const [songs, setSongs] = useState<Song[]>([]);
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -19,20 +24,20 @@ export default function MyMusic() {
     const [activeTab, setActiveTab] = useState<"songs" | "playlists">("songs");
 
     useEffect(() => {
-        getUserSongs().then(async (res) => {
+        const loadData = async () => {
+            const songsRes = await getUserSongs();
             const songsWithUrls = await Promise.all(
-                res.map(async (song) => ({
+                songsRes.map(async (song) => ({
                     ...song,
                     songUrl: await getSignedUrl(song.songKey),
                     image: song.image ? await getSignedUrl(song.image) : null,
                 }))
             );
             setSongs(songsWithUrls);
-        });
 
-        getUserPlaylists().then(async (res) => {
+            const playlistsRes = await getUserPlaylists();
             const playlistsWithUrls = await Promise.all(
-                res.map(async (playlist) => ({
+                playlistsRes.map(async (playlist) => ({
                     ...playlist,
                     image: playlist.image ? await getSignedUrl(playlist.image) : null,
                     songs: await Promise.all(
@@ -45,7 +50,14 @@ export default function MyMusic() {
                 }))
             );
             setPlaylists(playlistsWithUrls);
-        });
+
+            const isSongEdit = await getFunctionState(editSongFeatureKey);
+            const isPlaylistEdit = await getFunctionState(editPlaylistFeatureKey);
+            setIsSongEditOn(isSongEdit);
+            setIsPlaylistEditOn(isPlaylistEdit);
+        };
+
+        loadData();
     }, [user]);
 
     const handlePlayPlaylist = async (playlist: Playlist) => {
@@ -124,15 +136,17 @@ export default function MyMusic() {
                                             </svg>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); navigate(`/editSong/${song.id}`); }}
-                                        className="absolute bottom-2 right-2 btn btn-xs btn-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-1"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z" />
-                                        </svg>
-                                        Edit
-                                    </button>
+                                    {isSongEditOn && (
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); navigate(`/editSong/${song.id}`); }}
+                                            className="absolute bottom-2 right-2 btn btn-xs btn-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-1"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z" />
+                                            </svg>
+                                            Edit
+                                        </button>
+                                    )}
                                     <div className="font-semibold text-center text-sm mt-2">{song.title}</div>
                                 </div>
                             ))}
@@ -164,15 +178,17 @@ export default function MyMusic() {
                                             </svg>
                                         </div>
                                     </div>
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); navigate(`/editPlaylist/${playlist.id}`); }}
-                                        className="absolute bottom-2 right-2 btn btn-xs btn-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-1"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z" />
-                                        </svg>
-                                        Edit
-                                    </button>
+                                    {isPlaylistEditOn && (
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); navigate(`/editPlaylist/${playlist.id}`); }}
+                                            className="absolute bottom-2 right-2 btn btn-xs btn-primary opacity-0 group-hover:opacity-100 transition-opacity shadow-lg gap-1"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3 h-3">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z" />
+                                            </svg>
+                                            Edit
+                                        </button>
+                                    )}
                                     <div className="font-semibold text-center text-sm mt-2 truncate w-full">{playlist.title}</div>
                                     <div className="text-xs text-base-content/50">{playlist.songs.length} songs</div>
                                 </div>

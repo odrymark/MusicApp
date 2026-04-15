@@ -1,6 +1,7 @@
 using Api.Controllers;
 using Api.Services.Playlist;
 using Api.Services.R2;
+using FHHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ public class PlaylistControllerStartup
     {
         services.AddSingleton(Substitute.For<IPlaylistService>());
         services.AddSingleton(Substitute.For<IR2Service>());
+        services.AddSingleton(Substitute.For<IFeatureStateProvider>());  // ← Add this line
         
         services.AddTransient<PlaylistController>();
         services.AddSingleton(this);

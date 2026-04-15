@@ -4,6 +4,7 @@ using Api.DTOs.Request;
 using Api.Services;
 using Api.Services.R2;
 using Api.Services.Song;
+using FHHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/song")]
-public class SongController(IR2Service r2Service, ISongService songService) : ControllerBase
+public class SongController(IR2Service r2Service, ISongService songService, IFeatureStateProvider stateProvider) : ControllerBase
 {
     [Authorize]
     [HttpPost("uploadSong")]
@@ -30,13 +31,7 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
             string? imgKey = null;
             if (dto.image != null)
             {
-                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
                 imgKey = await r2Service.UploadImageStorage(dto.image);
-                Console.WriteLine($"Image uploaded with key: {imgKey}");
-            }
-            else
-            {
-                Console.WriteLine("No image provided");
             }
 
             await songService.CreateSong(id, dto.title, songKey, dto.artist, dto.isPublic, imgKey);
@@ -101,6 +96,13 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
     [HttpPost("editSong")]
     public async Task<IActionResult> EditSong([FromForm] SongEditReqDto dto)
     {
+        if (!stateProvider.IsEnabled("edit_song"))
+            return Problem(
+                detail: "Song editing is currently not available",
+                statusCode: StatusCodes.Status403Forbidden,
+                title: "Feature Disabled"
+            );
+        
         try
         {
             var idStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -109,15 +111,9 @@ public class SongController(IR2Service r2Service, ISongService songService) : Co
             string? imgKey = null;
             if (dto.image != null)
             {
-                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
                 imgKey = await r2Service.UploadImageStorage(dto.image);
-                Console.WriteLine($"Image uploaded with key: {imgKey}");
                 
                 await r2Service.DeleteFile(dto.prevImgKey!);
-            }
-            else
-            {
-                Console.WriteLine("No image provided");
             }
             
             await songService.EditSong(id, dto.id, dto.title, dto.artist, dto.isPublic, imgKey);
