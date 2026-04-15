@@ -3,6 +3,7 @@ using Api.DTOs.Request;
 using Api.DTOs.Response;
 using Api.Services.Playlist;
 using Api.Services.R2;
+using FHHelper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
@@ -14,6 +15,7 @@ namespace Test.ControllerTests.PlaylistTests;
 public class PlaylistControllerTests(
     IPlaylistService mockPlaylistService,
     IR2Service mockR2Service,
+    IFeatureStateProvider mockStateProvider,
     IServiceProvider provider)
 {
     private readonly PlaylistController _controller = PlaylistControllerStartup.GetController(provider);
@@ -76,6 +78,7 @@ public class PlaylistControllerTests(
             isPublic = true
         };
 
+        mockStateProvider.IsEnabled("edit_playlist").Returns(true);
         mockR2Service.UploadImageStorage(mockFile).Returns("new-key");
 
         await _controller.EditPlaylist(dto);

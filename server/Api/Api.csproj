@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <PackageReference Include="AWSSDK.S3" Version="4.0.18.6" />
-      <PackageReference Include="FeatureHub.SDK" Version="3.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.13" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.13">
         <PrivateAssets>all</PrivateAssets>

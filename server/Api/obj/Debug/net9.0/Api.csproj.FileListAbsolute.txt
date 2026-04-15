@@ -228,3 +228,4 @@
 /home/odrymark/Projects/MusicApp/server/Api/bin/Debug/net9.0/SemanticVersioning.dll
 /home/odrymark/Projects/MusicApp/server/Api/bin/Debug/net9.0/FHHelper.dll
 /home/odrymark/Projects/MusicApp/server/Api/bin/Debug/net9.0/FHHelper.pdb
+/home/odrymark/Projects/MusicApp/server/Api/bin/Debug/net9.0/api.json
