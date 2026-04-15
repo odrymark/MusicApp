@@ -12,14 +12,12 @@ namespace Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _service;
-    private readonly IWebHostEnvironment _env;
     private readonly double _jwtExpireMinutes;
     private readonly double _refreshExpireDays;
 
-    public AuthController(IAuthService service, IConfiguration configuration, IWebHostEnvironment env)
+    public AuthController(IAuthService service, IConfiguration configuration)
     {
         _service = service;
-        _env = env;
 
         var jwtSection = configuration.GetSection("Jwt");
         _jwtExpireMinutes = double.Parse(jwtSection["ExpireMinutes"]!);
@@ -33,7 +31,7 @@ public class AuthController : ControllerBase
         Response.Cookies.Append("jwt", token, new CookieOptions
         {
             HttpOnly = true,
-            Secure = !_env.IsDevelopment(),
+            Secure = true,
             SameSite = SameSiteMode.Lax,
             Expires = DateTime.UtcNow.AddMinutes(_jwtExpireMinutes)
         });
@@ -44,7 +42,7 @@ public class AuthController : ControllerBase
         Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = !_env.IsDevelopment(),
+            Secure = true,
             SameSite = SameSiteMode.Lax,
             Expires = DateTime.UtcNow.AddDays(_refreshExpireDays)
         });
