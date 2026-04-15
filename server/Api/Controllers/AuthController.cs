@@ -12,14 +12,12 @@ namespace Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _service;
-    private readonly IWebHostEnvironment _env;
     private readonly double _jwtExpireMinutes;
     private readonly double _refreshExpireDays;
 
-    public AuthController(IAuthService service, IConfiguration configuration, IWebHostEnvironment env)
+    public AuthController(IAuthService service, IConfiguration configuration)
     {
         _service = service;
-        _env = env;
 
         var jwtSection = configuration.GetSection("Jwt");
         _jwtExpireMinutes = double.Parse(jwtSection["ExpireMinutes"]!);
