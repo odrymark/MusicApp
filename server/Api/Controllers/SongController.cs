@@ -31,13 +31,7 @@ public class SongController(IR2Service r2Service, ISongService songService, IFea
             string? imgKey = null;
             if (dto.image != null)
             {
-                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
                 imgKey = await r2Service.UploadImageStorage(dto.image);
-                Console.WriteLine($"Image uploaded with key: {imgKey}");
-            }
-            else
-            {
-                Console.WriteLine("No image provided");
             }
 
             await songService.CreateSong(id, dto.title, songKey, dto.artist, dto.isPublic, imgKey);
@@ -117,15 +111,9 @@ public class SongController(IR2Service r2Service, ISongService songService, IFea
             string? imgKey = null;
             if (dto.image != null)
             {
-                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
                 imgKey = await r2Service.UploadImageStorage(dto.image);
-                Console.WriteLine($"Image uploaded with key: {imgKey}");
                 
                 await r2Service.DeleteFile(dto.prevImgKey!);
-            }
-            else
-            {
-                Console.WriteLine("No image provided");
             }
             
             await songService.EditSong(id, dto.id, dto.title, dto.artist, dto.isPublic, imgKey);

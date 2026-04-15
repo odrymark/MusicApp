@@ -57,13 +57,7 @@ public class PlaylistController(IPlaylistService playlistService, IR2Service r2S
             string? imgKey = null;
             if (dto.image != null)
             {
-                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
                 imgKey = await r2Service.UploadImageStorage(dto.image);
-                Console.WriteLine($"Image uploaded with key: {imgKey}");
-            }
-            else
-            {
-                Console.WriteLine("No image provided");
             }
 
             await playlistService.CreatePlaylist(id, dto.title, dto.songIds, dto.isPublic, imgKey);
@@ -94,15 +88,9 @@ public class PlaylistController(IPlaylistService playlistService, IR2Service r2S
             string? imgKey = null;
             if (dto.image != null)
             {
-                Console.WriteLine($"Image received: {dto.image.FileName}, size: {dto.image.Length}");
                 imgKey = await r2Service.UploadImageStorage(dto.image);
-                Console.WriteLine($"Image uploaded with key: {imgKey}");
                 
                 await r2Service.DeleteFile(dto.prevImgKey!);
-            }
-            else
-            {
-                Console.WriteLine("No image provided");
             }
             
             await playlistService.EditPlaylist(id, dto.id, dto.title, dto.songIds, dto.isPublic, imgKey);
