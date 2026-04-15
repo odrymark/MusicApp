@@ -11,7 +11,7 @@ The project uses:
 - Neon for the database provider
 - CloudFlare R2 for storing songs
 - SonarQube for static code analysis
-- fly.io for deployment
+- Contabo for VPS
 
 ## Architecture
 
