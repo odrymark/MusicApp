@@ -102,6 +102,6 @@ app.UseSwaggerUi();
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapControllers();     
+app.MapControllers();
 
 await app.RunAsync();

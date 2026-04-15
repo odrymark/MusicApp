@@ -9,27 +9,33 @@ public interface IFeatureStateProvider
 
 public class FeatureStateProvider : IFeatureStateProvider
 {
-    private readonly EdgeFeatureHubConfig _config;
+    private readonly EdgeFeatureHubConfig? _config;
+    private readonly bool _isInitialized;
 
     public FeatureStateProvider(string url, string sdkKey)
     {
-        var config = new EdgeFeatureHubConfig(url, sdkKey);
-        
-        config.Init().Wait();
-        
-        _config = config;
+        try
+        {
+            var config = new EdgeFeatureHubConfig(url, sdkKey);
+            config.Init().Wait(TimeSpan.FromSeconds(20));
+            _config = config;
+            _isInitialized = true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"FeatureHub initialization failed: {e.Message}");
+            _config = null;
+            _isInitialized = false;
+        }
     }
 
     public bool IsEnabled(string featureKey)
     {
-        try
+        if (!_isInitialized || _config == null)
         {
-            return (bool)_config.Repository[featureKey].Value!;
+            return false;
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        
+        return (bool)_config.Repository[featureKey].Value!;
     }
 }
