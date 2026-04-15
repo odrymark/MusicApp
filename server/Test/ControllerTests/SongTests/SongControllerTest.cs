@@ -53,11 +53,14 @@ public class SongControllerTests(
     [Fact]
     public async Task UploadSong_Calls_R2_For_Song_Only_When_No_Image()
     {
+        mockSongService.ClearReceivedCalls();
+        mockR2Service.ClearReceivedCalls();
+    
         var userId = Guid.NewGuid();
         SongControllerStartup.SetupUserClaims(_controller, userId);
 
         var mockSongFile = Substitute.For<IFormFile>();
-        
+    
         var dto = new UploadSongReqDto 
         { 
             title = "Track Without Image", 
@@ -73,7 +76,7 @@ public class SongControllerTests(
 
         Assert.IsType<OkResult>(result);
         await mockR2Service.Received(1).UploadSongStorage(mockSongFile);
-        await mockR2Service.Received(0).UploadImageStorage(Arg.Any<IFormFile>());
+        await mockR2Service.DidNotReceive().UploadImageStorage(Arg.Any<IFormFile>());
         await mockSongService.Received(1).CreateSong(userId, dto.title, "song-key-789", dto.artist, dto.isPublic, null);
     }
 
@@ -207,8 +210,9 @@ public class SongControllerTests(
     [Fact]
     public async Task EditSong_Updates_Song_When_Feature_Enabled_Without_Image()
     {
-        mockR2Service.ClearReceivedCalls();
         mockSongService.ClearReceivedCalls();
+        mockR2Service.ClearReceivedCalls();
+        mockStateProvider.ClearReceivedCalls();
     
         var userId = Guid.NewGuid();
         var songId = Guid.NewGuid();
@@ -236,6 +240,10 @@ public class SongControllerTests(
     [Fact]
     public async Task EditSong_Updates_Song_And_Image_When_Feature_Enabled()
     {
+        mockSongService.ClearReceivedCalls();
+        mockR2Service.ClearReceivedCalls();
+        mockStateProvider.ClearReceivedCalls();
+    
         var userId = Guid.NewGuid();
         var songId = Guid.NewGuid();
         SongControllerStartup.SetupUserClaims(_controller, userId);
