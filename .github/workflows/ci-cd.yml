@@ -116,9 +116,6 @@ jobs:
             -t ghcr.io/odrymark/musicapp/client:$VERSION \
             -f ./client/Dockerfile \
             --push ./client
-          
-          docker push ghcr.io/odrymark/musicapp/api --all-tags
-          docker push ghcr.io/odrymark/musicapp/client --all-tags
 
       - name: Create release notes
         uses: ncipollo/release-action@v1
@@ -132,7 +129,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "docker-compose.yaml"
+          source: "docker-compose.yml"
           target: "/var/www/app/MusicApp/"
 
       - name: Deploy to VPS
