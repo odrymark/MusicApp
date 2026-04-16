@@ -76,7 +76,7 @@ jobs:
 
           dotnet restore server/server.sln
 
-          dotnet ef migrations bundle --project server/DataAccess --startup-project server/Api --output migration-bundle --self-contained --no-restore
+          dotnet ef migrations bundle --project server/DataAccess --startup-project server/Api --output migration-bundle --self-contained
           
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             ./migration-bundle --connection "${{ secrets.NEON_PRODUCTION_CONNECTION_STRING }}"
