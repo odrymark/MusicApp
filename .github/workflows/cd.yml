@@ -24,17 +24,17 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./server
-          dockerfile: ./server/Api/Dockerfile
+          file: ./server/Api/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/api:latest
+          tags: ghcr.io/odrymark/musicapp/api:latest
 
       - name: Build and push Client image
         uses: docker/build-push-action@v4
         with:
           context: ./client
-          dockerfile: ./client/Dockerfile
+          file: ./client/Dockerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}/client:latest
+          tags: ghcr.io/odrymark/musicapp/client:latest
 
       - name: Create release notes
         uses: ncipollo/release-action@v1
@@ -43,7 +43,7 @@ jobs:
           generateReleaseNotes: true
           body: |
             This release includes the following container images:
-            http://ghcr.io/${{ github.repository }}:${{ steps.semver-app.outputs.version }}
+            http://ghcr.io/odrymark/musicapp:${{ steps.semver-app.outputs.version }}
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
