@@ -43,7 +43,7 @@ jobs:
             /d:sonar.token="${{ secrets.SONARQUBE_TOKEN }}" \
             /v:"${{ steps.app-v.outputs.version }}" \
             /d:sonar.coverageReportPaths="coverage-report/SonarQube.xml" \
-            /d:sonar.qualitygate.wait=true
+            /d:sonar.qualitygate.wait=true \
             /d:sonar.exclusions="client/**,**/Migrations/**,k6/**,testcafe/**,**/Dockerfile " \
             /d:sonar.coverage.exclusions="**/DTOs/**,**/*Dto.cs,**/Program.cs,**/DataAccess/**,"
 
