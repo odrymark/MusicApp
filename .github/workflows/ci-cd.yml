@@ -44,8 +44,8 @@ jobs:
             /v:"${{ steps.app-v.outputs.version }}" \
             /d:sonar.coverageReportPaths="coverage-report/SonarQube.xml" \
             /d:sonar.qualitygate.wait=true \
-            /d:sonar.exclusions="client/**,**/Migrations/**,k6/**,testcafe/**,**/Dockerfile " \
-            /d:sonar.coverage.exclusions="**/DTOs/**,**/*Dto.cs,**/Program.cs,**/DataAccess/**,"
+            /d:sonar.exclusions="client/**,**/Migrations/**,k6/**,testcafe/**,**/Dockerfile" \
+            /d:sonar.coverage.exclusions="**/DTOs/**,**/*Dto.cs,**/Program.cs,**/DataAccess/**"
 
       - name: Build & Test
         run: |
@@ -103,8 +103,19 @@ jobs:
         run: |
           VERSION=${{ needs.build.outputs.app_version }}
           
-          docker build -t ghcr.io/odrymark/musicapp/api:latest -t ghcr.io/odrymark/musicapp/api:$VERSION -f ./server/Api/Dockerfile ./server
-          docker build -t ghcr.io/odrymark/musicapp/client:latest -t ghcr.io/odrymark/musicapp/client:$VERSION -f ./client/Dockerfile ./client
+          docker buildx build \
+            --provenance=false \
+            -t ghcr.io/odrymark/musicapp/api:latest \
+            -t ghcr.io/odrymark/musicapp/api:$VERSION \
+            -f ./server/Api/Dockerfile \
+            --push ./server
+          
+          docker buildx build \
+            --provenance=false \
+            -t ghcr.io/odrymark/musicapp/client:latest \
+            -t ghcr.io/odrymark/musicapp/client:$VERSION \
+            -f ./client/Dockerfile \
+            --push ./client
           
           docker push ghcr.io/odrymark/musicapp/api --all-tags
           docker push ghcr.io/odrymark/musicapp/client --all-tags
