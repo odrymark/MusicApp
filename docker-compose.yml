@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    image: ghcr.io/odrymark/MusicApp/api:latest
+    image: ghcr.io/odrymark/musicApp/api:latest
     build:
       context: ./server
       dockerfile: Api/Dockerfile
@@ -38,7 +38,7 @@ services:
       - PORT=8085
 
   client:
-    image: ghcr.io/odrymark/MusicApp/client:latest
+    image: ghcr.io/odrymark/musicApp/client:latest
     build:
       context: ./client
       dockerfile: Dockerfile
