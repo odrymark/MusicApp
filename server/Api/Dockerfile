@@ -22,5 +22,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY Api/appsettings.json .
-COPY Api/appsettings.Development.json .
 ENTRYPOINT ["dotnet", "Api.dll"]
