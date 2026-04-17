@@ -14,33 +14,14 @@ public class R2Service : IR2Service
 
     public R2Service(IConfiguration config)
     {
-        var path = config["R2:ConfigPath"];
-        if (string.IsNullOrWhiteSpace(path) || !File.Exists(path))
-        {
-            throw new InvalidOperationException($"R2 config file not found or path empty: '{path}'");
-        }
-
-        var json = File.ReadAllText(path);
-
-        var r2Config = JsonSerializer.Deserialize<R2Config>(json);
-
-        if (r2Config == null || 
-            string.IsNullOrEmpty(r2Config.AccessKey) ||
-            string.IsNullOrEmpty(r2Config.SecretKey) ||
-            string.IsNullOrEmpty(r2Config.BucketName) ||
-            string.IsNullOrEmpty(r2Config.Endpoint))
-        {
-            throw new InvalidOperationException("Failed to deserialize R2 config JSON: AccessKey, SecretKey, BucketName, and Endpoint are all required");
-        }
-
-        _accessKey = r2Config.AccessKey;
-        _secretKey = r2Config.SecretKey;
-        _bucketName = r2Config.BucketName;
-        _endpoint = r2Config.Endpoint;
+        _accessKey = config["R2:AccessKey"] ?? throw new InvalidOperationException("R2:AccessKey is missing");
+        _secretKey = config["R2:SecretKey"] ?? throw new InvalidOperationException("R2:SecretKey is missing");
+        _bucketName = config["R2:BucketName"] ?? throw new InvalidOperationException("R2:BucketName is missing");
+        _endpoint = config["R2:Endpoint"] ?? throw new InvalidOperationException("R2:Endpoint is missing");
 
         if (string.IsNullOrWhiteSpace(_endpoint))
         {
-            throw new InvalidOperationException("R2 Endpoint is empty or whitespace in config file");
+            throw new InvalidOperationException("R2 Endpoint is empty or whitespace");
         }
     }
 

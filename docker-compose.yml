@@ -16,6 +16,18 @@ services:
       - 8081:8081
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__DefaultConnection=${CONNECTIONSTRINGS__DEFAULTCONNECTION}
+      - Jwt__Key=${JWT__KEY}
+      - Jwt__Issuer=${JWT__ISSUER}
+      - Jwt__Audience=${JWT__AUDIENCE}
+      - Jwt__ExpireMinutes=${JWT__EXPIREMINUTES}
+      - RefreshToken__ExpireDays=${REFRESHTOKEN__EXPIREDAYS}
+      - R2__AccessKey=${R2__ACCESSKEY}
+      - R2__SecretKey=${R2__SECRETKEY}
+      - R2__BucketName=${R2__BUCKETNAME}
+      - R2__Endpoint=${R2__ENDPOINT}
+      - FeatureHub__Url=${FEATUREHUB__URL}
+      - FeatureHub__SdkKey=${FEATUREHUB__SDKKEY}
     restart: always
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
@@ -34,7 +46,6 @@ services:
     networks:
       - app-network
     environment:
-      - LOGGING_LEVEL_IO_FEATUREHUB=DEBUG
       - PORT=8085
 
   client:
