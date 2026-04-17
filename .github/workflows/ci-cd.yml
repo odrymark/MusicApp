@@ -131,6 +131,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "docker-compose.yml"
           target: "/var/www/app/MusicApp/"
+          overwrite: true
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
