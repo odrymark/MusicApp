@@ -143,3 +143,49 @@ jobs:
             cd /var/www/app/MusicApp
             docker-compose pull
             docker-compose up -d
+
+  vps-smoke-tests:
+    runs-on: ubuntu-latest
+    needs: deploy-app
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install k6
+        run: |
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update && sudo apt-get install k6
+
+      - name: Run k6 Auth Test
+        run: k6 run k6/auth_test.js
+        env:
+          BASE_URL: http://${{ secrets.VPS_HOST }}:8080
+
+      - name: Run k6 Song Test
+        run: k6 run k6/song_test.js
+        env:
+          BASE_URL: http://${{ secrets.VPS_HOST }}:8080
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run TestCafe against VPS
+        run: |
+          npx testcafe chrome:headless \
+            testcafe/home_test.js \
+            testcafe/upload_song_test.js \
+            --screenshots takeOnFails \
+            --screenshots-path screenshots/
+        env:
+          BASE_URL: http://${{ secrets.VPS_HOST }}
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vps-test-failures
+          path: screenshots/
