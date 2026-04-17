@@ -105,9 +105,13 @@ public class R2ServiceTests
     [Fact]
     public async Task DeleteFile_Returns_Early_When_Key_Is_Null_Or_Empty()
     {
-        await _r2Service.DeleteFile(null!);
-        await _r2Service.DeleteFile("");
-        await _r2Service.DeleteFile("   ");
+        var exceptionNull = await Record.ExceptionAsync(() => _r2Service.DeleteFile(null!));
+        var exceptionEmpty = await Record.ExceptionAsync(() => _r2Service.DeleteFile(""));
+        var exceptionWhitespace = await Record.ExceptionAsync(() => _r2Service.DeleteFile("   "));
+
+        Assert.Null(exceptionNull);
+        Assert.Null(exceptionEmpty);
+        Assert.Null(exceptionWhitespace);
     }
 
     [Fact]

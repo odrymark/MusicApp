@@ -25,14 +25,6 @@ public class R2Service : IR2Service
         }
     }
 
-    private sealed class R2Config
-    {
-        public string AccessKey { get; init; } = string.Empty;
-        public string SecretKey { get; init; } = string.Empty;
-        public string BucketName { get; init; } = string.Empty;
-        public string Endpoint { get; init; } = string.Empty;
-    }
-
     public async Task<string> UploadSongStorage(IFormFile file)
     {
         if (file == null || file.Length == 0)
