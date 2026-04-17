@@ -24,7 +24,7 @@ builder.Services.AddCors(options =>
             .AllowAnyMethod()
             .AllowCredentials()
     );
-});
+}); 
 
 builder.Services.AddDbContext<MusicDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
