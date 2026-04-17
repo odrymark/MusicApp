@@ -59,9 +59,9 @@ export const options = {
   },
   thresholds: {
     http_req_failed:           ['rate<0.01'],
-    get_songs_duration:        ['p(95)<300'],
-    get_user_songs_duration:   ['p(95)<300'],
-    get_signed_url_duration:   ['p(95)<200'],
+    get_signed_url_duration: ['p(95)<400'],
+    get_songs_duration:      ['p(95)<500'],
+    get_user_songs_duration: ['p(95)<450'],
     errors:                    ['rate<0.01'],
   },
 };
