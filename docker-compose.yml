@@ -1,6 +1,42 @@
 version: '3.8'
 
 services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - SUBDOMAINS=musicapp-devops
+      - TOKEN=${DUCKDNS_TOKEN}
+    restart: always
+
+  gateway:
+    image: lscr.io/linuxserver/swag:latest
+    container_name: gateway
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - URL=${DUCKDNS_DOMAIN}
+      - SUBDOMAINS=wildcard
+      - VALIDATION=duckdns
+      - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
+    volumes:
+      - ./gateway-config:/config
+    ports:
+      - 443:443
+      - 80:80
+    restart: always
+    networks:
+      - app-network
+    depends_on:
+      - client
+      - api
+
   api:
     image: ghcr.io/odrymark/musicapp/api:latest
     build:
@@ -11,9 +47,8 @@ services:
         condition: service_started
     networks:
       - app-network
-    ports:
-      - 8080:8080
-      - 8081:8081
+    expose:
+      - 8080
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__DefaultConnection=${CONNECTIONSTRINGS__DEFAULTCONNECTION}
@@ -29,43 +64,29 @@ services:
       - FeatureHub__Url=${FEATUREHUB__URL}
       - FeatureHub__SdkKey=${FEATUREHUB__SDKKEY}
     restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  featurehub:
-    image: featurehub/party-server:latest
-    restart: always
-    volumes:
-      - ./server/featurehub:/db
-    ports:
-      - 8085:8085
-    networks:
-      - app-network
-    environment:
-      - PORT=8085
 
   client:
     image: ghcr.io/odrymark/musicapp/client:latest
     build:
       context: ./client
       dockerfile: Dockerfile
-    ports:
-      - 443:443
     networks:
       - app-network
+    expose:
+      - 5173
     depends_on:
       - api
     restart: always
-    healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
+
+  featurehub:
+    image: featurehub/party-server:latest
+    restart: always
+    volumes:
+      - ./server/featurehub:/db
+    networks:
+      - app-network
+    environment:
+      - PORT=8085
 
 networks:
   app-network:
