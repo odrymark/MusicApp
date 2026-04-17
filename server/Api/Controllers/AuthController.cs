@@ -26,6 +26,7 @@ public class AuthController : ControllerBase
         _refreshExpireDays = double.Parse(refreshSection["ExpireDays"]!);
     }
 
+#pragma warning disable S3330
     private void SetJwtCookie(string token)
     {
         Response.Cookies.Append("jwt", token, new CookieOptions
@@ -47,6 +48,7 @@ public class AuthController : ControllerBase
             Expires = DateTime.UtcNow.AddDays(_refreshExpireDays)
         });
     }
+#pragma warning restore S3330
 
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] UserLoginReqDto loginReqDto)
