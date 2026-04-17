@@ -26,13 +26,14 @@ public class AuthController : ControllerBase
         _refreshExpireDays = double.Parse(refreshSection["ExpireDays"]!);
     }
 
-#pragma warning disable S3330
     private void SetJwtCookie(string token)
     {
+        var isSecure = Request.IsHttps;
+        
         Response.Cookies.Append("jwt", token, new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
+            Secure = isSecure,
             SameSite = SameSiteMode.Lax,
             Expires = DateTime.UtcNow.AddMinutes(_jwtExpireMinutes)
         });
@@ -40,15 +41,16 @@ public class AuthController : ControllerBase
 
     private void SetRefreshCookie(string refreshToken)
     {
+        var isSecure = Request.IsHttps;
+        
         Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
+            Secure = isSecure,
             SameSite = SameSiteMode.Lax,
             Expires = DateTime.UtcNow.AddDays(_refreshExpireDays)
         });
     }
-#pragma warning restore S3330
 
     [HttpPost("login")]
     public async Task<ActionResult> Login([FromBody] UserLoginReqDto loginReqDto)
