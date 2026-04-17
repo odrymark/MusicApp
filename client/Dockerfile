@@ -6,13 +6,10 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine
+# Copy the built files
 COPY --from=build /app/dist /usr/share/nginx/html
+# Copy a simple nginx config (we will create this below)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-RUN mkdir -p /etc/nginx/certs && \
-    apk add --no-cache openssl && \
-    openssl req -x509 -newkey rsa:4096 -nodes -out /etc/nginx/certs/cert.pem \
-    -keyout /etc/nginx/certs/key.pem -days 365 -subj "/CN=localhost"
-
-EXPOSE 443
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
