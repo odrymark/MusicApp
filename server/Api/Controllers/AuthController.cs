@@ -28,10 +28,12 @@ public class AuthController : ControllerBase
 
     private void SetJwtCookie(string token)
     {
+        var isSecure = Request.IsHttps;
+        
         Response.Cookies.Append("jwt", token, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = isSecure,
             SameSite = SameSiteMode.Lax,
             Expires = DateTime.UtcNow.AddMinutes(_jwtExpireMinutes)
         });
@@ -39,10 +41,12 @@ public class AuthController : ControllerBase
 
     private void SetRefreshCookie(string refreshToken)
     {
+        var isSecure = Request.IsHttps;
+        
         Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = isSecure,
             SameSite = SameSiteMode.Lax,
             Expires = DateTime.UtcNow.AddDays(_refreshExpireDays)
         });

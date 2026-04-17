@@ -1,34 +1,12 @@
 version: '3.8'
 
 services:
-  duckdns:
-    image: lscr.io/linuxserver/duckdns:latest
-    container_name: duckdns
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - SUBDOMAINS=musicapp-devops
-      - TOKEN=${DUCKDNS_TOKEN}
-    restart: always
-
   gateway:
-    image: lscr.io/linuxserver/swag:latest
+    image: nginx:alpine
     container_name: gateway
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/London
-      - URL=${DUCKDNS_DOMAIN}
-      - SUBDOMAINS=wildcard
-      - VALIDATION=duckdns
-      - DUCKDNSTOKEN=${DUCKDNS_TOKEN}
     volumes:
-      - ./gateway-config:/config
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - 443:443
       - 80:80
     restart: always
     networks:
@@ -42,9 +20,6 @@ services:
     build:
       context: ./server
       dockerfile: Api/Dockerfile
-    depends_on:
-      featurehub:
-        condition: service_started
     networks:
       - app-network
     expose:
