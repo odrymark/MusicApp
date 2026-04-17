@@ -16,6 +16,8 @@
 **/appsettings.Development.json
 **/api.json
 **/featurehub/
+.env
+**/.env
 
 # --------------------------
 # Node / React ignores
