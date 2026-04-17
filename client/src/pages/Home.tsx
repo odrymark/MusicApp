@@ -67,7 +67,7 @@ export default function Home() {
         <div className="h-screen flex flex-col bg-base-200">
             <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
                 <div className="px-4 md:px-8 py-3 flex flex-col gap-2">
-                    <span className="text-xl font-bold text-primary">Music App</span>
+                    <span className="text-xl font-bold text-primary">Testing if works</span>
                     <div className="relative w-full max-w-sm">
                         <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-base-content/40" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
