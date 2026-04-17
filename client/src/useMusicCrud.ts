@@ -4,7 +4,7 @@ import { userAtom } from "./atoms/userAtom.ts";
 import { useAtom } from "jotai";
 
 const api = new Api({
-    baseUrl: "http://localhost:8080",
+    baseUrl: "",
     baseApiParams: {
         credentials: "include"
     }
