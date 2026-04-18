@@ -12,6 +12,8 @@ The project uses:
 - CloudFlare R2 for storing songs
 - SonarQube for static code analysis
 - Contabo for VPS
+- k6 for load/performance testing
+- TestCafe for end-to-end browser testing
 
 ## Architecture
 
@@ -27,6 +29,42 @@ Backend (.NET 9):
 Database (PostgreSQL):
   - Stores user data, playlists, song metadata, and relationships between users and content.
   - Optimized with indexes for search queries and supports relational integrity for playlists and song ownership.
+
+## CI/CD Pipeline
+
+The CI/CD pipeline runs on every push to `main` and on pull requests. It consists of the following stages:
+
+1. **Build** — Restores, builds, and tests the .NET backend. Runs SonarQube static code analysis and generates a code coverage report.
+
+2. **Deploy DB** — Bundles and applies Entity Framework migrations. On `main` the production database is targeted; on other branches, the staging database is used.
+
+3. **Deploy App** *(main only)* — Builds and pushes Docker images for the API and client to GitHub Container Registry (GHCR), creates a GitHub release with auto-generated notes, and deploys to the VPS via SSH.
+
+4. **VPS Smoke Tests** *(main only, after deploy)* — Runs automated tests against the live VPS to verify the deployment:
+   - **TestCafe** end-to-end tests (`testcafe/home_test.js`, `testcafe/upload_song_test.js`) using Firefox headless. Screenshots are uploaded as artifacts on failure.
+   - **k6** load tests (`k6/auth_test.js`, `k6/song_test.js`) against the API on port 8080.
+
+### k6 Load Tests
+
+| Test file | Scenarios | Key thresholds |
+|---|---|---|
+| `k6/auth_test.js` | Login load (up to 10 VUs), token refresh load (up to 20 VUs) | `http_req_failed < 4%`, login p95 < 2 s, refresh p95 < 500 ms |
+| `k6/song_test.js` | Public song listing (up to 10 VUs), authenticated song access (up to 20 VUs) | `http_req_failed < 1%`, getSongs p95 < 500 ms, signed URL p95 < 400 ms |
+
+### TestCafe E2E Tests
+
+| Test file | Coverage |
+|---|---|
+| `testcafe/home_test.js` | Home page loads and songs are visible |
+| `testcafe/upload_song_test.js` | Authenticated user can upload a song |
+
+## Agentic Workflows
+
+The repository includes two GitHub Copilot agentic workflows that run on a daily schedule:
+
+- **Daily Repo Status** (`.github/workflows/daily-repo-status.md`) — Gathers recent repository activity (issues, PRs, code changes) and creates a GitHub issue with a status report, highlights, and recommended next steps.
+
+- **Daily Documentation Updater** (`.github/workflows/daily-doc-updater.md`) — Scans merged pull requests and commits from the last 24 hours, identifies undocumented changes, and opens a pull request to update the documentation.
 
 ## Feature plan
 
@@ -77,9 +115,9 @@ Database (PostgreSQL):
 *Easter vacation - nothing planned.*
 
 ### Week 15
-**Feature 1:** [...]
+**Feature 1:** k6 load tests and TestCafe E2E tests running against the VPS as part of the CI/CD pipeline
 
-**Feature 2:** [...]
+**Feature 2:** Daily agentic workflows for repo status reporting and documentation updates
 
 ### Week 16
 **Feature 1:** [...]
