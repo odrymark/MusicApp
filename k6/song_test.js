@@ -148,8 +148,8 @@ export default function () {
     getSignedUrlDuration.add(signedUrlRes.timings.duration);
 
     const signedUrlOk = check(signedUrlRes, {
-    'getSignedUrl status is 200':    (r) => r.status === 200,
-    'getSignedUrl returns a string': (r) => r.body.startsWith('https://'),
+      'getSignedUrl status is 200':    (r) => r.status === 200,
+      'getSignedUrl returns a string': (r) => r.body.startsWith('https://'),
     });
 
     errorRate.add(!signedUrlOk);
