@@ -152,6 +152,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run TestCafe against VPS
+        run: |
+          npx testcafe "firefox:headless --disable-native-automation" \
+          testcafe/home_test.js \
+          testcafe/upload_song_test.js \
+          --screenshots takeOnFails \
+          --screenshots-path screenshots/
+        env:
+          BASE_URL: http://${{ secrets.VPS_HOST }}
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vps-test-failures
+          path: screenshots/
+
       - name: Install k6
         uses: grafana/setup-k6-action@v1
 
@@ -164,25 +186,3 @@ jobs:
         run: k6 run k6/song_test.js
         env:
           BASE_URL: http://${{ secrets.VPS_HOST }}:8080
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Run TestCafe against VPS
-        run: |
-          npx testcafe "chrome:headless --disable-native-automation" \
-            testcafe/home_test.js \
-            testcafe/upload_song_test.js \
-            --screenshots takeOnFails \
-            --screenshots-path screenshots/
-        env:
-          BASE_URL: http://${{ secrets.VPS_HOST }}
-
-      - name: Upload screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: vps-test-failures
-          path: screenshots/
