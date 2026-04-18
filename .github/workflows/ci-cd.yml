@@ -172,7 +172,7 @@ jobs:
 
       - name: Run TestCafe against VPS
         run: |
-          npx testcafe "chrome:headless --ignore-certificate-errors" \
+          npx testcafe "chrome:headless --disable-native-automation" \
             testcafe/home_test.js \
             testcafe/upload_song_test.js \
             --screenshots takeOnFails \
