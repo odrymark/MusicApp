@@ -152,6 +152,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Check frontend is reachable
+        run: curl -f http://${{ secrets.VPS_HOST }}
+
       - name: Install k6
         uses: grafana/setup-k6-action@v1
 
