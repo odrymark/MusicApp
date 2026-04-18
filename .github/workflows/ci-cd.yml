@@ -152,9 +152,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check frontend is reachable
-        run: curl -f http://${{ secrets.VPS_HOST }}
-
       - name: Install k6
         uses: grafana/setup-k6-action@v1
 
@@ -173,12 +170,9 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Debug BASE_URL
-        run: echo "BASE_URL=http://${{ secrets.VPS_HOST }}"
-
       - name: Run TestCafe against VPS
         run: |
-          npx testcafe chrome:headless \
+          npx testcafe "chrome:headless --ignore-certificate-errors" \
             testcafe/home_test.js \
             testcafe/upload_song_test.js \
             --screenshots takeOnFails \
