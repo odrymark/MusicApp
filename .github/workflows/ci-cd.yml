@@ -170,6 +170,9 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Debug BASE_URL
+        run: echo "BASE_URL=http://${{ secrets.VPS_HOST }}"
+
       - name: Run TestCafe against VPS
         run: |
           npx testcafe chrome:headless \
