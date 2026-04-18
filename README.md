@@ -120,11 +120,6 @@ The repository includes two GitHub Copilot agentic workflows that run on a daily
 **Feature 2:** Daily agentic workflows for repo status reporting and documentation updates
 
 ### Week 16
-**Feature 1:** [...]
-
-**Feature 2:** [...]
-
-### Week 17
-**Feature 1:** [...]
+**Feature 1:** Featurehub toggles for song and playlist editing
 
 **Feature 2:** [...]
