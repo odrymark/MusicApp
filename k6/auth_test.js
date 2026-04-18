@@ -116,8 +116,7 @@ export default function () {
     return;
   }
 
-  const newRefreshToken = refreshRes.json('refreshToken');
-  const newToken = refreshRes.json('token');
+  const { token: newToken, refreshToken: newRefreshToken } = refreshRes.json();
 
   sleep(1);
 
