@@ -42,7 +42,7 @@ The CI/CD pipeline runs on every push to `main` and on pull requests. It consist
 
 4. **VPS Smoke Tests** *(main only, after deploy)* — Runs automated tests against the live VPS to verify the deployment:
    - **TestCafe** end-to-end tests (`testcafe/home_test.js`, `testcafe/upload_song_test.js`) using Firefox headless. Screenshots are uploaded as artifacts on failure.
-   - **k6** load tests (`k6/auth_test.js`, `k6/song_test.js`) against the API on port 8080.
+   - **k6** load tests (`k6/auth_test.js`, `k6/song_test.js`) against the API on port 8080. Before running, the VPS is switched to the staging database; after completion, the production database is restored.
 
 ### k6 Load Tests
 
@@ -60,11 +60,13 @@ The CI/CD pipeline runs on every push to `main` and on pull requests. It consist
 
 ## Agentic Workflows
 
-The repository includes two GitHub Copilot agentic workflows that run on a daily schedule:
+The repository includes three GitHub Copilot agentic workflows that run on a daily schedule:
 
 - **Daily Repo Status** (`.github/workflows/daily-repo-status.md`) — Gathers recent repository activity (issues, PRs, code changes) and creates a GitHub issue with a status report, highlights, and recommended next steps.
 
 - **Daily Documentation Updater** (`.github/workflows/daily-doc-updater.md`) — Scans merged pull requests and commits from the last 24 hours, identifies undocumented changes, and opens a pull request to update the documentation.
+
+- **Code Simplifier** (`.github/workflows/code-simplifier.md`) — Analyzes recently modified code and creates pull requests with simplifications that improve clarity, consistency, and maintainability while preserving functionality.
 
 ## Feature plan
 
