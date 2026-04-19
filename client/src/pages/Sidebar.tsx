@@ -6,6 +6,13 @@ import { currentPlaylistAtom } from "../atoms/currentPlaylistAtom";
 import useMusicCrud from "../useMusicCrud";
 import { useEffect, useRef, useState } from "react";
 
+function navButtonClass(pathname: string, targetPath: string): string {
+    const isActive = pathname === targetPath;
+    return `flex items-center gap-3 p-3 rounded-lg transition-colors ${
+        isActive ? "bg-primary/10 text-primary font-medium" : "hover:bg-base-200"
+    }`;
+}
+
 export default function Sidebar() {
     const { getMe, logout, getSignedUrl } = useMusicCrud();
     const user = useAtomValue(userAtom);
@@ -159,11 +166,7 @@ export default function Sidebar() {
                 <div className="flex flex-col justify-between flex-1 p-6">
                     <nav className="flex flex-col justify-center space-y-2 flex-1">
                         <button
-                            className={`flex items-center gap-3 p-3 rounded-lg font-medium transition-colors ${
-                                location.pathname === "/home"
-                                    ? "bg-primary/10 text-primary"
-                                    : "hover:bg-base-200"
-                            }`}
+                            className={navButtonClass(location.pathname, "/home")}
                             onClick={() => navigate("/home")}
                         >
                             <span>Home</span>
@@ -171,33 +174,21 @@ export default function Sidebar() {
                         {user && (
                             <>
                                 <button
-                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                                        location.pathname === "/myMusic"
-                                            ? "bg-primary/10 text-primary font-medium"
-                                            : "hover:bg-base-200"
-                                    }`}
+                                    className={navButtonClass(location.pathname, "/myMusic")}
                                     onClick={() => navigate("/myMusic")}
                                 >
                                     <span>My Music</span>
                                 </button>
 
                                 <button
-                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                                        location.pathname === "/uploadSong"
-                                            ? "bg-primary/10 text-primary font-medium"
-                                            : "hover:bg-base-200"
-                                    }`}
+                                    className={navButtonClass(location.pathname, "/uploadSong")}
                                     onClick={() => navigate("/uploadSong")}
                                 >
                                     <span>Upload Song</span>
                                 </button>
 
                                 <button
-                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
-                                        location.pathname === "/createPlaylist"
-                                            ? "bg-primary/10 text-primary font-medium"
-                                            : "hover:bg-base-200"
-                                    }`}
+                                    className={navButtonClass(location.pathname, "/createPlaylist")}
                                     onClick={() => navigate("/createPlaylist")}
                                 >
                                     <span>Create Playlist</span>
