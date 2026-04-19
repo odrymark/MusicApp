@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uUVsVbmsXJU=",
+  "dgSpecHash": "SdboSn5uREg=",
   "success": true,
-  "projectFilePath": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
+  "projectFilePath": "/home/odrymark/Projects/tst/MusicApp/server/Test/Test.csproj",
   "expectedPackageFiles": [
     "/home/odrymark/.nuget/packages/awssdk.core/4.0.3.12/awssdk.core.4.0.3.12.nupkg.sha512",
     "/home/odrymark/.nuget/packages/awssdk.s3/4.0.18.6/awssdk.s3.4.0.18.6.nupkg.sha512",
