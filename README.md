@@ -27,7 +27,7 @@ Backend (.NET 9):
   - Handles file uploads for songs and stores metadata in the database.
 
 Database (PostgreSQL):
-  - Stores user data, playlists, song metadata, and relationships between users and content.
+  - Stores user data, playlist data, song data, and relationships between users and content.
   - Optimized with indexes for search queries and supports relational integrity for playlists and song ownership.
 
 ## CI/CD Pipeline
@@ -123,5 +123,3 @@ The repository includes three GitHub Copilot agentic workflows that run on a dai
 
 ### Week 16
 **Feature 1:** Featurehub toggles for song and playlist editing
-
-**Feature 2:** [...]
