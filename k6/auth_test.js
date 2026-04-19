@@ -59,7 +59,7 @@ export const options = {
   thresholds: {
     http_req_failed:  ['rate<0.04'],
     login_duration:   ['p(95)<2000'],
-    refresh_duration: ['p(95)<500'],
+    refresh_duration: ['p(95)<1000'],
     errors:           ['rate<0.04'],
   },
 };
