@@ -65,9 +65,13 @@ test('clearing search restores song sections', async (t) => {
 });
 test('search is case insensitive', async (t) => {
     await t.typeText(searchInput, 'test');
+    await t.expect(songCards.count).gt(0);
     const lowerCount = await songCards.count;
+
     await t.selectText(searchInput).typeText(searchInput, 'TEST');
+    await t.expect(songCards.count).gt(0);
     const upperCount = await songCards.count;
+
     await t.expect(lowerCount).eql(upperCount);
 });
 
