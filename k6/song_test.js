@@ -63,7 +63,7 @@ export const options = {
     get_songs_duration:      ['p(95)<500'],
     get_user_songs_duration: ['p(95)<450'],
     errors:                  ['rate<0.01'],
-  },
+  }, 
 };
 
 export default function () {
