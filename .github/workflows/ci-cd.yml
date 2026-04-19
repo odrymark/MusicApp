@@ -152,6 +152,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Switch to staging env
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /var/www/app/MusicApp
+            cp ../.env.Staging .env
+            docker-compose up -d
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -173,17 +184,6 @@ jobs:
         with:
           name: vps-test-failures
           path: screenshots/
-
-      - name: Switch to staging env for k6 tests
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            cd /var/www/app/MusicApp
-            cp ../.env.Staging .env
-            docker-compose up -d
 
       - name: Install k6
         uses: grafana/setup-k6-action@v1
