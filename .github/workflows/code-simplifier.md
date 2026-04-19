@@ -18,6 +18,7 @@ imports:
 
 safe-outputs:
   create-pull-request:
+    protected-files: fallback-to-issue
     title-prefix: "[code-simplifier] "
     labels: [refactoring, code-quality, automation]
     reviewers: [copilot]
