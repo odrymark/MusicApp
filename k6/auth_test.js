@@ -11,15 +11,15 @@ const BASE_URL = __ENV.BASE_URL || 'http://167.86.77.173:8080';
 
 const users = new SharedArray('users', function () {
   return [
-    { username: 'testuser1', password: 'testpassword' },
-    { username: 'testuser2', password: 'testpassword' },
-    { username: 'testuser3', password: 'testpassword' },
-    { username: 'testuser4', password: 'testpassword' },
-    { username: 'testuser5', password: 'testpassword' },
-    { username: 'testuser6', password: 'testpassword' },
-    { username: 'testuser7', password: 'testpassword' },
-    { username: 'testuser8', password: 'testpassword' },
-    { username: 'testuser9', password: 'testpassword' },
+    { username: 'testuser1',  password: 'testpassword' },
+    { username: 'testuser2',  password: 'testpassword' },
+    { username: 'testuser3',  password: 'testpassword' },
+    { username: 'testuser4',  password: 'testpassword' },
+    { username: 'testuser5',  password: 'testpassword' },
+    { username: 'testuser6',  password: 'testpassword' },
+    { username: 'testuser7',  password: 'testpassword' },
+    { username: 'testuser8',  password: 'testpassword' },
+    { username: 'testuser9',  password: 'testpassword' },
     { username: 'testuser10', password: 'testpassword' },
     { username: 'testuser11', password: 'testpassword' },
     { username: 'testuser12', password: 'testpassword' },
@@ -65,7 +65,7 @@ export const options = {
 };
 
 export default function () {
-  const user = users[__VU % users.length];
+  const user = users[(__VU - 1) % users.length];
 
   const loginRes = http.post(
     `${BASE_URL}/api/auth/login`,
@@ -76,10 +76,8 @@ export default function () {
   loginDuration.add(loginRes.timings.duration);
 
   const loginOk = check(loginRes, {
-    'login status is 200':        (r) => r.status === 200,
-    'login returns token':        (r) => r.json('token') !== '',
-    'login returns refreshToken': (r) => r.json('refreshToken') !== '',
-    'login returns username':     (r) => r.json('username') !== '',
+    'login status is 200':    (r) => r.status === 200,
+    'login returns username': (r) => r.json('username') !== '',
   });
 
   errorRate.add(!loginOk);
@@ -90,22 +88,18 @@ export default function () {
     return;
   }
 
-  const { token, refreshToken } = loginRes.json();
-
   sleep(1);
 
   const refreshRes = http.post(
     `${BASE_URL}/api/auth/refresh`,
-    JSON.stringify({ refreshToken }),
+    null,
     { headers: { 'Content-Type': 'application/json' } }
   );
 
   refreshDuration.add(refreshRes.timings.duration);
 
   const refreshOk = check(refreshRes, {
-    'refresh status is 200':       (r) => r.status === 200,
-    'refresh returns new token':   (r) => r.json('token') !== '',
-    'refresh returns new refresh': (r) => r.json('refreshToken') !== '',
+    'refresh status is 200': (r) => r.status === 200,
   });
 
   errorRate.add(!refreshOk);
@@ -116,19 +110,13 @@ export default function () {
     return;
   }
 
-  const { token: newToken, refreshToken: newRefreshToken } = refreshRes.json();
-
   sleep(1);
 
+  // Logout — jwt and refreshToken cookies sent automatically
   const logoutRes = http.post(
     `${BASE_URL}/api/auth/logout`,
-    JSON.stringify({ refreshToken: newRefreshToken }),
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${newToken}`,
-      },
-    }
+    null,
+    { headers: { 'Content-Type': 'application/json' } }
   );
 
   check(logoutRes, {

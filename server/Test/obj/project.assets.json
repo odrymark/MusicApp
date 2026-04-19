@@ -5601,11 +5601,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
+      "projectUniqueName": "/home/odrymark/Projects/tst/MusicApp/server/Test/Test.csproj",
       "projectName": "Test",
-      "projectPath": "/home/odrymark/Projects/MusicApp/server/Test/Test.csproj",
+      "projectPath": "/home/odrymark/Projects/tst/MusicApp/server/Test/Test.csproj",
       "packagesPath": "/home/odrymark/.nuget/packages/",
-      "outputPath": "/home/odrymark/Projects/MusicApp/server/Test/obj/",
+      "outputPath": "/home/odrymark/Projects/tst/MusicApp/server/Test/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/odrymark/.nuget/NuGet/NuGet.Config"
@@ -5620,11 +5620,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj": {
-              "projectPath": "/home/odrymark/Projects/MusicApp/server/Api/Api.csproj"
+            "/home/odrymark/Projects/tst/MusicApp/server/Api/Api.csproj": {
+              "projectPath": "/home/odrymark/Projects/tst/MusicApp/server/Api/Api.csproj"
             },
-            "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj": {
-              "projectPath": "/home/odrymark/Projects/MusicApp/server/DataAccess/DataAccess.csproj"
+            "/home/odrymark/Projects/tst/MusicApp/server/DataAccess/DataAccess.csproj": {
+              "projectPath": "/home/odrymark/Projects/tst/MusicApp/server/DataAccess/DataAccess.csproj"
             }
           }
         }
