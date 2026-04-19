@@ -1,5 +1,5 @@
 import { useAtomValue, useSetAtom } from "jotai";
-import { useNavigate, Outlet } from "react-router-dom";
+import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import { userAtom } from "../atoms/userAtom";
 import { currentSongAtom } from "../atoms/currentSongAtom";
 import { currentPlaylistAtom } from "../atoms/currentPlaylistAtom";
@@ -10,6 +10,7 @@ export default function Sidebar() {
     const { getMe, logout, getSignedUrl } = useMusicCrud();
     const user = useAtomValue(userAtom);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const currentSong = useAtomValue(currentSongAtom);
     const setCurrentSong = useSetAtom(currentSongAtom);
@@ -158,16 +159,23 @@ export default function Sidebar() {
                 <div className="flex flex-col justify-between flex-1 p-6">
                     <nav className="flex flex-col justify-center space-y-2 flex-1">
                         <button
-                            className="flex items-center gap-3 p-3 rounded-lg bg-primary/10 text-primary font-medium"
+                            className={`flex items-center gap-3 p-3 rounded-lg font-medium transition-colors ${
+                                location.pathname === "/home"
+                                    ? "bg-primary/10 text-primary"
+                                    : "hover:bg-base-200"
+                            }`}
                             onClick={() => navigate("/home")}
                         >
-                            <span className="text-xl">🏠</span>
                             <span>Home</span>
                         </button>
                         {user && (
                             <>
                                 <button
-                                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors"
+                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                                        location.pathname === "/myMusic"
+                                            ? "bg-primary/10 text-primary font-medium"
+                                            : "hover:bg-base-200"
+                                    }`}
                                     onClick={() => navigate("/myMusic")}
                                 >
                                     <span className="text-xl">📊</span>
@@ -175,26 +183,28 @@ export default function Sidebar() {
                                 </button>
 
                                 <button
-                                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors"
+                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                                        location.pathname === "/uploadSong"
+                                            ? "bg-primary/10 text-primary font-medium"
+                                            : "hover:bg-base-200"
+                                    }`}
                                     onClick={() => navigate("/uploadSong")}
                                 >
-                                    <span className="text-xl">⬆️</span>
                                     <span>Upload Song</span>
                                 </button>
 
                                 <button
-                                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors"
+                                    className={`flex items-center gap-3 p-3 rounded-lg transition-colors ${
+                                        location.pathname === "/createPlaylist"
+                                            ? "bg-primary/10 text-primary font-medium"
+                                            : "hover:bg-base-200"
+                                    }`}
                                     onClick={() => navigate("/createPlaylist")}
                                 >
-                                    <span className="text-xl">⬆️</span>
                                     <span>Create Playlist</span>
                                 </button>
                             </>
                         )}
-                        <button className="flex items-center gap-3 p-3 rounded-lg hover:bg-base-200 transition-colors">
-                            <span className="text-xl">⚙️</span>
-                            <span>Settings</span>
-                        </button>
                     </nav>
 
                     {user && (
