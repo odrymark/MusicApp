@@ -90,7 +90,8 @@ export default function () {
     return;
   }
 
-  const { token, refreshToken } = loginRes.json();
+  const newRefreshToken = refreshRes.json('refreshToken');
+  const newToken = refreshRes.json('token');
 
   sleep(1);
 
