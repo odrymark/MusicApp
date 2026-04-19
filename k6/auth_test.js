@@ -7,7 +7,7 @@ const errorRate = new Rate('errors');
 const loginDuration = new Trend('login_duration');
 const refreshDuration = new Trend('refresh_duration');
 
-const BASE_URL = __ENV.BASE_URL || 'http://localhost:5249';
+const BASE_URL = __ENV.BASE_URL || 'http://167.86.77.173:8080';
 
 const users = new SharedArray('users', function () {
   return [
@@ -90,8 +90,7 @@ export default function () {
     return;
   }
 
-  const newRefreshToken = refreshRes.json('refreshToken');
-  const newToken = refreshRes.json('token');
+  const { token, refreshToken } = loginRes.json();
 
   sleep(1);
 
