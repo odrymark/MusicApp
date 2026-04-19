@@ -178,7 +178,6 @@ export default function Sidebar() {
                                     }`}
                                     onClick={() => navigate("/myMusic")}
                                 >
-                                    <span className="text-xl">📊</span>
                                     <span>My Music</span>
                                 </button>
 
