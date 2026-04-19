@@ -79,7 +79,7 @@ export default function EditSong() {
                 <header className="bg-base-100 shadow-sm border-b border-base-300 flex-shrink-0">
                     <div className="navbar px-4 md:px-8 py-3">
                         <div className="flex-1">
-                            <span className="text-xl font-bold text-primary">Edit Playlist</span>
+                            <span className="text-xl font-bold text-primary">Edit Song</span>
                         </div>
                     </div>
                 </header>

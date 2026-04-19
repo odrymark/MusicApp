@@ -5,7 +5,7 @@ import useMusicCrud, { type Song } from "../useMusicCrud";
 export default function EditPlaylist() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { getPlaylists, getSongs, getSignedUrl, editPlaylist, getFunctionState } = useMusicCrud();
+    const { getUserPlaylists, getSongs, getSignedUrl, editPlaylist, getFunctionState } = useMusicCrud();
 
     const [title, setTitle] = useState("");
     const [isPublic, setIsPublic] = useState(false);
@@ -31,7 +31,7 @@ export default function EditPlaylist() {
 
     useEffect(() => {
         const loadData = async () => {
-            const [playlists, songs] = await Promise.all([getPlaylists(), getSongs()]);
+            const [playlists, songs] = await Promise.all([getUserPlaylists(), getSongs()]);
             const playlist = playlists.find((p) => p.id === id);
             if (!playlist) return navigate("/myMusic");
 
@@ -302,7 +302,6 @@ export default function EditPlaylist() {
                         </div>
                     </div>
 
-                    {/* Right panel — song picker */}
                     <div className="card bg-base-100 shadow-xl flex-1 overflow-hidden flex flex-col">
                         <div className="card-body flex flex-col overflow-hidden">
                             <div className="flex items-center justify-between flex-shrink-0">
